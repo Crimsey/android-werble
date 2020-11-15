@@ -57,7 +57,7 @@ public class RetrofitBuilder {
     public static <T> T createService(Class<T> service){
         return retrofit.create(service);
     }
-/*
+
     public static <T> T createServiceWithAuth(Class<T> service, final TokenManager tokenManager){
 
         OkHttpClient newClient = client.newBuilder().addInterceptor(new Interceptor() {
@@ -80,7 +80,7 @@ public class RetrofitBuilder {
         return newRetrofit.create(service);
 
     }
-*/
+
     public static Retrofit getRetrofit() {
         return retrofit;
     }

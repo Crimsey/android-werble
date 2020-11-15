@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
+import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
@@ -27,119 +27,110 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegisterActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = "RegisterActivity";
+    private static final String TAG = "LoginActivity";
 
     @BindView(R.id.Login)
     TextInputLayout Login;
-    @BindView(R.id.Email)
-    TextInputLayout Email;
     @BindView(R.id.Password)
     TextInputLayout Password;
-    //@BindView(R.id.PasswordConfirmation)
-    //TextInputLayout PasswordConfirmation;
 
     ApiService service;
-    Call<AccessToken> call;
-    AwesomeValidation validator;
     TokenManager tokenManager;
+    AwesomeValidation validator;
+    Call<AccessToken> call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
 
         service = RetrofitBuilder.createService(ApiService.class);
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
-        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs",MODE_PRIVATE));
         setupRules();
 
         if (tokenManager.getToken().getAccessToken() != null){
-            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            startActivity(new Intent(LoginActivity.this, EventActivity.class));
             finish();
         }
     }
 
-    @OnClick(R.id.RegistrationButton)
-    void register(){
+    @OnClick(R.id.LoginButton)
+    void login() {
 
-        String name = Login.getEditText().getText().toString();
-        String email = Email.getEditText().getText().toString();
+        String login = Login.getEditText().getText().toString();
         String password = Password.getEditText().getText().toString();
-        //String password_confirmation = PasswordConfirmation().getText().toString();
+
         Login.setError(null);
-        Email.setError(null);
         Password.setError(null);
 
         validator.clear();
 
-        if(validator.validate()) {
-            String password_confirmation = password;
-            call = service.register(name, email, password,password_confirmation);
+        if (validator.validate()) {
+
+            call = service.login(login, password);
             call.enqueue(new Callback<AccessToken>() {
                 @Override
                 public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
 
-                    Log.e(TAG, "onResponse: " + response);
+                    Log.w(TAG, "onResponse " + response);
 
                     if (response.isSuccessful()) {
-                        Log.e(TAG, "onResponse: " + response.body());
                         tokenManager.saveToken(response.body());
-                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                        startActivity(new Intent(LoginActivity.this, EventActivity.class));
                         finish();
                     } else {
-                        handleErrors(response.errorBody());
+                        if (response.code() == 422) {
+                            handleErrors(response.errorBody());
+                        }
+                        if (response.code() == 401) {
+                            ApiError apiError = Utils.converErrors(response.errorBody());
+                            Toast.makeText(LoginActivity.this, apiError.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
 
                 @Override
                 public void onFailure(Call<AccessToken> call, Throwable t) {
-                    Log.e(TAG, "onFailure: " + t.getMessage());
+                    Log.w(TAG, "onFailure: " + t.getMessage());
                 }
             });
         }
     }
 
-    @OnClick(R.id.go_to_login)
+    @OnClick(R.id.go_to_register)
     void goToRegister(){
-        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
     }
 
     private void handleErrors(ResponseBody response){
 
         ApiError apiError = Utils.converErrors(response);
-        if (apiError.getErrors() != null) {
-            for (Map.Entry<String, List<String>> error : apiError.getErrors().entrySet()) {
-                if (error.getKey().equals("login")) {
-                    Login.setError(error.getValue().get(0));
-                }
-                if (error.getKey().equals("email")) {
-                    Login.setError(error.getValue().get(0));
-                }
-                if (error.getKey().equals("password")) {
-                    Login.setError(error.getValue().get(0));
-                }
+
+        for (Map.Entry<String, List<String>> error : apiError.getErrors().entrySet()){
+            if (error.getKey().equals("login")){
+                Login.setError(error.getValue().get(0));
+            }
+            if (error.getKey().equals("password")){
+                Password.setError(error.getValue().get(0));
             }
         }
-         else {
-            Log.e("no errors","karol");
-         }
-        }
-
+    }
 
     public void setupRules(){
         validator.addValidation(this,R.id.Login, RegexTemplate.NOT_EMPTY,R.string.err_login);
-        validator.addValidation(this,R.id.Email, Patterns.EMAIL_ADDRESS,R.string.err_email);
-        validator.addValidation(this,R.id.Password,"[a-zA-Z0-9]{8,}",R.string.err_password);
+        validator.addValidation(this,R.id.Password,RegexTemplate.NOT_EMPTY,R.string.err_password);
+
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
-        if (call != null) {
+        if(call != null){
             call.cancel();
             call = null;
         }
