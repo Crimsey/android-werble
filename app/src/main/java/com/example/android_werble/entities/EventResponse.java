@@ -6,5 +6,9 @@ import java.util.List;
 
 public class EventResponse {
 
-    List<Event> getData()
+    List<Event> data;
+
+    public List<Event> getData(){
+        return data;
+    }
 }

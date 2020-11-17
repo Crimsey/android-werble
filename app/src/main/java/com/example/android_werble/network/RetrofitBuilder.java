@@ -74,7 +74,7 @@ public class RetrofitBuilder {
                 request = builder.build();
                 return chain.proceed(request);
             }
-        }).authenticator(CustomAuthenticator.getInstance(tokenManager)).build();
+        }).build();
 
         Retrofit newRetrofit = retrofit.newBuilder().client(newClient).build();
         return newRetrofit.create(service);

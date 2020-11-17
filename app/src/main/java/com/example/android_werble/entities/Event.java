@@ -21,6 +21,10 @@ public class Event {
     UnsignedInteger event_status_id;
     UnsignedInteger event_creator_id;
     UnsignedInteger event_type_id;
+
+    public String getName(){
+        return name;
+    }
     
 
 }
