@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.android_werble.entities.AccessToken;
+import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
-import com.example.android_werble.entities.EventResponse;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 
@@ -28,7 +29,7 @@ public class EventActivity extends AppCompatActivity {
 
     ApiService service;
     TokenManager tokenManager;
-    Call<EventResponse> call;
+    Call<Data<Event>> call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +52,16 @@ public class EventActivity extends AppCompatActivity {
     @OnClick(R.id.EventButton)
     void getEvents(){
         call = service.events();
-        call.enqueue(new Callback<EventResponse>() {
-
+        call.enqueue(new Callback<Data<Event>>() {
 
             @Override
-            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
                 Log.w(TAG, "onResponse: " + response);
 
                 if (response.isSuccessful()) {
-                    //title.setText(response.body().getData().get(0).getName());
-                    title.setText(response.body().get("data").);
+                    title.setText(response.body().getData().get(0).getName());
+                    //String titleEvent = response.body().getData().get(0).getName();
+                    //title.setText(titleEvent);
                     Log.w(TAG,"getEvents"+response);
                 } else {
                     tokenManager.deleteToken();
@@ -71,8 +72,8 @@ public class EventActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<EventResponse> call, Throwable t) {
-
+            public void onFailure(Call<Data<Event>> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage() );
             }
         });
 

@@ -1,7 +1,8 @@
 package com.example.android_werble.network;
 
 import com.example.android_werble.entities.AccessToken;
-import com.example.android_werble.entities.EventResponse;
+import com.example.android_werble.entities.Data;
+import com.example.android_werble.entities.Event;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -28,7 +29,7 @@ public interface ApiService {
     Call <AccessToken> refresh(@Field("refresh_token") String refreshToken);
 
     @GET("events")
-    Call<EventResponse> events();
+    Call<Data<Event>> events();
 
 
 }
