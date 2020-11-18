@@ -11,7 +11,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Androidwerble">
+        android:theme="@style/Theme.Androidwerble"
+        android:usesCleartextTraffic="true">
         <activity android:name=".EventActivity"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />

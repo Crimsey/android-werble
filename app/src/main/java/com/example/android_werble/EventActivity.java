@@ -43,19 +43,25 @@ public class EventActivity extends AppCompatActivity {
             finish();
         }
 
-        service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
+        //service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
+        service = RetrofitBuilder.createService(ApiService.class);
+        Log.w(TAG,"LAST LINE"+tokenManager.getToken().getAccessToken());
     }
 
     @OnClick(R.id.EventButton)
-    void getPosts(){
+    void getEvents(){
         call = service.events();
         call.enqueue(new Callback<EventResponse>() {
+
+
             @Override
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
                 Log.w(TAG, "onResponse: " + response);
 
                 if (response.isSuccessful()) {
-                    title.setText(response.body().getData().get(0).getName());
+                    //title.setText(response.body().getData().get(0).getName());
+                    title.setText(response.body().get("data").);
+                    Log.w(TAG,"getEvents"+response);
                 } else {
                     tokenManager.deleteToken();
                     startActivity(new Intent(EventActivity.this, LoginActivity.class));

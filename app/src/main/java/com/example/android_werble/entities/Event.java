@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Event {
 
-    int event_id;
+    UnsignedInteger event_id;
     String name;
     String location;
     String zip_code;
