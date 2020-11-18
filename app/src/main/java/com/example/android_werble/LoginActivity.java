@@ -12,6 +12,7 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
+import com.example.android_werble.entities.Event;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.textfield.TextInputLayout;
@@ -81,6 +82,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (response.isSuccessful()) {
                         tokenManager.saveToken(response.body());
+                        Log.w(TAG,"SPRAWDZAMY TOKEN:"+tokenManager.getToken().getAccessToken());
+                        Log.w(TAG,"RES BODY: :"+response.body().getAccessToken());
+
                         startActivity(new Intent(LoginActivity.this, EventActivity.class));
                         finish();
                     } else {

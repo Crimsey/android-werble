@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="werble_background">#3333FF</color>
+    <color name="yellow1">#FCDF27 </color>
+    <color name="yellow2">#F9FE41 </color>
+    <color name="grey05">#9B9B9B  </color>
+    <color name="orange4">#FFB923  </color>
+    <color name="orange5">#FFC607  </color>
+    <color name="blue2">#0732FF  </color>
+    <color name="blue25">#5C79FF  </color>
+
 </resources>

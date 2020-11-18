@@ -1,12 +1,14 @@
 package com.example.android_werble.entities;
 
 import com.google.common.primitives.UnsignedInteger;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
 public class Event {
 
-    int event_id;
+    UnsignedInteger event_id;
+    //@SerializedName("name")
     String name;
     String location;
     String zip_code;
