@@ -14,6 +14,7 @@ import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
@@ -56,6 +57,12 @@ public class LoginActivity extends AppCompatActivity {
         if (tokenManager.getToken().getAccessToken() != null){
             startActivity(new Intent(LoginActivity.this, EventActivity.class));
             finish();
+        }
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            String logoutMessage = intent.getStringExtra("logoutMessage");
+            Snackbar.make(findViewById(R.id.loginLayout), logoutMessage, Snackbar.LENGTH_LONG).show();
         }
     }
 

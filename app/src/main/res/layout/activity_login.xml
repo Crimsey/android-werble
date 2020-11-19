@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp">
@@ -21,19 +22,18 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/Login"
-            android:hint="Login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:hint="Login">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-
-                android:drawablePadding="10dp"
-                android:imeOptions="actionNext"
                 android:layout_height="wrap_content"
-                />
+                android:drawablePadding="10dp"
+
+                android:imeOptions="actionNext"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,45 +41,45 @@
             android:id="@+id/Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
-            android:hint="Password">
+            android:hint="Password"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:imeOptions="actionDone"
-                android:maxLines="1"
-                android:inputType="textPassword"
-
-                android:drawablePadding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/go_to_register"
-            android:text="Not yet registered"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            style="@style/Base.TextAppearance.AppCompat.Medium"
-            android:layout_gravity="end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="Not yet registered" />
 
         <Button
             android:id="@+id/LoginButton"
-            android:text="Login"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Login" />
 
         <ProgressBar
             android:id="@+id/loader"
-            android:visibility="invisible"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible" />
 
     </LinearLayout>
 

@@ -12,6 +12,7 @@ import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,6 +79,17 @@ public class EventActivity extends AppCompatActivity {
         });
 
     }
+
+    @OnClick(R.id.logoutButton)
+    void logout(){
+        String message="SUCCESSFULY LOGOUT!";
+        Intent i = new Intent(this,LoginActivity.class);
+        i.putExtra("logoutMessage",message);
+        tokenManager.deleteToken();
+        startActivity(new Intent(EventActivity.this, LoginActivity.class));
+        finish();
+    }
+
 
     @Override
     protected void onDestroy() {

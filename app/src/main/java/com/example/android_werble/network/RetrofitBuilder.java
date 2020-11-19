@@ -34,7 +34,10 @@ public class RetrofitBuilder {
 
                     Request.Builder builder = request.newBuilder()
                             .addHeader("Accept","application/json")
+                            .addHeader("Content-Type","multipart/form data")
+                            .addHeader("Content-Type","application/json")
                             .addHeader("Connection","close");
+
 
                     request = builder.build();
 
