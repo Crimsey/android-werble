@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:background="@drawable/event_bg"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/prefix"
+                android:layout_width="wrap_content"
+                android:text="A"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/eventName"
+            android:layout_width="wrap_content"
+            android:text="larntech"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="60dp"
+            android:textColor="@color/com_facebook_primary_button_pressed_text_color"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp" />
+
+        <ImageView
+            android:id="@+id/imageMore"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/messenger_bubble_large_blue"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp" />
+    </RelativeLayout>
+</LinearLayout>

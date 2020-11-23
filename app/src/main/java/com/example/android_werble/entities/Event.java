@@ -188,6 +188,31 @@ public class Event {
         this.updatedAt = updatedAt;
     }
 
+    @Override
+    public String toString(){
+        return "EventResponse{" +
+                "id= " +eventId +
+                ",name="+name  + '\''+
+                ",location="+location  + '\''+
+                ",zip_code="+zipCode  + '\''+
+                ",street_name="+streetName  + '\''+
+                ",house_number="+houseNumber  + '\''+
+                ",longitude="+longitude  + '\''+
+                ",latitude="+latitude  + '\''+
+                ",description="+description  + '\''+
+                ",datetime="+datetime  + '\''+
+                ",isActive="+isActive  + '\''+
+                ",eventVisibilityLevelId="+eventVisibilityLevelId  + '\''+
+                ",eventStatusId="+eventStatusId  + '\''+
+                ",eventCreatorId="+eventCreatorId  + '\''+
+                ",eventTypeId="+eventTypeId  + '\''+
+                ",deletedAt="+deletedAt  + '\''+
+                ",createdAt="+createdAt  + '\''+
+                ",updatedAt="+updatedAt  + '\''+
+                '}';
+
+    }
+
 }
 
 

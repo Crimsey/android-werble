@@ -10,7 +10,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-public interface ApiService {
+public interface  ApiService {
 
     @POST("register") //http://domain.com/api/
     @FormUrlEncoded
@@ -29,7 +29,9 @@ public interface ApiService {
     Call <AccessToken> refresh(@Field("refresh_token") String refreshToken);
 
     @GET("events")
-    Call<Data<Event>> events();
+    Call<Data<Event>> getAllEvents();
 
+    //@GET("user/events")
+    //Call<Data<Event>> userEvents();
 
 }
