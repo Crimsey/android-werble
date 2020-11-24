@@ -8,6 +8,9 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.example.android_werble.BuildConfig;
 
 import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -27,6 +30,10 @@ public class RetrofitBuilder {
 
     private static OkHttpClient buildClient(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                //.connectTimeout(10, TimeUnit.SECONDS)
+                //.readTimeout(15,TimeUnit.SECONDS)
+                //.writeTimeout(15,TimeUnit.SECONDS)
+                .callTimeout(1,TimeUnit.MINUTES)
             .addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
@@ -34,8 +41,9 @@ public class RetrofitBuilder {
 
                     Request.Builder builder = request.newBuilder()
                             .addHeader("Accept","application/json")
-                            .addHeader("Content-Type","multipart/form data")
-                            .addHeader("Content-Type","application/json")
+                            .header("Accept-Encoding", "identity")
+                            //.addHeader("Content-Type","multipart/form data")
+                            //.addHeader("Content-Type","application/json")
                             .addHeader("Connection","close");
 
 
@@ -55,7 +63,6 @@ public class RetrofitBuilder {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
-                //.addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
     }
@@ -80,9 +87,9 @@ public class RetrofitBuilder {
                 request = builder.build();
                 return chain.proceed(request);
             }
-        }).build();
+        }).authenticator(CustomAuthenticator.getInstance(tokenManager)).build();
 
-        Retrofit newRetrofit = retrofit.newBuilder().client(newClient).build();
+        Retrofit newRetrofit = retrofit.newBuilder().client(newClient).build();//.callbackExecutor(Executors.newSingleThreadExecutor()).build();
         return newRetrofit.create(service);
 
     }

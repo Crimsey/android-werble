@@ -78,18 +78,7 @@ public class EventActivity extends AppCompatActivity {
 
                     }
                     title.setText(content);
-                    //List<Data<Event>> eventList = Collections.singletonList(response.body());
-                    /*String content ="";
-                    int i=0;
-                    for (Data<Event> currentEvent : eventList){
 
-                        content+="Id :" + currentEvent;//.getData().get(i).getEventId() + "\n";
-                        Log.w(TAG, "curr: " + currentEvent.getData() + "\n");
-                        i++;
-
-                    }
-                    title.setText(content);
-*/
                     //title.setText(response.body().getData().get(0).getName());
                     //String titleEvent = response.body().getData().get(0).getName();
                     //title.setText(titleEvent);
