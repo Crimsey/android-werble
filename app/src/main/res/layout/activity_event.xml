@@ -39,4 +39,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EventButton" />
 
+    <Button
+        android:id="@+id/deleteToken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:layout_marginBottom="42dp"
+        android:text="deleteToken"
+        app:layout_constraintBottom_toTopOf="@+id/EventButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/event_title" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.android_werble.network;
 import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
+import com.example.android_werble.entities.Message;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -24,11 +25,16 @@ public interface ApiService {
     Call<AccessToken> login(@Field("login") String login,
                             @Field("password") String password);
 
+    @POST("logout")
+    Call<Message>   logout();
+
     @POST("refresh")
     @FormUrlEncoded
     Call <AccessToken> refresh(@Field("refresh_token") String refreshToken);
 
-    @GET("events")
+
+    @GET("user/events")
+    //@GET("events")
     Call<Data<Event>> events();
 
 
