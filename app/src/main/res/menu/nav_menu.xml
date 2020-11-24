@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="STORAGE">
+        <menu>
+
+            <item android:title="Map"
+                android:icon="@drawable/messenger_bubble_large_blue"/>
+            <item android:title="Your profile"
+                android:icon="@drawable/messenger_bubble_large_blue"/>
+            <item android:title="Your events"
+                android:icon="@drawable/messenger_bubble_large_blue"/>
+            <item android:title="Your friends"
+                android:icon="@drawable/messenger_bubble_large_blue"/>
+            <item android:title="Create event"
+                android:icon="@drawable/messenger_bubble_large_blue"/>
+
+        </menu>
+    </item>
+    <item android:title="APP">
+        <menu>
+            <item android:title="Settings"
+                android:icon="@drawable/messenger_bubble_large_blue"/>
+            <item
+                android:id="@+id/logoutButton"
+                android:title="Logout"
+                android:icon="@drawable/messenger_bubble_large_blue"/>
+        </menu>
+    </item>
+</menu>

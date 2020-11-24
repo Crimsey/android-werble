@@ -1,11 +1,17 @@
 package com.example.android_werble;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.Data;
@@ -13,6 +19,7 @@ import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Collections;
@@ -25,9 +32,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventActivity extends AppCompatActivity {
+public class EventActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "EventActivity";
+
+    //variables for sidebar
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @BindView(R.id.event_title)
     TextView title;
@@ -54,6 +66,27 @@ public class EventActivity extends AppCompatActivity {
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
         //service = RetrofitBuilder.createService(ApiService.class);
         Log.w(TAG, "LAST LINE" + tokenManager.getToken().getAccessToken());
+
+        //implementation of sidebar
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.openNavDrawer,
+                R.string.closeNavDrawer
+        );
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @OnClick(R.id.EventButton)
@@ -88,7 +121,7 @@ public class EventActivity extends AppCompatActivity {
                     startActivity(new Intent(EventActivity.this, LoginActivity.class));
                     finish();
                 }*/
-            }
+           }
 
             @Override
             public void onFailure(Call<Data<Event>> call, Throwable t) {
@@ -103,6 +136,7 @@ public class EventActivity extends AppCompatActivity {
         tokenManager.deleteToken();
         finish();
     }
+
 
     @OnClick(R.id.logoutButton)
     void logout() {
@@ -132,6 +166,21 @@ public class EventActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Log.w(TAG,"SIDEBAR");
+        Toast.makeText(EventActivity.this,"TOST",Toast.LENGTH_LONG).show();
+        switch (item.getTitle().toString()) {
+            case "Logout": logout(); break;
+        }
+        return false;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 
     @Override
     protected void onDestroy() {

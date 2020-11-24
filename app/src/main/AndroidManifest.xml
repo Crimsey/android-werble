@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Androidwerble"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EventActivity"/>
+        <activity android:name=".EventActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity">

@@ -3,5 +3,9 @@
     <string name="err_login">The name field is required.</string>
     <string name="err_email">The email field must be a valid email adress.</string>
     <string name="err_password">The password must be at least 8 characters.</string>
+    
+    <string name="openNavDrawer">Navigation Drawer Open</string>
+    <string name="closeNavDrawer">Navigation Drawer Close</string>
+
 
 </resources>

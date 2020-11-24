@@ -37,5 +37,8 @@ public interface ApiService {
     //@GET("events")
     Call<Data<Event>> events();
 
+    //@GET("user")
+    //Call<Data<User>> user();
+
 
 }
