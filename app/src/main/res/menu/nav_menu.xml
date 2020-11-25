@@ -6,7 +6,9 @@
 
             <item android:title="Map"
                 android:icon="@drawable/messenger_bubble_large_blue"/>
-            <item android:title="Your profile"
+            <item
+                android:id="@+id/profileSidebar"
+                android:title="Your profile"
                 android:icon="@drawable/messenger_bubble_large_blue"/>
             <item android:title="Your events"
                 android:icon="@drawable/messenger_bubble_large_blue"/>

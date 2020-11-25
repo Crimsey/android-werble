@@ -17,6 +17,7 @@ import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
+import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -32,22 +33,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "EventActivity";
+    private static final String TAG = "UserActivity";
 
     //variables for sidebar
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
-    @BindView(R.id.event_title)
-    TextView title;
+    //@BindView(R.id.event_title)
+    //TextView title;
 
-    //@BindView(R.id.profileSidebar)
-    //MenuItem profileSidebar;
+    @BindView(R.id.userTitle)
+    TextView userTitle;
 
-    Call<Data<Event>> call;
+    Call<User> call;
     Call<Message> messageCall;
 
     ApiService service;
@@ -56,18 +57,17 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
+        setContentView(R.layout.activity_user);
 
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
 
         if (tokenManager.getToken() == null) {
-            startActivity(new Intent(EventActivity.this, LoginActivity.class));
+            startActivity(new Intent(UserActivity.this, LoginActivity.class));
             finish();
         }
 
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
-        //service = RetrofitBuilder.createService(ApiService.class);
         Log.w(TAG, "LAST LINE" + tokenManager.getToken().getAccessToken());
 
         //implementation of sidebar
@@ -89,68 +89,45 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         actionBarDrawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        getUser();
     }
 
-    @OnClick(R.id.EventButton)
-    void getEvents() {
+    //@OnClick(R.id.EventButton)
+    void getUser() {
 
-        call = service.events();
-        call.enqueue(new Callback<Data<Event>>() {
+        call = service.user();
+        call.enqueue(new Callback<User>() {
 
             @Override
-            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 Log.w(TAG, "onResponse: " + response);
 
                 if (response.isSuccessful()) {
-                    List<Event> eventList = response.body().getData();
+                    User user = response.body();
                     String content = "";
-                    for (Event event : eventList) {
 
-                        content += "Id :" + event.getEventId().toString() + "\n" +
-                                "name: " + event.getName() + "\n";//.getData().get(i).getEventId() + "\n";
-                        //Log.w(TAG, "curr: " + event.getData() + "\n");
-
-
+                        content += "Id :" + user.getUserId().toString() + "\n" +
+                                "login: " + user.getLogin() + "\n" //.getData().get(i).getEventId() + "\n";
+                                + "email: " + user.getEmail() + "\n"
+                                + "first_name: " + user.getFirstName() + "\n"
+                                + "last_name: " + user.getLastName() + "\n"
+                                + "birth_date: " + user.getBirthDate() + "\n"
+                                + "description: " + user.getDescription() + "\n";
+                    userTitle.setText(content);
                     }
-                    title.setText(content);
+                }
 
-                    //title.setText(response.body().getData().get(0).getName());
-                    //String titleEvent = response.body().getData().get(0).getName();
-                    //title.setText(titleEvent);
-                    Log.w(TAG, "getEvents" + response);
-                } /*else {
-                    tokenManager.deleteToken();
-                    startActivity(new Intent(EventActivity.this, LoginActivity.class));
-                    finish();
-                }*/
-           }
 
             @Override
-            public void onFailure(Call<Data<Event>> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Log.w(TAG, "onFailure: " + t.getMessage());
             }
         });
 
     }
 
-    //@OnClick(R.id.profileSidebar)
-    void gotoProfile() {
-        Toast.makeText(EventActivity.this,"TUTAJ",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventActivity.this, UserActivity.class));
-        finish();
-        Log.w(TAG,"USERACTIVITY");
-    }
 
-
-    @OnClick(R.id.deleteToken)
-    void deletetoken(){
-        tokenManager.deleteToken();
-        finish();
-    }
-
-
-    @OnClick(R.id.logoutButton)
+    //@OnClick(R.id.logoutButton)
     void logout() {
         messageCall = service.logout();
 
@@ -161,12 +138,12 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
                 if (response.isSuccessful()) {
                     String message = response.body().getMessage();
-                    Intent i = new Intent(EventActivity.this, LoginActivity.class);
+                    Intent i = new Intent(UserActivity.this, LoginActivity.class);
                     i.putExtra("logoutMessage", message);
                     Log.w(TAG, "MESS: " + message);
 
                     tokenManager.deleteToken();
-                    startActivity(new Intent(EventActivity.this, LoginActivity.class));
+                    startActivity(new Intent(UserActivity.this, LoginActivity.class));
                     finish();
                 }
             }
@@ -178,15 +155,21 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         });
     }
 
+    void gotoProfile() {
+        Toast.makeText(UserActivity.this,"TUTAJ",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(UserActivity.this, UserActivity.class));
+        finish();
+        Log.w(TAG,"USERACTIVITY");
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         Log.w(TAG,"SIDEBAR");
-        Toast.makeText(EventActivity.this,"TOST",Toast.LENGTH_LONG).show();
+        Toast.makeText(UserActivity.this,"TOST",Toast.LENGTH_LONG).show();
         switch (item.getTitle().toString()) {
             case "Logout": logout(); break;
             case "Your profile": gotoProfile(); break;
+
         }
         return false;
     }

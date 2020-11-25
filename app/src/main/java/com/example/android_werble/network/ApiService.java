@@ -4,6 +4,7 @@ import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
+import com.example.android_werble.entities.User;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -37,8 +38,8 @@ public interface ApiService {
     //@GET("events")
     Call<Data<Event>> events();
 
-    //@GET("user")
-    //Call<Data<User>> user();
+    @GET("user")
+    Call<User> user();
 
 
 }
