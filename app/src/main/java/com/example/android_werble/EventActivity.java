@@ -142,6 +142,12 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         Log.w(TAG,"USERACTIVITY");
     }
 
+    void gotoMap() {
+        Toast.makeText(EventActivity.this,"MAP",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(EventActivity.this, MapActivity.class));
+        finish();
+        Log.w(TAG,"GOINGTOMAP");
+    }
 
     @OnClick(R.id.deleteToken)
     void deletetoken(){
@@ -187,6 +193,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         switch (item.getTitle().toString()) {
             case "Logout": logout(); break;
             case "Your profile": gotoProfile(); break;
+            case "Map": gotoMap();; break;
         }
         return false;
     }

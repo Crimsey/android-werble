@@ -162,6 +162,11 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         Log.w(TAG,"USERACTIVITY");
     }
 
+    void gotoEvent() {
+        startActivity(new Intent(UserActivity.this, EventActivity.class));
+        finish();
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.w(TAG,"SIDEBAR");
@@ -169,6 +174,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getTitle().toString()) {
             case "Logout": logout(); break;
             case "Your profile": gotoProfile(); break;
+            case "Your events": gotoEvent(); break;
 
         }
         return false;

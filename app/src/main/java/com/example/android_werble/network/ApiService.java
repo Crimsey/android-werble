@@ -33,6 +33,9 @@ public interface ApiService {
     @FormUrlEncoded
     Call <AccessToken> refresh(@Field("refresh_token") String refreshToken);
 
+    /*@POST("user/events/create")
+    @FormUrlEncoded
+    Call<AccessToken> createEvent(@Field(""));*/
 
     @GET("user/events")
     //@GET("events")

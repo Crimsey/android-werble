@@ -10,7 +10,9 @@
                 android:id="@+id/profileSidebar"
                 android:title="Your profile"
                 android:icon="@drawable/messenger_bubble_large_blue"/>
-            <item android:title="Your events"
+            <item
+                android:id="@+id/got"
+                android:title="Your events"
                 android:icon="@drawable/messenger_bubble_large_blue"/>
             <item android:title="Your friends"
                 android:icon="@drawable/messenger_bubble_large_blue"/>
