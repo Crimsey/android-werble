@@ -7,6 +7,9 @@
     <string name="openNavDrawer">Navigation Drawer Open</string>
     <string name="closeNavDrawer">Navigation Drawer Close</string>
     <string name="title_activity_map">Map</string>
+    <string name="err_event_name">Wrong event name!</string>
+    <string name="err_event_location">Wrong location!</string>
+    <string name="err_event_datetime">Wrong datetime!</string>
 
 
 </resources>

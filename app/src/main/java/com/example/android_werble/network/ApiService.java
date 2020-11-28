@@ -33,12 +33,14 @@ public interface ApiService {
     @FormUrlEncoded
     Call <AccessToken> refresh(@Field("refresh_token") String refreshToken);
 
-    /*@POST("user/events/create")
+    @POST("user/events/create")
     @FormUrlEncoded
-    Call<AccessToken> createEvent(@Field(""));*/
+    Call<AccessToken> createEvent(@Field("name")String name,
+                                  @Field("location") String location,
+                                  @Field("description") String description,
+                                  @Field("datetime") String datetime);
 
     @GET("user/events")
-    //@GET("events")
     Call<Data<Event>> events();
 
     @GET("user")

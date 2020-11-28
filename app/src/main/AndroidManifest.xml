@@ -41,6 +41,9 @@
         <activity
             android:name=".UserActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreateEventActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity">
