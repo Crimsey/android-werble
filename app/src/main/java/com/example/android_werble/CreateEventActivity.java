@@ -62,9 +62,6 @@ public class CreateEventActivity extends AppCompatActivity {
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
-
-
-
         setupRules();
     }
 
@@ -104,6 +101,8 @@ public class CreateEventActivity extends AppCompatActivity {
         }
 
     }
+
+
 
 
     private void handleErrors(ResponseBody response) {
