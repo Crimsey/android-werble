@@ -32,196 +32,129 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class EventActivity extends Sidebar {
+        private static final String TAG = "EventActivity";
 
-    private static final String TAG = "EventActivity";
+        @BindView(R.id.event_title)
+        TextView title;
 
-    //variables for sidebar
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+        //@BindView(R.id.profileSidebar)
+        //MenuItem profileSidebar;
 
-    @BindView(R.id.event_title)
-    TextView title;
+        Call<Data<Event>> call;
+        Call<Message> messageCall;
 
-    //@BindView(R.id.profileSidebar)
-    //MenuItem profileSidebar;
+        ApiService service;
+        TokenManager tokenManager;
 
-    Call<Data<Event>> call;
-    Call<Message> messageCall;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_event);
+            //sidebar = new Sidebar(this);
 
-    ApiService service;
-    TokenManager tokenManager;
+            ButterKnife.bind(this);
+            tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
+            if (tokenManager.getToken() == null) {
+                startActivity(new Intent(EventActivity.this, LoginActivity.class));
+                finish();
+            }
 
-        ButterKnife.bind(this);
-        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+            service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
+            //service = RetrofitBuilder.createService(ApiService.class);
+            Log.w(TAG, "LAST LINE" + tokenManager.getToken().getAccessToken());
 
-        if (tokenManager.getToken() == null) {
-            startActivity(new Intent(EventActivity.this, LoginActivity.class));
-            finish();
+
         }
 
-        service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
-        //service = RetrofitBuilder.createService(ApiService.class);
-        Log.w(TAG, "LAST LINE" + tokenManager.getToken().getAccessToken());
+        @OnClick(R.id.EventButton)
+        void getEvents() {
 
-        //implementation of sidebar
-        toolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
+            call = service.events();
+            call.enqueue(new Callback<Data<Event>>() {
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+                @Override
+                public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                    Log.w(TAG, "onResponse: " + response);
 
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                toolbar,
-                R.string.openNavDrawer,
-                R.string.closeNavDrawer
-        );
+                    if (response.isSuccessful()) {
+                        List<Event> eventList = response.body().getData();
+                        String content = "";
+                        for (Event event : eventList) {
 
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+                            content += "Id :" + event.getEventId().toString() + "\n" +
+                                    "name: " + event.getName() + "\n";//.getData().get(i).getEventId() + "\n";
+                            //Log.w(TAG, "curr: " + event.getData() + "\n");
 
 
-    }
+                        }
+                        title.setText(content);
 
-    @OnClick(R.id.EventButton)
-    void getEvents() {
-
-        call = service.events();
-        call.enqueue(new Callback<Data<Event>>() {
-
-            @Override
-            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-                Log.w(TAG, "onResponse: " + response);
-
-                if (response.isSuccessful()) {
-                    List<Event> eventList = response.body().getData();
-                    String content = "";
-                    for (Event event : eventList) {
-
-                        content += "Id :" + event.getEventId().toString() + "\n" +
-                                "name: " + event.getName() + "\n";//.getData().get(i).getEventId() + "\n";
-                        //Log.w(TAG, "curr: " + event.getData() + "\n");
-
-
-                    }
-                    title.setText(content);
-
-                    //title.setText(response.body().getData().get(0).getName());
-                    //String titleEvent = response.body().getData().get(0).getName();
-                    //title.setText(titleEvent);
-                    Log.w(TAG, "getEvents" + response);
-                } /*else {
+                        //title.setText(response.body().getData().get(0).getName());
+                        //String titleEvent = response.body().getData().get(0).getName();
+                        //title.setText(titleEvent);
+                        Log.w(TAG, "getEvents" + response);
+                    } /*else {
                     tokenManager.deleteToken();
                     startActivity(new Intent(EventActivity.this, LoginActivity.class));
                     finish();
                 }*/
-           }
-
-            @Override
-            public void onFailure(Call<Data<Event>> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-
-    }
-
-    //@OnClick(R.id.profileSidebar)
-    void gotoProfile() {
-        Toast.makeText(EventActivity.this,"TUTAJ",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventActivity.this, UserActivity.class));
-        finish();
-        Log.w(TAG,"USERACTIVITY");
-    }
-
-    void gotoMap() {
-        Toast.makeText(EventActivity.this,"MAP",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventActivity.this, MapActivity.class));
-        finish();
-        Log.w(TAG,"GOINGTOMAP");
-    }
-
-    void gotoCreateEvent() {
-        Toast.makeText(EventActivity.this,"CREATING",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventActivity.this, CreateEventActivity.class));
-        finish();
-        Log.w(TAG,"CREATE EVENT");
-    }
-
-    @OnClick(R.id.deleteToken)
-    void deletetoken(){
-        tokenManager.deleteToken();
-        finish();
-    }
-
-
-    @OnClick(R.id.logoutButton)
-    void logout() {
-        messageCall = service.logout();
-
-        messageCall.enqueue(new Callback<Message>() {
-            @Override
-            public void onResponse(Call<Message> messageCall, Response<Message> response) {
-                Log.w(TAG, "MESSresponse: " + response);
-
-                if (response.isSuccessful()) {
-                    String message = response.body().getMessage();
-                    Intent i = new Intent(EventActivity.this, LoginActivity.class);
-                    i.putExtra("logoutMessage", message);
-                    Log.w(TAG, "MESS: " + message);
-
-                    tokenManager.deleteToken();
-                    startActivity(new Intent(EventActivity.this, LoginActivity.class));
-                    finish();
                 }
+
+                @Override
+                public void onFailure(Call<Data<Event>> call, Throwable t) {
+                    Log.w(TAG, "onFailure: " + t.getMessage());
+                }
+            });
+
+        }
+
+        @OnClick(R.id.deleteToken)
+        void deletetoken() {
+            tokenManager.deleteToken();
+            finish();
+        }
+
+
+        @OnClick(R.id.logoutButton)
+        void logout() {
+            messageCall = service.logout();
+
+            messageCall.enqueue(new Callback<Message>() {
+                @Override
+                public void onResponse(Call<Message> messageCall, Response<Message> response) {
+                    Log.w(TAG, "MESSresponse: " + response);
+
+                    if (response.isSuccessful()) {
+                        String message = response.body().getMessage();
+                        Intent i = new Intent(EventActivity.this, LoginActivity.class);
+                        i.putExtra("logoutMessage", message);
+                        Log.w(TAG, "MESS: " + message);
+
+                        tokenManager.deleteToken();
+                        startActivity(new Intent(EventActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Message> messageCall, Throwable t) {
+                    Log.w(TAG, "onFailure: " + t.getMessage());
+                }
+            });
+        }
+
+        @Override
+        protected void onDestroy() {
+            super.onDestroy();
+            if (call != null) {
+                call.cancel();
+                call = null;
             }
-
-            @Override
-            public void onFailure(Call<Message> messageCall, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
+            if (messageCall != null) {
+                messageCall.cancel();
+                messageCall = null;
             }
-        });
-    }
-
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        Log.w(TAG,"SIDEBAR");
-        Toast.makeText(EventActivity.this,"TOST",Toast.LENGTH_LONG).show();
-        switch (item.getTitle().toString()) {
-            case "Logout": logout(); break;
-            case "Your profile": gotoProfile(); break;
-            //case "Your events":
-            case "Map": gotoMap(); break;
-            case "Create event": gotoCreateEvent(); break;
-        }
-        return false;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (call != null) {
-            call.cancel();
-            call = null;
-        }
-        if (messageCall != null) {
-            messageCall.cancel();
-            messageCall = null;
         }
     }
-}

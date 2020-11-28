@@ -36,6 +36,9 @@
             android:name=".MapActivity"
             android:label="@string/title_activity_map"></activity>
         <activity
+            android:name=".Sidebar"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".EventActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
