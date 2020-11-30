@@ -53,15 +53,10 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     ApiService service;
     Call<User> call;
+    Call<AccessToken> callAccessToken;
     AwesomeValidation validator;
     TokenManager tokenManager;
-
-    /*String firstName = userFirstName.getEditText().getText().toString();
-    String lastName = userLastName.getEditText().getText().toString();
-    String birthDate = userBirthDate.getEditText().getText().toString();
-    String description = userDescription.getEditText().getText().toString();
-    String password = userPassword.getEditText().getText().toString();*/
-    //String firstName,lastName,birthDate,description,password;
+    String user_id,firstName,lastName,birthDate,description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +80,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         userBirthDate = findViewById(R.id.userBirthDate);
         userDescription = findViewById(R.id.userDescription);
         userPassword = findViewById(R.id.userPassword);*/
-
-
-
         /*Call<User> call = service.userEdit(firstName, lastName, birthDate, description,password);
 
         User user = response.body();*/
@@ -102,16 +94,24 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                     Log.e(TAG, "onResponse: " + response.body().getFirstName());
 
                     User user = response.body();
-                    String firstName = user.getFirstName().toString();
-                    //userFirstName.setPlaceholderText(user.getFirstName().toString());
-                    userFirstName.setText(user.getFirstName().toString());
-                    //userFirstName.setText(firstName);
-                    /*firstName =user.getFirstName().toString();
+                    user_id = user.getUserId().toString();
+                    firstName = user.getFirstName().toString();
                     lastName = user.getLastName().toString();
                     birthDate = user.getBirthDate().toString();
                     description = user.getDescription().toString();
-                    password = user.getDescription().toString();
-*/
+                    //userFirstName.setPlaceholderText(user.getFirstName().toString());
+                    //if (userFirstName.getText().equals("")){
+
+                    //}else {
+                        userFirstName.setText(firstName);
+                    //}
+
+                    userLastName.setText(lastName);
+                    userBirthDate.setText(birthDate);
+                    userDescription.setText(description);
+                    //userPassword.setText(user.get);
+                    //userFirstName.setText(firstName);
+
                 } else {
                     handleErrors(response.errorBody());
                 }
@@ -134,32 +134,31 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     @OnClick(R.id.SettingsButton)
     void editUser() {
-        /*String firstName = userFirstName.getText().toString();
+        String firstName = userFirstName.getText().toString();
         String lastName = userLastName.getText().toString();
         String birthDate = userBirthDate.getText().toString();
         String description = userDescription.getText().toString();
-        String password = userPassword.getText().toString();
+        //String password = userPassword.getText().toString();
 
         userFirstName.setError(null);
         userLastName.setError(null);
         userBirthDate.setError(null);
         userDescription.setError(null);
-        userPassword.setError(null);
+       // userPassword.setError(null);
 
         validator.clear();
 
         if (validator.validate()) {
-            call = service.userEdit(firstName, lastName, birthDate, description,password);
+            callAccessToken = service.userEdit(user_id,firstName, lastName, birthDate, description);//,password);
 
-            call.enqueue(new Callback<User>() {
+            callAccessToken.enqueue(new Callback<AccessToken>() {
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    Log.w(TAG,"CHECK");
+                public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
+                    Log.w(TAG,"CHECK2");
                     if (response.isSuccessful()) {
                         Log.e(TAG, "onResponse: " + response);
 
-                        User user = response.body();
-                        //firstName.(); user.getFirstName().toString();
+
 
                     } else {
                         handleErrors(response.errorBody());
@@ -167,13 +166,13 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                 }
 
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                public void onFailure(Call<AccessToken> call, Throwable t) {
                     Log.e(TAG, "onFailure: " + t.getMessage());
 
                 }
             });
         }
-*/
+
     }
 
     private void handleErrors(ResponseBody response) {
@@ -195,9 +194,9 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                 if (error.getKey().equals("description")) {
                     userDescription.setError(error.getValue().get(0));
                 }
-                if (error.getKey().equals("password")) {
+                /*if (error.getKey().equals("password")) {
                     userPassword.setError(error.getValue().get(0));
-                }
+                }*/
             }
         } else {
             Log.e("no errors", "weird");
@@ -209,7 +208,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         validator.addValidation(this, R.id.userLastName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.userBirthDate, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.userDescription, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
-        validator.addValidation(this, R.id.userPassword, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
+        //validator.addValidation(this, R.id.userPassword, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
 
     }
 

@@ -21,7 +21,7 @@ public class User {
     @Json(name = "last_name")
     private String lastName;
     @Json(name = "birth_date")
-    private Object birthDate;
+    private String birthDate;
     @Json(name = "description")
     private String description;
     @Json(name = "longitude")
@@ -107,7 +107,7 @@ public class User {
         return birthDate;
     }
 
-    public void setBirthDate(Object birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

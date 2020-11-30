@@ -12,6 +12,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface ApiService {
 
@@ -48,10 +49,13 @@ public interface ApiService {
     Call<User> user();
 
     @PUT("user/{id}")
-    Call<User> userEdit(@Field("first_name") String first_name,
+    @FormUrlEncoded
+    Call<AccessToken> userEdit(
+                        @Path("id") String user_id,
+                        @Field("first_name") String first_name,
                         @Field("last_name") String last_name,
                         @Field("birth_date") String birth_date,
-                        @Field("description") String description,
-                        @Field("password") String password);
+                        @Field("description") String description);
+                        //@Field("password") String password);
 
 }
