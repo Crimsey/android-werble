@@ -40,16 +40,16 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     private static final String TAG = "SettingsActivity";
 
 
-    @BindView(R.id.userFirstName)
-    TextInputLayout userFirstName;
-    @BindView(R.id.userLastName)
-    TextInputLayout userLastName;
-    @BindView(R.id.userBirthDate)
-    TextInputLayout userBirthDate;
-    @BindView(R.id.userDescription)
-    TextInputLayout userDescription;
-    @BindView(R.id.userPassword)
-    TextInputLayout userPassword;
+    @BindView(R.id.userFirstName2)
+    TextInputEditText userFirstName;
+    @BindView(R.id.userLastName2)
+    TextInputEditText userLastName;
+    @BindView(R.id.userBirthDate2)
+    TextInputEditText userBirthDate;
+    @BindView(R.id.userDescription2)
+    TextInputEditText userDescription;
+    @BindView(R.id.userPassword2)
+    TextInputEditText userPassword;
 
     ApiService service;
     Call<User> call;
@@ -103,8 +103,8 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
                     User user = response.body();
                     String firstName = user.getFirstName().toString();
-                    userFirstName.setPlaceholderText(user.getFirstName().toString());
-                    userFirstName.();
+                    //userFirstName.setPlaceholderText(user.getFirstName().toString());
+                    userFirstName.setText(user.getFirstName().toString());
                     //userFirstName.setText(firstName);
                     /*firstName =user.getFirstName().toString();
                     lastName = user.getLastName().toString();
@@ -134,11 +134,11 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     @OnClick(R.id.SettingsButton)
     void editUser() {
-        String firstName = userFirstName.getEditText().getText().toString();
-        String lastName = userLastName.getEditText().getText().toString();
-        String birthDate = userBirthDate.getEditText().getText().toString();
-        String description = userDescription.getEditText().getText().toString();
-        String password = userPassword.getEditText().getText().toString();
+        /*String firstName = userFirstName.getText().toString();
+        String lastName = userLastName.getText().toString();
+        String birthDate = userBirthDate.getText().toString();
+        String description = userDescription.getText().toString();
+        String password = userPassword.getText().toString();
 
         userFirstName.setError(null);
         userLastName.setError(null);
@@ -173,7 +173,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                 }
             });
         }
-
+*/
     }
 
     private void handleErrors(ResponseBody response) {
