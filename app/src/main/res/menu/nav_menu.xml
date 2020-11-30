@@ -4,7 +4,9 @@
     <item android:title="STORAGE">
         <menu>
 
-            <item android:title="Map"
+            <item
+                android:id="@+id/mapSidebar"
+                android:title="Map"
                 android:icon="@drawable/messenger_bubble_large_blue"/>
             <item
                 android:id="@+id/profileSidebar"
@@ -14,11 +16,13 @@
                 android:id="@+id/got"
                 android:title="Your events"
                 android:icon="@drawable/messenger_bubble_large_blue"/>
-            <item android:title="Your friends"
-                android:icon="@drawable/messenger_bubble_large_blue"/>
-            <item android:title="Create event"
+            <item
+                android:id="@+id/participantSidebar"
+                android:title="Participating"
                 android:icon="@drawable/messenger_bubble_large_blue"/>
 
+            <item android:title="Your friends"
+                android:icon="@drawable/messenger_bubble_large_blue"/>
         </menu>
     </item>
     <item android:title="APP">
