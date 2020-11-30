@@ -89,7 +89,7 @@ public class User {
 
     public Object getFirstName() {
         return firstName;
-    }
+    } //
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

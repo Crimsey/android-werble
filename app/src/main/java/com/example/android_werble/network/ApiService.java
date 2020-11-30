@@ -47,7 +47,7 @@ public interface ApiService {
     @GET("user")
     Call<User> user();
 
-    @PUT("user")
+    @PUT("user/{id}")
     Call<User> userEdit(@Field("first_name") String first_name,
                         @Field("last_name") String last_name,
                         @Field("birth_date") String birth_date,

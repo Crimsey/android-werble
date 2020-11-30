@@ -100,7 +100,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                Log.w(TAG, "onResponse: " + response);
+                Log.w(TAG, "onResponse: " + response.body().getFirstName());
 
                 if (response.isSuccessful()) {
                     User user = response.body();

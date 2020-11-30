@@ -3,9 +3,12 @@ package com.example.android_werble;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
@@ -16,8 +19,11 @@ import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,9 +35,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "SettingsActivity";
+
 
     @BindView(R.id.userFirstName)
     TextInputLayout userFirstName;
@@ -48,6 +55,13 @@ public class SettingsActivity extends AppCompatActivity {
     Call<User> call;
     AwesomeValidation validator;
     TokenManager tokenManager;
+
+    /*String firstName = userFirstName.getEditText().getText().toString();
+    String lastName = userLastName.getEditText().getText().toString();
+    String birthDate = userBirthDate.getEditText().getText().toString();
+    String description = userDescription.getEditText().getText().toString();
+    String password = userPassword.getEditText().getText().toString();*/
+    //String firstName,lastName,birthDate,description,password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,21 +80,65 @@ public class SettingsActivity extends AppCompatActivity {
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
+        /*userFirstName = findViewById(R.id.userFirstName);
+        userLastName = findViewById(R.id.userLastName);
+        userBirthDate = findViewById(R.id.userBirthDate);
+        userDescription = findViewById(R.id.userDescription);
+        userPassword = findViewById(R.id.userPassword);*/
 
+
+
+        /*Call<User> call = service.userEdit(firstName, lastName, birthDate, description,password);
+
+        User user = response.body();*/
+
+        call = service.user();
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Log.w(TAG,"CHECK");
+                if (response.isSuccessful()) {
+                    Log.e(TAG, "onResponse: " + response.body().getFirstName());
+
+                    User user = response.body();
+                    String firstName = user.getFirstName().toString();
+                    userFirstName.setPlaceholderText(user.getFirstName().toString());
+                    userFirstName.();
+                    //userFirstName.setText(firstName);
+                    /*firstName =user.getFirstName().toString();
+                    lastName = user.getLastName().toString();
+                    birthDate = user.getBirthDate().toString();
+                    description = user.getDescription().toString();
+                    password = user.getDescription().toString();
+*/
+                } else {
+                    handleErrors(response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+
+            }
+        });
+
+
+        /*TextInputEditText edit = (TextInputEditText) findViewById(R.id.userFirstName);
+        edit.setText(user.getFirstName().toString());
+*/
 
         setupRules();
     }
 
-    @OnClick(R.id.CreateEventButton)
+    @OnClick(R.id.SettingsButton)
     void editUser() {
         String firstName = userFirstName.getEditText().getText().toString();
         String lastName = userLastName.getEditText().getText().toString();
         String birthDate = userBirthDate.getEditText().getText().toString();
         String description = userDescription.getEditText().getText().toString();
         String password = userPassword.getEditText().getText().toString();
-
-        EditText editText = (EditText)findViewById(R.id.userFirstName);
-        editText.setText(firstName);//?????
 
         userFirstName.setError(null);
         userLastName.setError(null);
@@ -96,10 +154,13 @@ public class SettingsActivity extends AppCompatActivity {
             call.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
+                    Log.w(TAG,"CHECK");
                     if (response.isSuccessful()) {
-                        Log.e(TAG, "onResponse: " + response.body());
-                        //Toast.makeText(SettingsActivity.this,"Created event!",Toast.LENGTH_LONG).show();
-                        //set the text in edit text
+                        Log.e(TAG, "onResponse: " + response);
+
+                        User user = response.body();
+                        //firstName.(); user.getFirstName().toString();
+
                     } else {
                         handleErrors(response.errorBody());
                     }
@@ -114,9 +175,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
     }
-
-
-
 
     private void handleErrors(ResponseBody response) {
 
@@ -164,4 +222,13 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }

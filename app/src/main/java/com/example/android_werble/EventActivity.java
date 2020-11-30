@@ -158,6 +158,13 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         Log.w(TAG,"CREATE EVENT");
     }
 
+    void gotoSettings() {
+        Toast.makeText(EventActivity.this,"SETTINGS",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(EventActivity.this, SettingsActivity.class));
+        finish();
+        Log.w(TAG,"CREATE EVENT");
+    }
+
     @OnClick(R.id.deleteToken)
     void deletetoken(){
         tokenManager.deleteToken();
@@ -205,6 +212,8 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
             //case "Your events":
             case "Map": gotoMap(); break;
             case "Create event": gotoCreateEvent(); break;
+            case "Settings": gotoSettings(); break;
+
         }
         return false;
     }
