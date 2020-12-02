@@ -30,11 +30,19 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyBYIzqk9PklDC0cTCssbscSZEITklTBq2g" />
 
         <activity
             android:name=".MapActivity"
-            android:label="@string/title_activity_map"></activity>
+            android:label="@string/title_activity_map"/>
+        <activity
+            android:name=".MyLocationActivity"
+            android:label="@string/title_activity_map"/>
+        <activity
+            android:name=".MyLocationLayerActivity"
+            android:label="@string/title_activity_map"/>
+
+
         <activity
             android:name=".EventActivity"
             android:theme="@style/AppTheme.NoActionBar" />

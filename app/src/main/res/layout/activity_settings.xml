@@ -139,13 +139,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ProgressBar
-            android:id="@+id/loader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="invisible" />
-
     </FrameLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

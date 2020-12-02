@@ -145,7 +145,10 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     //@OnClick(R.id.mapSidebar)
     void gotoMap() {
         Toast.makeText(EventActivity.this,"MAP",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventActivity.this, MapActivity.class));
+        //startActivity(new Intent(EventActivity.this, MapActivity.class));
+        startActivity(new Intent(EventActivity.this,MyLocationActivity.class));
+        //startActivity(new Intent(EventActivity.this,MyLocationLayerActivity.class));
+
         finish();
         Log.w(TAG,"GOINGTOMAP");
     }
@@ -162,7 +165,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         Toast.makeText(EventActivity.this,"SETTINGS",Toast.LENGTH_LONG).show();
         startActivity(new Intent(EventActivity.this, SettingsActivity.class));
         finish();
-        Log.w(TAG,"CREATE EVENT");
+        Log.w(TAG,"SETTINGS");
     }
 
     @OnClick(R.id.deleteToken)

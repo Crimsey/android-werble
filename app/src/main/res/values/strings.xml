@@ -10,6 +10,9 @@
     <string name="err_event_name">Wrong event name!</string>
     <string name="err_event_location">Wrong location!</string>
     <string name="err_event_datetime">Wrong datetime!</string>
+    <string name="location_permission_denied">Location permission denied</string>
+    <string name="permission_required_toast">Permission required</string>
+    <string name="permission_rationale_location">Permission Rationale Location</string>
 
 
 </resources>
