@@ -75,15 +75,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
-        /*userFirstName = findViewById(R.id.userFirstName);
-        userLastName = findViewById(R.id.userLastName);
-        userBirthDate = findViewById(R.id.userBirthDate);
-        userDescription = findViewById(R.id.userDescription);
-        userPassword = findViewById(R.id.userPassword);*/
-        /*Call<User> call = service.userEdit(firstName, lastName, birthDate, description,password);
-
-        User user = response.body();*/
-
         call = service.user();
 
         call.enqueue(new Callback<User>() {
@@ -94,23 +85,24 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                     Log.e(TAG, "onResponse: " + response.body().getFirstName());
 
                     User user = response.body();
-                    user_id = user.getUserId().toString();
-                    firstName = user.getFirstName().toString();
-                    lastName = user.getLastName().toString();
-                    birthDate = user.getBirthDate().toString();
-                    description = user.getDescription().toString();
-                    //userFirstName.setPlaceholderText(user.getFirstName().toString());
-                    //if (userFirstName.getText().equals("")){
+                        user_id = user.getUserId().toString();
 
-                    //}else {
-                        userFirstName.setText(firstName);
-                    //}
-
-                    userLastName.setText(lastName);
-                    userBirthDate.setText(birthDate);
-                    userDescription.setText(description);
-                    //userPassword.setText(user.get);
-                    //userFirstName.setText(firstName);
+                    if (user.getFirstName()!=null){
+                       firstName = user.getFirstName().toString();
+                       userFirstName.setText(firstName);
+                    }
+                    if (user.getLastName()!=null){
+                        lastName = user.getLastName().toString();
+                        userLastName.setText(lastName);
+                    }
+                    if (user.getBirthDate()!=null){
+                        birthDate = user.getBirthDate().toString();
+                        userBirthDate.setText(birthDate);
+                    }
+                    if (user.getDescription()!=null){
+                        description = user.getDescription().toString();
+                        userDescription.setText(description);
+                    }
 
                 } else {
                     handleErrors(response.errorBody());
@@ -124,10 +116,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
-
-        /*TextInputEditText edit = (TextInputEditText) findViewById(R.id.userFirstName);
-        edit.setText(user.getFirstName().toString());
-*/
 
         setupRules();
     }
@@ -173,6 +161,8 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
             });
         }
 
+        gotoProfile();
+
     }
 
     private void handleErrors(ResponseBody response) {
@@ -207,10 +197,64 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         validator.addValidation(this, R.id.userFirstName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.userLastName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.userBirthDate, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
-        validator.addValidation(this, R.id.userDescription, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
-        //validator.addValidation(this, R.id.userPassword, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
+        //validator.addValidation(this, R.id.userDescription, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
 
     }
+
+    //@OnClick(R.id.profileSidebar)
+    void gotoProfile() {
+        Toast.makeText(SettingsActivity.this,"TUTAJ",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(SettingsActivity.this, UserActivity.class));
+        finish();
+        Log.w(TAG,"USERACTIVITY");
+    }
+
+    //@OnClick(R.id.mapSidebar)
+    void gotoMap() {
+        Toast.makeText(this,"MAP",Toast.LENGTH_LONG).show();
+        //startActivity(new Intent(EventActivity.this, MapActivity.class));
+        startActivity(new Intent(this,MyLocationActivity.class));
+        //startActivity(new Intent(EventActivity.this,MyLocationLayerActivity.class));
+
+        finish();
+        Log.w(TAG,"GOINGTOMAP");
+    }
+
+    //@OnClick(R.id.createEventSidebar)
+    void gotoCreateEvent() {
+        Toast.makeText(this,"CREATING",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, CreateEventActivity.class));
+        finish();
+        Log.w(TAG,"CREATE EVENT");
+    }
+
+    void gotoSettings() {
+        Toast.makeText(this,"SETTINGS",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, SettingsActivity.class));
+        finish();
+        Log.w(TAG,"SETTINGS");
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Log.w(TAG,"SIDEBAR");
+        Toast.makeText(this,"TOST",Toast.LENGTH_LONG).show();
+        switch (item.getTitle().toString()) {
+            //case "Logout": logout(); break;
+            case "Your profile": gotoProfile(); break;
+            //case "Your events":
+            case "Map": gotoMap(); break;
+            case "Create event": gotoCreateEvent(); break;
+            case "Settings": gotoSettings(); break;
+
+        }
+        return false;    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -220,14 +264,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
             call = null;
         }
     }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 }
+
+

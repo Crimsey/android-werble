@@ -105,6 +105,11 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 if (response.isSuccessful()) {
                     User user = response.body();
                     String content = "";
+                    String x="";
+                    /*if (user.getFirstName()==null){
+
+                    }*/
+
 
                         content += "Id :" + user.getUserId().toString() + "\n" +
                                 "login: " + user.getLogin() + "\n" //.getData().get(i).getEventId() + "\n";
