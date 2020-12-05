@@ -172,6 +172,20 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
+    void gotoSettings() {
+        Toast.makeText(UserActivity.this,"SETTINGS",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(UserActivity.this, SettingsActivity.class));
+        finish();
+        Log.w(TAG,"SETTINGS");
+    }
+
+    void gotoMap() {
+        Toast.makeText(UserActivity.this,"MAP",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(UserActivity.this,MyLocationActivity.class));
+        finish();
+        Log.w(TAG,"GOINGTOMAP");
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.w(TAG,"SIDEBAR");
@@ -180,6 +194,9 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             case "Logout": logout(); break;
             case "Your profile": gotoProfile(); break;
             case "Your events": gotoEvent(); break;
+            case "Map": gotoMap(); break;
+            case "Settings": gotoSettings(); break;
+
 
         }
         return false;

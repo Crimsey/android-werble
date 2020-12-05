@@ -230,8 +230,8 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     void gotoSettings() {
         Toast.makeText(this,"SETTINGS",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(this, SettingsActivity.class));
-        finish();
+    /*    startActivity(new Intent(this, SettingsActivity.class));
+        finish();*/
         Log.w(TAG,"SETTINGS");
     }
 

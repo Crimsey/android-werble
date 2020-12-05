@@ -100,9 +100,15 @@ public class CreateEventActivity extends AppCompatActivity {
             });
         }
 
+        gotoEvent();
     }
 
-
+    void gotoEvent() {
+        Toast.makeText(CreateEventActivity.this,"CREATING",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(CreateEventActivity.this, EventActivity.class));
+        finish();
+        Log.w(TAG,"CREATE EVENT");
+    }
 
 
     private void handleErrors(ResponseBody response) {

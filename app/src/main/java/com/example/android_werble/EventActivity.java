@@ -5,11 +5,16 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +27,7 @@ import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,13 +42,17 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
     private static final String TAG = "EventActivity";
 
+    RecyclerView recyclerView;
+    List<Event> eventList;
+
+
     //variables for sidebar
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-
-    @BindView(R.id.event_title)
-    TextView title;
+    
+    //@BindView(R.id.event_title)
+    //TextView title;
 
     //@BindView(R.id.profileSidebar)
     //MenuItem profileSidebar;
@@ -57,6 +67,14 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+
+        //eventListView = findViewById(R.id.eventList);
+        //eventListView.setTextFilterEnabled(true);
+        recyclerView = (RecyclerView) findViewById(R.id.eventsRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
 
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
@@ -90,9 +108,11 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
 
 
+
+        getEvents();
     }
 
-    @OnClick(R.id.EventButton)
+    //@OnClick(R.id.EventButton)
     void getEvents() {
 
         call = service.events();
@@ -102,24 +122,40 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
             public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
                 Log.w(TAG, "onResponse: " + response);
 
-                if (response.isSuccessful()) {
+
+
+                if (response.isSuccessful()){
+                    eventList = response.body().getData();
+                    //ArrayList<Event> eventList = r
+
+                    /*for (Event event : eventList){
+                        //eventList.add(new Event());
+                    }*/
+
+                    //ArrayList<Event> eventList = response.body().getData(); ???
+                    //List<Event> eventList = response.body().getData();
+                    //for (Event event :eventList){
+                    recyclerView.setAdapter(new Adapter(eventList, recyclerView));
+
+                    }
+
+
+
+                /*if (response.isSuccessful()) {
                     List<Event> eventList = response.body().getData();
                     String content = "";
                     for (Event event : eventList) {
 
                         content += "Id :" + event.getEventId().toString() + "\n" +
                                 "name: " + event.getName() + "\n";//.getData().get(i).getEventId() + "\n";
-                        //Log.w(TAG, "curr: " + event.getData() + "\n");
-
-
-                    }
-                    title.setText(content);
-
+                    }*/
+                    //title.setText(content);
                     //title.setText(response.body().getData().get(0).getName());
                     //String titleEvent = response.body().getData().get(0).getName();
                     //title.setText(titleEvent);
-                    Log.w(TAG, "getEvents" + response);
-                } /*else {
+                    //Log.w(TAG, "getEvents" + response);
+                //}
+                /*else {
                     tokenManager.deleteToken();
                     startActivity(new Intent(EventActivity.this, LoginActivity.class));
                     finish();
@@ -153,7 +189,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         Log.w(TAG,"GOINGTOMAP");
     }
 
-    //@OnClick(R.id.createEventSidebar)
+    @OnClick(R.id.CreateEventButton)
     void gotoCreateEvent() {
         Toast.makeText(EventActivity.this,"CREATING",Toast.LENGTH_LONG).show();
         startActivity(new Intent(EventActivity.this, CreateEventActivity.class));
@@ -168,14 +204,10 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         Log.w(TAG,"SETTINGS");
     }
 
-    @OnClick(R.id.deleteToken)
-    void deletetoken(){
-        tokenManager.deleteToken();
-        finish();
-    }
 
 
-    @OnClick(R.id.logoutButton)
+
+    //@OnClick(R.id.logoutButton)
     void logout() {
         messageCall = service.logout();
 
@@ -214,7 +246,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
             case "Your profile": gotoProfile(); break;
             //case "Your events":
             case "Map": gotoMap(); break;
-            case "Create event": gotoCreateEvent(); break;
+            //case "Create event": gotoCreateEvent(); break;
             case "Settings": gotoSettings(); break;
 
         }

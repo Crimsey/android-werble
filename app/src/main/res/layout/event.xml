@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <TextView
+        android:id="@+id/eventName"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_weight="0.9"
+        android:background="#8c8c8c"
+        android:textColor="#fff"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/eventDatetime"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:background="#8c8c8c"
+        android:textColor="#fff"
+        android:textSize="22sp"
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:id="@+id/eventLocation"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_weight="1.15"
+        android:background="#8c8c8c"
+        android:textColor="#fff"
+        android:textSize="22sp"
+        android:textAlignment="textEnd"
+        android:gravity="end" />
+
+</LinearLayout>
