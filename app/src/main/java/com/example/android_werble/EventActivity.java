@@ -50,7 +50,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    
+
     //@BindView(R.id.event_title)
     //TextView title;
 
