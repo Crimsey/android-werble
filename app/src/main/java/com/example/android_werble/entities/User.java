@@ -25,9 +25,9 @@ public class User {
     @Json(name = "description")
     private String description;
     @Json(name = "longitude")
-    private Object longitude;
+    private Double longitude;
     @Json(name = "latitude")
-    private Object latitude;
+    private Double latitude;
     @Json(name = "is_admin")
     private Integer isAdmin;
     @Json(name = "is_active")
@@ -123,7 +123,7 @@ public class User {
         return longitude;
     }
 
-    public void setLongitude(Object longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -131,7 +131,7 @@ public class User {
         return latitude;
     }
 
-    public void setLatitude(Object latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 

@@ -58,7 +58,7 @@ public interface ApiService {
                         @Field("description") String description);
     @PUT("user/position")
     @FormUrlEncoded
-    Call<AccessToken>  userPosition(
+    Call<Message> userPosition(
                         @Field("longitude") String longitude,
                         @Field("latitude") String latitude);
 

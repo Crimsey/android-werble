@@ -109,7 +109,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 if (response.isSuccessful()) {
                     User user = response.body();
 
-
+/*
                     if (user.getFirstName().toString()==null){
                         firstname.setText("nofirstname :(");
                     }else  {firstname.setText(user.getFirstName().toString());}
@@ -125,7 +125,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                     if (user.getDescription()==null){
                         description.setText("nodescription :(");
                     }else  {description.setText("Description: "+user.getDescription().toString());}
-
+*/
                     email.setText(user.getEmail());
                     login.setText(user.getLogin());
                       /*  content += "Id :" + user.getUserId().toString() + "\n" +

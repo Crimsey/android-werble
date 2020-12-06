@@ -1,5 +1,9 @@
 package com.example.android_werble;
 
+import com.example.android_werble.entities.AccessToken;
+import com.example.android_werble.entities.Message;
+import com.example.android_werble.network.ApiService;
+import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,7 +31,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 //import com.google.appengine.api.search.GeoPoint;
+
 
 
 /**
@@ -63,6 +72,12 @@ public class MyLocationActivity extends AppCompatActivity
 
     private FusedLocationProviderClient mFusedLocationClient;
 
+    Call<Message> callAccessToken;
+    ApiService service;
+    String longitude;
+    String latitude;
+    TokenManager tokenManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +85,12 @@ public class MyLocationActivity extends AppCompatActivity
         setContentView(R.layout.activity_map);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+        if (tokenManager.getToken() == null) {
+            startActivity(new Intent(MyLocationActivity.this, LoginActivity.class));
+            finish();
+        }
+        service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
 
 
         SupportMapFragment mapFragment =
@@ -99,6 +120,40 @@ public class MyLocationActivity extends AppCompatActivity
                     //GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                     LatLng latLng  = new LatLng(location.getLatitude(), location.getLongitude());
                     System.out.println("WSPÓŁRZĘDNE"+latLng);
+
+                    longitude = String.valueOf(location.getLongitude());
+
+                    Log.e(TAG, "location.getLongitude(): " + location.getLongitude());
+
+                    latitude = String.valueOf(location.getLatitude());
+                    Log.e(TAG, "location.getLatitude(): " + location.getLatitude());
+
+                    callAccessToken = service.userPosition(longitude,latitude);
+
+                    callAccessToken.enqueue(new Callback<Message>() {
+                        @Override
+                        public void onResponse(Call<Message> call, Response<Message> response) {
+                            Log.w(TAG,"CHECK2");
+                            if (response.isSuccessful()) {
+                                Log.e(TAG, "onResponse: " + response.body().getMessage());
+
+
+
+
+                            } else {
+                                Log.e(TAG, "ELSE: " + response);
+
+                                //handleErrors(response.errorBody());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Message> call, Throwable t) {
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+
+                        }
+                    });
+
                 }
 
             }
