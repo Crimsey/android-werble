@@ -115,6 +115,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     //@OnClick(R.id.EventButton)
     void getEvents() {
 
+
         call = service.events();
         call.enqueue(new Callback<Data<Event>>() {
 

@@ -56,6 +56,10 @@ public interface ApiService {
                         @Field("last_name") String last_name,
                         @Field("birth_date") String birth_date,
                         @Field("description") String description);
-                        //@Field("password") String password);
+    @PUT("user/position")
+    @FormUrlEncoded
+    Call<AccessToken>  userPosition(
+                        @Field("longitude") String longitude,
+                        @Field("latitude") String latitude);
 
 }

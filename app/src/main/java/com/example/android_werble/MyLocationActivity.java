@@ -69,11 +69,13 @@ public class MyLocationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
     private void getLastKnownLocation() {
@@ -96,7 +98,7 @@ public class MyLocationActivity extends AppCompatActivity
                     Location location = task.getResult();
                     //GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                     LatLng latLng  = new LatLng(location.getLatitude(), location.getLongitude());
-                    System.out.println(location.getLatitude());
+                    System.out.println("WSPÓŁRZĘDNE"+latLng);
                 }
 
             }
@@ -134,6 +136,7 @@ public class MyLocationActivity extends AppCompatActivity
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
+        getLastKnownLocation();
         return false;
     }
 
