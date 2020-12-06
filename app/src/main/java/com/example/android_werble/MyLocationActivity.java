@@ -1,10 +1,15 @@
 package com.example.android_werble;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
 import android.Manifest;
@@ -22,6 +27,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+//import com.google.appengine.api.search.GeoPoint;
+
+
 /**
  * This demo shows how GMS Location can be used to check for changes to the users location.  The
  * "My Location" button uses GMS Location to set the blue dot representing the users location.
@@ -34,8 +42,7 @@ public class MyLocationActivity extends AppCompatActivity
         OnMyLocationClickListener,
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback,
-        NavigationView.OnNavigationItemSelectedListener
-        {
+        NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MyLocationActivity";
 
@@ -54,6 +61,9 @@ public class MyLocationActivity extends AppCompatActivity
 
     private GoogleMap map;
 
+    private FusedLocationProviderClient mFusedLocationClient;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +72,35 @@ public class MyLocationActivity extends AppCompatActivity
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+    }
+
+    private void getLastKnownLocation() {
+        Log.d(TAG, " getLastKnownLocation: called.");
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if (task.isSuccessful()){
+                    Location location = task.getResult();
+                    //GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                    LatLng latLng  = new LatLng(location.getLatitude(), location.getLongitude());
+                    System.out.println(location.getLatitude());
+                }
+
+            }
+        });
     }
 
     @Override

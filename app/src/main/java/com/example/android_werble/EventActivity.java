@@ -126,21 +126,8 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
                 if (response.isSuccessful()){
                     eventList = response.body().getData();
-                    //ArrayList<Event> eventList = r
-
-                    /*for (Event event : eventList){
-                        //eventList.add(new Event());
-                    }*/
-
-                    //ArrayList<Event> eventList = response.body().getData(); ???
-                    //List<Event> eventList = response.body().getData();
-                    //for (Event event :eventList){
                     recyclerView.setAdapter(new Adapter(eventList, recyclerView));
-
                     }
-
-
-
                 /*if (response.isSuccessful()) {
                     List<Event> eventList = response.body().getData();
                     String content = "";

@@ -37,6 +37,10 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String TAG = "UserActivity";
 
+    //variables for sidebar
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
    // @BindView(R.id.firstname)
     TextView firstname,lastname,login,email,birthdate,description;
@@ -69,6 +73,25 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         birthdate = findViewById(R.id.birthdate);
         description = findViewById(R.id.description);
         login = findViewById(R.id.login);
+
+        //implementation of sidebar
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.openNavDrawer,
+                R.string.closeNavDrawer
+        );
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
         getUser();
     }
