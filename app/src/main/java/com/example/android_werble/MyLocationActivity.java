@@ -6,15 +6,21 @@ import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import android.Manifest;
 import android.content.Intent;
@@ -29,6 +35,7 @@ import androidx.core.content.ContextCompat;
 
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import retrofit2.Call;
@@ -99,6 +106,8 @@ public class MyLocationActivity extends AppCompatActivity
 
     }
 
+
+
     private void getLastKnownLocation() {
         Log.d(TAG, " getLastKnownLocation: called.");
 
@@ -137,12 +146,8 @@ public class MyLocationActivity extends AppCompatActivity
                             if (response.isSuccessful()) {
                                 Log.e(TAG, "onResponse: " + response.body().getMessage());
 
-
-
-
                             } else {
                                 Log.e(TAG, "ELSE: " + response);
-
                                 //handleErrors(response.errorBody());
                             }
                         }
@@ -150,12 +155,9 @@ public class MyLocationActivity extends AppCompatActivity
                         @Override
                         public void onFailure(Call<Message> call, Throwable t) {
                             Log.e(TAG, "onFailure: " + t.getMessage());
-
                         }
                     });
-
                 }
-
             }
         });
     }
@@ -166,6 +168,49 @@ public class MyLocationActivity extends AppCompatActivity
         map.setOnMyLocationButtonClickListener(this);
         map.setOnMyLocationClickListener(this);
         enableMyLocation();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        //Create Marker
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        //Set Marker Position
+                        markerOptions.position(latLng);
+                        //Set Latittude and Longitude On Marker
+                        markerOptions.title(latLng.latitude+ " : " + latLng.longitude);
+                        //Clear the previously Clcik position
+                        map.clear();
+                        //Zoom the Narker
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+                        //Add Marker on Map
+                        googleMap.addMarker(markerOptions);
+                    }
+                });
+
+            }
+        });
+
+        /*(map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+            }
+        })
+    }
+
+    //FLOATING BUTTON PACK IT UP
+    private void addMapMarker(){
+        /*Marker marker = map.addMarker(new MarkerOptions()
+                .position(new LatLng())
+                .title("TEST")
+                .snippet("event-test")
+        );*/
     }
 
     /**
