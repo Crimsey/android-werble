@@ -44,6 +44,19 @@ public class Event {
     @Json(name = "updated_at")
     private String updatedAt;
 
+    @Json(name = "disance")
+    private Double distance;
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+
+
     public Integer getEventId() {
         return eventId;
     }

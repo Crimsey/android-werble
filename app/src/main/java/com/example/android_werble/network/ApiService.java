@@ -45,6 +45,9 @@ public interface ApiService {
     @GET("user/events")
     Call<Data<Event>> events();
 
+    @GET("user/events/local")
+    Call<Data<Event>> getLocalEvents();
+
     @GET("user")
     Call<User> user();
 

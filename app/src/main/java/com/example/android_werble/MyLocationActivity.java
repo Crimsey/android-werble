@@ -1,6 +1,8 @@
 package com.example.android_werble;
 
 import com.example.android_werble.entities.AccessToken;
+import com.example.android_werble.entities.Data;
+import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
@@ -37,6 +39,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,6 +83,9 @@ public class MyLocationActivity extends AppCompatActivity
 
     private FusedLocationProviderClient mFusedLocationClient;
 
+    List<Event> eventList;
+
+    Call<Data<Event>> call;
     Call<Message> callAccessToken;
     ApiService service;
     String longitude;
@@ -169,6 +176,39 @@ public class MyLocationActivity extends AppCompatActivity
         map.setOnMyLocationClickListener(this);
         enableMyLocation();
 
+        //getLocalEvents();
+
+        call = service.getLocalEvents();
+        call.enqueue(new Callback<Data<Event>>() {
+
+            @Override
+            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                Log.w(TAG, "onResponseLOCALEVENTS: " + response);
+                if (response.isSuccessful()){
+                    eventList = response.body().getData();
+                    Log.w(TAG,"ADDING MARKERS1");
+
+                    for (Event event : eventList){
+                        Double lat = event.getLatitude();
+                        Double lon = event.getLongitude();
+
+                        LatLng position = new LatLng(lat,lon); //event position
+                        MarkerOptions markerOptions = new MarkerOptions();//creating marker
+                        markerOptions.position(position);//add position to marker
+                        markerOptions.title(event.getName());//add title to marker
+                        googleMap.addMarker(markerOptions);//display marker on map
+                        Log.w(TAG,"ADDING MARKERS2");
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Data<Event>> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,11 +223,11 @@ public class MyLocationActivity extends AppCompatActivity
                         //Set Marker Position
                         markerOptions.position(latLng);
                         //Set Latittude and Longitude On Marker
-                        markerOptions.title(latLng.latitude+ " : " + latLng.longitude);
+                        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
                         //Clear the previously Clcik position
                         map.clear();
                         //Zoom the Narker
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                         //Add Marker on Map
                         googleMap.addMarker(markerOptions);
                     }
@@ -195,6 +235,34 @@ public class MyLocationActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    //void getLocalEvents() {
+
+/*
+        call = service.getLocalEvents();
+        call.enqueue(new Callback<Data<Event>>() {
+
+            @Override
+            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                Log.w(TAG, "onResponse: " + response);
+                if (response.isSuccessful()){
+                    eventList = response.body().getData();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Data<Event>> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+*/
+    //}
+
+        void EventsToMarkers(){
+
+        }
 
         /*(map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -211,7 +279,7 @@ public class MyLocationActivity extends AppCompatActivity
                 .title("TEST")
                 .snippet("event-test")
         );*/
-    }
+
 
     /**
      * Enables the My Location layer if the fine location permission has been granted.
