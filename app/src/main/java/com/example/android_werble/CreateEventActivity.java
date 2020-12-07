@@ -40,10 +40,12 @@ public class CreateEventActivity extends AppCompatActivity {
     @BindView(R.id.eventDatetime)
     TextInputLayout eventDatetime;
 
+    String longitude,latitude;
     ApiService service;
     Call<AccessToken> call;
     AwesomeValidation validator;
     TokenManager tokenManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +63,12 @@ public class CreateEventActivity extends AppCompatActivity {
 
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
-
         setupRules();
+        //createEventwithMarker();
     }
 
     @OnClick(R.id.CreateEventButton)
-    void createEvent() {
+    void createEventwithMarker() {
         String name = eventName.getEditText().getText().toString();
         String location = eventLocation.getEditText().getText().toString();
         String description = eventDescription.getEditText().getText().toString();
@@ -80,7 +82,15 @@ public class CreateEventActivity extends AppCompatActivity {
         validator.clear();
 
         if (validator.validate()) {
-            call = service.createEvent(name, location, description, datetime);
+           Bundle b = getIntent().getExtras();
+           String latitude = b.getString("lat");
+           String longitude = b.getString("lon");
+
+           Log.w(TAG,b.getString("lat"));
+           Log.w(TAG,b.getString("lon"));
+
+            call = service.createEventwithMarker(name, location, description, datetime,longitude,latitude);
+            //call = service.createEvent(name, location, description, datetime);
             call.enqueue(new Callback<AccessToken>() {
                 @Override
                 public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {

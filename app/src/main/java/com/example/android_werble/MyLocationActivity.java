@@ -176,7 +176,6 @@ public class MyLocationActivity extends AppCompatActivity
         map.setOnMyLocationClickListener(this);
         enableMyLocation();
 
-        //getLocalEvents();
 
         call = service.getLocalEvents();
         call.enqueue(new Callback<Data<Event>>() {
@@ -218,24 +217,29 @@ public class MyLocationActivity extends AppCompatActivity
                 map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
-                        //Create Marker
                         MarkerOptions markerOptions = new MarkerOptions();
-                        //Set Marker Position
                         markerOptions.position(latLng);
-                        //Set Latittude and Longitude On Marker
                         markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-                        //Clear the previously Clcik position
-                        map.clear();
-                        //Zoom the Narker
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                        //Add Marker on Map
                         googleMap.addMarker(markerOptions);
+
+                        //ask if certain??
+                        Log.w(TAG,"goting to create event");
+
+                        Intent intent = new Intent(MyLocationActivity.this, CreateEventActivity.class);
+                        intent.putExtra("lat",Double.toString(latLng.latitude));
+                        intent.putExtra("lon",Double.toString(latLng.longitude));
+
+                        startActivity(intent);
+                        finish();
+
                     }
                 });
 
             }
         });
     }
+
+
 
     //void getLocalEvents() {
 
