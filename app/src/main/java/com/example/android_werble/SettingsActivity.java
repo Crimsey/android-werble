@@ -87,6 +87,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                     User user = response.body();
                         user_id = user.getUserId().toString();
 
+
                     if (user.getFirstName()!=null){
                        firstName = user.getFirstName().toString();
                        userFirstName.setText(firstName);

@@ -45,17 +45,10 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     RecyclerView recyclerView;
     List<Event> eventList;
 
-
     //variables for sidebar
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-
-    //@BindView(R.id.event_title)
-    //TextView title;
-
-    //@BindView(R.id.profileSidebar)
-    //MenuItem profileSidebar;
 
     Call<Data<Event>> call;
     Call<Message> messageCall;
@@ -112,7 +105,7 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         getEvents();
     }
 
-    //@OnClick(R.id.EventButton)
+    @OnClick(R.id.join)
     void getEvents() {
 
 

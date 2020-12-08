@@ -68,4 +68,12 @@ public interface ApiService {
                         @Field("longitude") String longitude,
                         @Field("latitude") String latitude);
 
+    @GET("user/event/{id}")
+    Call<Event> getSingleEvent(
+                        @Path("id") Integer event_id);
+
+    /*@POST("user/events/review/create")
+    @FormUrlEncoded
+    Call<AccessToken> createReview()
+    */
 }

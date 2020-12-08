@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,7 +63,9 @@ public class MyLocationActivity extends AppCompatActivity
         OnMyLocationClickListener,
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener,
+        GoogleMap.OnMarkerClickListener
+{
 
     private static final String TAG = "MyLocationActivity";
 
@@ -175,6 +178,8 @@ public class MyLocationActivity extends AppCompatActivity
         map.setOnMyLocationButtonClickListener(this);
         map.setOnMyLocationClickListener(this);
         enableMyLocation();
+        map.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
+
 
 
         call = service.getLocalEvents();
@@ -195,9 +200,11 @@ public class MyLocationActivity extends AppCompatActivity
                         MarkerOptions markerOptions = new MarkerOptions();//creating marker
                         markerOptions.position(position);//add position to marker
                         markerOptions.title(event.getName());//add title to marker
-                        googleMap.addMarker(markerOptions);//display marker on map
+                        //markerOptions.
+                        googleMap.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
                         Log.w(TAG,"ADDING MARKERS2");
                     }
+
                 }
 
             }
@@ -239,6 +246,44 @@ public class MyLocationActivity extends AppCompatActivity
         });
     }
 
+    /** Called when the user clicks a marker. */
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+        // Retrieve the data from the marker.
+        Integer clickCount = (Integer) marker.getTag();
+
+        // Check if a click count was set, then display the click count.
+        /*if (clickCount != null) {
+            clickCount = clickCount + 1;
+            marker.setTag(clickCount);
+            Toast.makeText(this,
+                    marker.getTitle() +
+                            " has been clicked " + clickCount + " times.",
+                    Toast.LENGTH_SHORT).show();
+        }*/
+        if (clickCount !=null) {
+            clickCount++;
+            //if (clickCount == 2) {
+                Toast.makeText(this,
+                        marker.getTitle() +
+                                " has been clicked " + clickCount + " times.",
+                        Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(MyLocationActivity.this, SingleEventActivity.class);
+                intent.putExtra("event_id", String.valueOf(marker.getTag()));
+
+                startActivity(intent);
+                finish();
+                Log.w(TAG,"SINGLE EVENT ACTIVITY");
+            //}
+        }
+        // Return false to indicate that we have not consumed the event and that we wish
+        // for the default behavior to occur (which is for the camera to move such that the
+        // marker is centered and for the marker's info window to open, if it has one).
+        return false;
+        //return true;
+    }
 
 
     //void getLocalEvents() {
@@ -264,11 +309,7 @@ public class MyLocationActivity extends AppCompatActivity
 */
     //}
 
-        void EventsToMarkers(){
-
-        }
-
-        /*(map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+       /*(map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
 
@@ -309,6 +350,40 @@ public class MyLocationActivity extends AppCompatActivity
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         getLastKnownLocation();
+
+        call = service.getLocalEvents();
+        call.enqueue(new Callback<Data<Event>>() {
+
+            @Override
+            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                Log.w(TAG, "onResponseLOCALEVENTS: " + response);
+                if (response.isSuccessful()){
+                    eventList = response.body().getData();
+                    Log.w(TAG,"ADDING MARKERS1");
+
+                    for (Event event : eventList){
+                        Double lat = event.getLatitude();
+                        Double lon = event.getLongitude();
+
+                        LatLng position = new LatLng(lat,lon); //event position
+                        MarkerOptions markerOptions = new MarkerOptions();//creating marker
+                        markerOptions.position(position);//add position to marker
+                        markerOptions.title(event.getName());//add title to marker
+                        //markerOptions.
+                        map.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
+                        Log.w(TAG,"ADDING MARKERS2");
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Data<Event>> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+
         return false;
     }
 
