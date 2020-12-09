@@ -131,9 +131,9 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     public void setupRules(){
-        validator.addValidation(this,R.id.Login, RegexTemplate.NOT_EMPTY,R.string.err_login);
+        validator.addValidation(this,R.id.Login, "[a-zA-Z0-9]{4,50}",R.string.err_login);
         validator.addValidation(this,R.id.Email, Patterns.EMAIL_ADDRESS,R.string.err_email);
-        validator.addValidation(this,R.id.Password,"[a-zA-Z0-9]{8,}",R.string.err_password);
+        validator.addValidation(this,R.id.Password,"[a-zA-Z0-9]{8,50}",R.string.err_password);
     }
 
     @Override

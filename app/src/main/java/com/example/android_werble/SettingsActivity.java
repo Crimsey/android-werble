@@ -138,7 +138,8 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         validator.clear();
 
         if (validator.validate()) {
-            callAccessToken = service.userEdit(user_id,firstName, lastName, birthDate, description);//,password);
+
+            callAccessToken = service.userEdit(firstName, lastName, birthDate, description);//,password);
 
             callAccessToken.enqueue(new Callback<AccessToken>() {
                 @Override
@@ -239,7 +240,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.w(TAG,"SIDEBAR");
-        Toast.makeText(this,"TOST",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"TOST",Toast.LENGTH_LONG).show();
         switch (item.getTitle().toString()) {
             //case "Logout": logout(); break;
             case "Your profile": gotoProfile(); break;

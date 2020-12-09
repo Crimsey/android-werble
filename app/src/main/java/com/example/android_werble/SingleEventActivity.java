@@ -6,16 +6,24 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
+import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
+import com.example.android_werble.entities.EventParticipant;
+import com.example.android_werble.entities.Message;
+import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -24,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,19 +41,30 @@ import retrofit2.Response;
 public class SingleEventActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "SingleEventActivity";
+    RecyclerView recyclerView;
+    List<EventParticipant> eventParticipantList;
 
+    Call<Message> callJoin;
     ApiService service;
     Call<Event> call;
+    Call<Data<EventParticipant>> callParticipant;
+
     Call<AccessToken> callAccessToken;
     AwesomeValidation validator;
     TokenManager tokenManager;
 
     //String event_id;
     TextView name,location,zip_code,street_name,house_number,description,datetime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singleevent);
+
+        recyclerView = (RecyclerView) findViewById(R.id.participantRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         name = findViewById(R.id.singleEventName);
         location = findViewById(R.id.singleEventLocation);
@@ -65,11 +85,9 @@ public class SingleEventActivity extends AppCompatActivity implements Navigation
 
 
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
-        validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
-
+        //validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-        Log.w(TAG,"BAJOJAJO"+event_id);
 
         call = service.getSingleEvent(Integer.parseInt(event_id));
 
@@ -82,8 +100,6 @@ public class SingleEventActivity extends AppCompatActivity implements Navigation
                     Log.e(TAG, "onResponse: " + response.body());
 
                     Event event = response.body();
-
-
                     //Data2<Event> eventData2 = response.body();
                     //event_id = event.getEventId().toString();
                     //List<Event> eventList = response.body().getData2();
@@ -137,7 +153,34 @@ public class SingleEventActivity extends AppCompatActivity implements Navigation
 
             }
         });
-        setupRules();
+        Log.w(TAG, "PRE-PARTICIPANT");
+
+        callParticipant = service.getEventParticipant(Integer.parseInt(event_id));
+        callParticipant.enqueue(new Callback<Data<EventParticipant>>() {
+
+            @Override
+            public void onResponse(Call<Data<EventParticipant>> call, Response<Data<EventParticipant>> response) {
+                Log.w(TAG, "PARTICIPANT" + response);
+
+                if (response.isSuccessful()){
+                    eventParticipantList = response.body().getData();
+                    recyclerView.setAdapter(new AdapterParticipant(eventParticipantList, recyclerView));
+                    Log.w(TAG, "PARTICIPANT2");
+
+                }
+             else {
+                Log.w(TAG, "POST-PARTICIPANT");
+            }
+            }
+
+            @Override
+            public void onFailure(Call<Data<EventParticipant>> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+
+            }
+        });
+
+        //setupRules();
 
     }
         private void handleErrors (ResponseBody response){
@@ -168,13 +211,46 @@ public class SingleEventActivity extends AppCompatActivity implements Navigation
             }
         }
 
-    public void setupRules() {
+        @OnClick(R.id.joinSingleEvent)
+        void joinSingleEvent(){
+            Bundle b = getIntent().getExtras();
+            String event_id = b.getString("event_id");
+        callJoin = service.joinEvent(Integer.parseInt(event_id),"1");
+        callJoin.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                Log.w(TAG, "You have joined!: " + response);
+                Toast.makeText(SingleEventActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
+
+                finish();
+                startActivity(getIntent());
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+
+            }
+        });
+
+        }
+
+        @OnClick(R.id.returntomap)
+        void gotoMap() {
+            //Toast.makeText(EventActivity.this,"MAP",Toast.LENGTH_LONG).show();
+            startActivity(new Intent(SingleEventActivity.this,MyLocationActivity.class));
+            finish();
+            Log.w(TAG,"Returning to map");
+        }
+
+
+    /*public void setupRules() {
         validator.addValidation(this, R.id.userFirstName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.userLastName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.userBirthDate, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         //validator.addValidation(this, R.id.userDescription, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
 
-    }
+    }*/
 
         @Override
         public boolean onNavigationItemSelected (@NonNull MenuItem item){

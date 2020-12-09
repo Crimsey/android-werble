@@ -13,32 +13,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class EventActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        AdapterEvent.OnNoteListener {
 
     private static final String TAG = "EventActivity";
 
@@ -101,7 +95,6 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
         getEvents();
     }
 
@@ -116,12 +109,11 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
             public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
                 Log.w(TAG, "onResponse: " + response);
 
-
-
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    recyclerView.setAdapter(new Adapter(eventList, recyclerView));
-                    }
+                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventActivity.this::onNoteClick));
+
+                }
                 /*if (response.isSuccessful()) {
                     List<Event> eventList = response.body().getData();
                     String content = "";
@@ -130,18 +122,18 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
                         content += "Id :" + event.getEventId().toString() + "\n" +
                                 "name: " + event.getName() + "\n";//.getData().get(i).getEventId() + "\n";
                     }*/
-                    //title.setText(content);
-                    //title.setText(response.body().getData().get(0).getName());
-                    //String titleEvent = response.body().getData().get(0).getName();
-                    //title.setText(titleEvent);
-                    //Log.w(TAG, "getEvents" + response);
+                //title.setText(content);
+                //title.setText(response.body().getData().get(0).getName());
+                //String titleEvent = response.body().getData().get(0).getName();
+                //title.setText(titleEvent);
+                //Log.w(TAG, "getEvents" + response);
                 //}
                 /*else {
                     tokenManager.deleteToken();
                     startActivity(new Intent(EventActivity.this, LoginActivity.class));
                     finish();
                 }*/
-           }
+            }
 
             @Override
             public void onFailure(Call<Data<Event>> call, Throwable t) {
@@ -153,39 +145,59 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
 
     //@OnClick(R.id.profileSidebar)
     void gotoProfile() {
-        Toast.makeText(EventActivity.this,"TUTAJ",Toast.LENGTH_LONG).show();
+        Toast.makeText(EventActivity.this, "YOUR PROFILE", Toast.LENGTH_LONG).show();
         startActivity(new Intent(EventActivity.this, UserActivity.class));
         finish();
-        Log.w(TAG,"USERACTIVITY");
+        Log.w(TAG, "USERACTIVITY");
     }
 
     //@OnClick(R.id.mapSidebar)
     void gotoMap() {
-        Toast.makeText(EventActivity.this,"MAP",Toast.LENGTH_LONG).show();
+        Toast.makeText(EventActivity.this, "MAP", Toast.LENGTH_LONG).show();
         //startActivity(new Intent(EventActivity.this, MapActivity.class));
-        startActivity(new Intent(EventActivity.this,MyLocationActivity.class));
+        startActivity(new Intent(EventActivity.this, MyLocationActivity.class));
         //startActivity(new Intent(EventActivity.this,MyLocationLayerActivity.class));
 
         finish();
-        Log.w(TAG,"GOINGTOMAP");
+        Log.w(TAG, "GOINGTOMAP");
     }
 
     @OnClick(R.id.CreateEventButton)
     void gotoCreateEvent() {
-        Toast.makeText(EventActivity.this,"CREATING",Toast.LENGTH_LONG).show();
+        Toast.makeText(EventActivity.this, "CREATING", Toast.LENGTH_LONG).show();
         startActivity(new Intent(EventActivity.this, CreateEventActivity.class));
         finish();
-        Log.w(TAG,"CREATE EVENT");
+        Log.w(TAG, "CREATE EVENT");
     }
 
     void gotoSettings() {
-        Toast.makeText(EventActivity.this,"SETTINGS",Toast.LENGTH_LONG).show();
+        Toast.makeText(EventActivity.this, "SETTINGS", Toast.LENGTH_LONG).show();
         startActivity(new Intent(EventActivity.this, SettingsActivity.class));
         finish();
-        Log.w(TAG,"SETTINGS");
+        Log.w(TAG, "SETTINGS");
     }
 
+    /*@OnClick(R.id.join)
+    void joinSingleEvent(){
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+        callJoin = service.joinEvent(Integer.parseInt(event_id),"1");
+        callJoin.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                Log.w(TAG, "You have joined!: " + response);
+                Toast.makeText(SingleEventActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
 
+                finish();
+                startActivity(getIntent());
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+
+            }
+        });*/
 
 
     //@OnClick(R.id.logoutButton)
@@ -220,15 +232,23 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Log.w(TAG,"SIDEBAR");
-        Toast.makeText(EventActivity.this,"TOST",Toast.LENGTH_LONG).show();
+        Log.w(TAG, "SIDEBAR");
+        Toast.makeText(EventActivity.this, "TOST", Toast.LENGTH_LONG).show();
         switch (item.getTitle().toString()) {
-            case "Logout": logout(); break;
-            case "Your profile": gotoProfile(); break;
+            case "Logout":
+                logout();
+                break;
+            case "Your profile":
+                gotoProfile();
+                break;
             //case "Your events":
-            case "Map": gotoMap(); break;
+            case "Map":
+                gotoMap();
+                break;
             //case "Create event": gotoCreateEvent(); break;
-            case "Settings": gotoSettings(); break;
+            case "Settings":
+                gotoSettings();
+                break;
 
         }
         return false;
@@ -250,5 +270,39 @@ public class EventActivity extends AppCompatActivity implements NavigationView.O
             messageCall.cancel();
             messageCall = null;
         }
+    }
+
+    @Override
+    public void onNoteClick(int position) {
+        Log.d(TAG, "onNoteClick: clicked.");
+
+
+        call = service.getLocalEvents();
+        call.enqueue(new Callback<Data<Event>>() {
+
+
+            @Override
+            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                Log.w(TAG, "onResponse: " + response);
+
+                List<Event> event = response.body().getData();
+                if (response.isSuccessful()) {
+                    eventList = response.body().getData();
+                    //recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView,EventActivity.this::onNoteClick));
+
+                    Intent intent = new Intent(EventActivity.this, SingleEventActivity.class);
+                    intent.putExtra("event_id", String.valueOf(position));
+                    //intent.putExtra("event_id", String.valueOf(event.get(position)));
+                    startActivity(intent);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Data<Event>> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+            }
+        });
     }
 }

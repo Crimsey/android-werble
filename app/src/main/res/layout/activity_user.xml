@@ -29,8 +29,8 @@
 
                 <TextView
                     android:id="@+id/firstname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="125dp"
+                    android:layout_height="28dp"
                     android:gravity="center_vertical"
                     android:text="firstname"
                     android:textColor="@color/teal_700"
@@ -42,8 +42,8 @@
 
                 <TextView
                     android:id="@+id/lastname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="257dp"
+                    android:layout_height="22dp"
                     android:text="lastname"
                     android:textColor="@color/teal_700"
                     android:textSize="18sp"
@@ -69,10 +69,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
+                    android:gravity="center"
                     android:text="description"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.269"
+                    app:layout_constraintHorizontal_bias="0.163"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/birthdate" />
 
@@ -80,10 +81,11 @@
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="email"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.239"
+                    app:layout_constraintHorizontal_bias="0.145"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/login" />
 
@@ -95,18 +97,20 @@
                     android:text="login"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.236"
+                    app:layout_constraintHorizontal_bias="0.143"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center" />
 
                 <TextView
                     android:id="@+id/birthdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="birthdate"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.257"
+                    app:layout_constraintHorizontal_bias="0.156"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/email" />
             </androidx.constraintlayout.widget.ConstraintLayout>

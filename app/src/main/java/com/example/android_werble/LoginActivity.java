@@ -129,8 +129,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void setupRules(){
-        validator.addValidation(this,R.id.Login, RegexTemplate.NOT_EMPTY,R.string.err_login);
-        validator.addValidation(this,R.id.Password,RegexTemplate.NOT_EMPTY,R.string.err_password);
+        validator.addValidation(this,R.id.Login, RegexTemplate.NOT_EMPTY, R.string.err_login2);
+        validator.addValidation(this,R.id.Password,RegexTemplate.NOT_EMPTY, R.string.err_password2);
 
     }
 

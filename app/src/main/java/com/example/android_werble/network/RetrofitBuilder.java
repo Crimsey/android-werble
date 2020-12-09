@@ -36,18 +36,21 @@ public class RetrofitBuilder {
                 //.connectTimeout(10, TimeUnit.SECONDS)
                 //.readTimeout(15,TimeUnit.SECONDS)
                 //.writeTimeout(15,TimeUnit.SECONDS)
-                .callTimeout(1,TimeUnit.MINUTES)
+                .callTimeout(5,TimeUnit.MINUTES)
             .addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                     Request request = chain.request();
 
                     Request.Builder builder = request.newBuilder()
+                            .addHeader("Content-Type","application/json")
                             .addHeader("Accept","application/json")
-                            .header("Accept-Encoding", "identity")
+                            .addHeader("Content-Type","multipart/form data");
+                            //.addHeader("Accept","application/json")
+                            //.header("Accept-Encoding", "identity")
                             //.addHeader("Content-Type","multipart/form data")
                             //.addHeader("Content-Type","application/json")
-                            .addHeader("Connection","close");
+                            //.addHeader("Connection","close");
 
 
                     request = builder.build();

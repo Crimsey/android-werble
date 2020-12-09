@@ -3,6 +3,7 @@ package com.example.android_werble.network;
 import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
+import com.example.android_werble.entities.EventParticipant;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 
@@ -54,10 +55,9 @@ public interface ApiService {
     @GET("user")
     Call<User> user();
 
-    @PUT("user/{id}")
+    @PUT("user/profile/edit")
     @FormUrlEncoded
     Call<AccessToken> userEdit(
-                        @Path("id") String user_id,
                         @Field("first_name") String first_name,
                         @Field("last_name") String last_name,
                         @Field("birth_date") String birth_date,
@@ -71,6 +71,15 @@ public interface ApiService {
     @GET("user/event/{id}")
     Call<Event> getSingleEvent(
                         @Path("id") Integer event_id);
+
+    @GET("user/events/{id}/participants")
+    Call<Data<EventParticipant>> getEventParticipant(@Path("id") Integer event_id);
+
+    @POST("user/event/{id}/join")
+    @FormUrlEncoded
+    Call<Message> joinEvent(
+                    @Path("id") Integer event_id,
+                    @Field("participant_status_id") String participant_status_id);
 
     /*@POST("user/events/review/create")
     @FormUrlEncoded
