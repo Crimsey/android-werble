@@ -47,7 +47,7 @@ public interface ApiService {
                                   @Field("latitude") String latitude);
 
     @GET("user/events")
-    Call<Data<Event>> events();
+    Call<Data<Event>> getUserEvents();
 
     @GET("user/events/local")
     Call<Data<Event>> getLocalEvents();

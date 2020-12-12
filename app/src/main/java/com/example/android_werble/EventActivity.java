@@ -95,11 +95,11 @@ public class EventActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        getEvents();
+        getLocalEvents();
     }
 
     @OnClick(R.id.join)
-    void getEvents() {
+    void getLocalEvents() {
 
 
         call = service.getLocalEvents();
@@ -107,6 +107,8 @@ public class EventActivity extends AppCompatActivity implements
 
             @Override
             public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                Log.w(TAG,"GETLOCALEVENTS");
+
                 Log.w(TAG, "onResponse: " + response);
 
                 if (response.isSuccessful()) {
@@ -133,6 +135,33 @@ public class EventActivity extends AppCompatActivity implements
                     startActivity(new Intent(EventActivity.this, LoginActivity.class));
                     finish();
                 }*/
+            }
+
+            @Override
+            public void onFailure(Call<Data<Event>> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+
+    }
+
+    @OnClick(R.id.yours)
+    void getUserEvents() {
+
+
+        call = service.getUserEvents();
+        call.enqueue(new Callback<Data<Event>>() {
+
+            @Override
+            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                Log.w(TAG,"GETUSEREVENTS");
+                Log.w(TAG, "onResponse: " + response);
+
+                if (response.isSuccessful()) {
+                    eventList = response.body().getData();
+                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventActivity.this::onNoteClick));
+
+                }
             }
 
             @Override

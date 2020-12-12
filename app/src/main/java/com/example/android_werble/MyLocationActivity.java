@@ -193,16 +193,19 @@ public class MyLocationActivity extends AppCompatActivity
                     Log.w(TAG,"ADDING MARKERS1");
 
                     for (Event event : eventList){
-                        Double lat = event.getLatitude();
-                        Double lon = event.getLongitude();
+                        if (event.getLatitude() != null && event.getLongitude() != null ) {
+                            Double lat = event.getLatitude();
 
-                        LatLng position = new LatLng(lat,lon); //event position
-                        MarkerOptions markerOptions = new MarkerOptions();//creating marker
-                        markerOptions.position(position);//add position to marker
-                        markerOptions.title(event.getName());//add title to marker
-                        //markerOptions.
-                        googleMap.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
-                        Log.w(TAG,"ADDING MARKERS2");
+                            Double lon = event.getLongitude();
+
+                            LatLng position = new LatLng(lat, lon); //event position
+                            MarkerOptions markerOptions = new MarkerOptions();//creating marker
+                            markerOptions.position(position);//add position to marker
+                            markerOptions.title(event.getName());//add title to marker
+                            //markerOptions.
+                            googleMap.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
+                            Log.w(TAG, "ADDING MARKERS2");
+                        }
                     }
 
                 }
@@ -361,17 +364,20 @@ public class MyLocationActivity extends AppCompatActivity
                     eventList = response.body().getData();
                     Log.w(TAG,"ADDING MARKERS1");
 
-                    for (Event event : eventList){
-                        Double lat = event.getLatitude();
-                        Double lon = event.getLongitude();
+                    for (Event event : eventList) {
+                        if (event.getLatitude() != null && event.getLongitude() != null) {
 
-                        LatLng position = new LatLng(lat,lon); //event position
-                        MarkerOptions markerOptions = new MarkerOptions();//creating marker
-                        markerOptions.position(position);//add position to marker
-                        markerOptions.title(event.getName());//add title to marker
-                        //markerOptions.
-                        map.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
-                        Log.w(TAG,"ADDING MARKERS2");
+                            Double lat = event.getLatitude();
+                            Double lon = event.getLongitude();
+
+                            LatLng position = new LatLng(lat, lon); //event position
+                            MarkerOptions markerOptions = new MarkerOptions();//creating marker
+                            markerOptions.position(position);//add position to marker
+                            markerOptions.title(event.getName());//add title to marker
+                            //markerOptions.
+                            map.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
+                            Log.w(TAG, "ADDING MARKERS2");
+                        }
                     }
 
                 }
