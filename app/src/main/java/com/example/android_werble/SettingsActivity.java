@@ -1,11 +1,17 @@
 package com.example.android_werble;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +29,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +56,8 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     TextInputEditText userBirthDate;
     @BindView(R.id.userDescription2)
     TextInputEditText userDescription;
-    @BindView(R.id.userPassword2)
-    TextInputEditText userPassword;
+
+    Button calbutton;
 
     ApiService service;
     Call<User> call;
@@ -117,8 +125,41 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
+        userBirthDate = findViewById(R.id.userBirthDate2);
+        userBirthDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog(userBirthDate);
+            }
+        });
+
+        calbutton = findViewById(R.id.calbutton);
+        calbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog(userBirthDate);
+            }
+        });
+
 
         setupRules();
+    }
+
+    private void showDateDialog(TextInputEditText userBirthDate) {
+        final Calendar calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                userBirthDate.setText(simpleDateFormat.format(calendar.getTime()));
+
+            }
+        };
+
+        new DatePickerDialog(SettingsActivity.this,R.style.datepicker, dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     @OnClick(R.id.SettingsButton)
@@ -127,13 +168,11 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         String lastName = userLastName.getText().toString();
         String birthDate = userBirthDate.getText().toString();
         String description = userDescription.getText().toString();
-        //String password = userPassword.getText().toString();
 
         userFirstName.setError(null);
         userLastName.setError(null);
         userBirthDate.setError(null);
         userDescription.setError(null);
-       // userPassword.setError(null);
 
         validator.clear();
 
@@ -186,9 +225,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                 if (error.getKey().equals("description")) {
                     userDescription.setError(error.getValue().get(0));
                 }
-                /*if (error.getKey().equals("password")) {
-                    userPassword.setError(error.getValue().get(0));
-                }*/
             }
         } else {
             Log.e("no errors", "weird");
@@ -199,7 +235,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         validator.addValidation(this, R.id.userFirstName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.userLastName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.userBirthDate, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
-        //validator.addValidation(this, R.id.userDescription, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
 
     }
 

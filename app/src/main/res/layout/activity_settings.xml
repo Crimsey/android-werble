@@ -79,7 +79,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/userBirthDate2"
-                    android:layout_width="match_parent"
+                    android:layout_width="273dp"
                     android:layout_height="wrap_content"
 
                     android:drawablePadding="10dp"
@@ -88,35 +88,30 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Button
+                android:id="@+id/calbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="275dp"
+                android:layout_weight="1"
+                android:text="CALENDAR"
+                app:layout_constraintBottom_toBottomOf="@+id/userBirthDate"
+                app:layout_constraintEnd_toEndOf="@+id/userBirthDate"
+                app:layout_constraintStart_toStartOf="@+id/userBirthDate"
+                app:layout_constraintTop_toBottomOf="@+id/userLastName"
+                android:backgroundTint="@color/teal_700"
+                />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/userDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Description"
-                app:layout_constraintBottom_toTopOf="@+id/userPassword">
+                app:layout_constraintBottom_toTopOf="@+id/SettingsButton"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/userDescription2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
-
-                    android:inputType="text" />
-
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/userPassword"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                app:layout_constraintBottom_toTopOf="@+id/SettingsButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/userPassword2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
