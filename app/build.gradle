@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.android_werble"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -92,6 +92,9 @@ dependencies {
 
     implementation 'com.google.maps.android:android-maps-utils:2.2.0'
     implementation 'com.google.android.gms:play-services-location:17.1.0'
+
+    //implementation 'https://github.com/noowenz/CustomDateTimePicker:latest-release'
+
 }
 
 

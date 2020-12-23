@@ -1,8 +1,15 @@
 package com.example.android_werble;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +21,11 @@ import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class CreateEventActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateEventActivity";
@@ -37,20 +48,24 @@ public class CreateEventActivity extends AppCompatActivity {
     TextInputLayout eventLocation;
     @BindView(R.id.eventDescription)
     TextInputLayout eventDescription;
-    @BindView(R.id.eventDatetime)
-    TextInputLayout eventDatetime;
+    @BindView(R.id.eventDatetime2)
+    TextInputEditText eventDatetime;
+    //EditText eventDatetime;
 
-    String longitude,latitude;
     ApiService service;
     Call<AccessToken> call;
     AwesomeValidation validator;
     TokenManager tokenManager;
+
+    private TextView DisplayDate;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createevent);
+
 
         Log.w(TAG,"My tu w ogóle wchodzimy?");
         ButterKnife.bind(this);
@@ -64,15 +79,55 @@ public class CreateEventActivity extends AppCompatActivity {
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
         setupRules();
-        //createEventwithMarker();
+
+        eventDatetime = findViewById(R.id.eventDatetime2);
+        eventDatetime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateTimeDialog(eventDatetime);
+            }
+        });
+
+
+
     }
+
+    private void showDateTimeDialog(final TextInputEditText eventDatetime) {
+        final Calendar calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR,year);
+                calendar.set(Calendar.MONTH,month);
+                calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+
+                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                        calendar.set(Calendar.MINUTE,minute);
+
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:00");
+
+                        eventDatetime.setText(simpleDateFormat.format(calendar.getTime()));
+                    }
+                };
+
+                new TimePickerDialog(CreateEventActivity.this,R.style.datepicker,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
+            }
+        };
+
+        new DatePickerDialog(CreateEventActivity.this,R.style.datepicker, dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
 
     @OnClick(R.id.CreateEventButton)
     void createEventwithMarker() {
         String name = eventName.getEditText().getText().toString();
         String location = eventLocation.getEditText().getText().toString();
         String description = eventDescription.getEditText().getText().toString();
-        String datetime = eventDatetime.getEditText().getText().toString();
+        //String datetime = eventDatetime.getEditText().getText().toString();
+        String datetime = eventDatetime.getText().toString();
 
         eventName.setError(null);
         eventLocation.setError(null);
@@ -137,9 +192,9 @@ public class CreateEventActivity extends AppCompatActivity {
                 if (error.getKey().equals("description")) {
                     eventDescription.setError(error.getValue().get(0));
                 }
-                if (error.getKey().equals("datetime")) {
+                /*if (error.getKey().equals("datetime")) {
                     eventDatetime.setError(error.getValue().get(0));
-                }
+                }*/
             }
         } else {
             Log.e("no errors", "weird");
@@ -149,7 +204,7 @@ public class CreateEventActivity extends AppCompatActivity {
     public void setupRules() {
         validator.addValidation(this, R.id.eventName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.eventLocation, RegexTemplate.NOT_EMPTY, R.string.err_event_location);
-        validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
+        //validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
 
     }
 
