@@ -21,4 +21,7 @@
     <color name="colorPrimary">#FCFCFC</color>
     <color name="colorPrimaryDark">#AAAABB</color>
     <color name="colorAccent">#CCCCDD</color>
+    <color name="gold">#FFE500</color>
+    <color name="darkYellow">#79BAA700</color>
+
 </resources>

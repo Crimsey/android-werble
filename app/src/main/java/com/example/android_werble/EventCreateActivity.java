@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -39,7 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class CreateEventActivity extends AppCompatActivity {
+public class EventCreateActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateEventActivity";
 
@@ -59,14 +57,10 @@ public class CreateEventActivity extends AppCompatActivity {
     AwesomeValidation validator;
     TokenManager tokenManager;
 
-    private TextView DisplayDate;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_createevent);
+        setContentView(R.layout.activity_eventcreate);
 
 
         Log.w(TAG,"My tu w ogóle wchodzimy?");
@@ -74,7 +68,7 @@ public class CreateEventActivity extends AppCompatActivity {
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
 
         if (tokenManager.getToken() == null) {
-            startActivity(new Intent(CreateEventActivity.this, LoginActivity.class));
+            startActivity(new Intent(EventCreateActivity.this, LoginActivity.class));
             finish();
         }
 
@@ -123,11 +117,11 @@ public class CreateEventActivity extends AppCompatActivity {
                     }
                 };
 
-                new TimePickerDialog(CreateEventActivity.this,R.style.datepicker,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
+                new TimePickerDialog(EventCreateActivity.this,R.style.datepicker,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
             }
         };
 
-        new DatePickerDialog(CreateEventActivity.this,R.style.datepicker, dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+        new DatePickerDialog(EventCreateActivity.this,R.style.datepicker, dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
 
@@ -161,7 +155,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
                     if (response.isSuccessful()) {
                         Log.e(TAG, "onResponse: " + response.body());
-                        Toast.makeText(CreateEventActivity.this,"Created event!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(EventCreateActivity.this,"Created event!",Toast.LENGTH_LONG).show();
                     } else {
                         handleErrors(response.errorBody());
                     }
@@ -179,8 +173,8 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     void gotoEvent() {
-        Toast.makeText(CreateEventActivity.this,"CREATING",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(CreateEventActivity.this, EventActivity.class));
+        Toast.makeText(EventCreateActivity.this,"CREATING",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(EventCreateActivity.this, EventActivity.class));
         finish();
         Log.w(TAG,"CREATE EVENT");
     }

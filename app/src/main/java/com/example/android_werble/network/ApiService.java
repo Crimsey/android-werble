@@ -81,8 +81,11 @@ public interface ApiService {
                     @Path("id") Integer event_id,
                     @Field("participant_status_id") String participant_status_id);
 
-    /*@POST("user/events/review/create")
+    @POST("user/events/review/create")
     @FormUrlEncoded
-    Call<AccessToken> createReview()
-    */
+    Call<Message> createReview(
+                        @Field("content") String content,
+                        @Field("rating") String rating,
+                        @Field("event_id") String event_id);
+
 }

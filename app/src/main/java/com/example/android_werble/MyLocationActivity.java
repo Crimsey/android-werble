@@ -1,6 +1,5 @@
 package com.example.android_werble;
 
-import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
@@ -8,8 +7,6 @@ import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
@@ -42,7 +39,6 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -235,7 +231,7 @@ public class MyLocationActivity extends AppCompatActivity
                         //ask if certain??
                         Log.w(TAG,"goting to create event");
 
-                        Intent intent = new Intent(MyLocationActivity.this, CreateEventActivity.class);
+                        Intent intent = new Intent(MyLocationActivity.this, EventCreateActivity.class);
                         intent.putExtra("lat",Double.toString(latLng.latitude));
                         intent.putExtra("lon",Double.toString(latLng.longitude));
 
@@ -273,7 +269,7 @@ public class MyLocationActivity extends AppCompatActivity
                                 " has been clicked " + clickCount + " times.",
                         Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(MyLocationActivity.this, SingleEventActivity.class);
+                Intent intent = new Intent(MyLocationActivity.this, EventSingleActivity.class);
                 intent.putExtra("event_id", String.valueOf(marker.getTag()));
 
                 startActivity(intent);

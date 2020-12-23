@@ -194,7 +194,7 @@ public class EventActivity extends AppCompatActivity implements
     @OnClick(R.id.CreateEventButton)
     void gotoCreateEvent() {
         Toast.makeText(EventActivity.this, "CREATING", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventActivity.this, CreateEventActivity.class));
+        startActivity(new Intent(EventActivity.this, EventCreateActivity.class));
         finish();
         Log.w(TAG, "CREATE EVENT");
     }
@@ -319,7 +319,7 @@ public class EventActivity extends AppCompatActivity implements
                     eventList = response.body().getData();
                     //recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView,EventActivity.this::onNoteClick));
 
-                    Intent intent = new Intent(EventActivity.this, SingleEventActivity.class);
+                    Intent intent = new Intent(EventActivity.this, EventSingleActivity.class);
                     intent.putExtra("event_id", String.valueOf(position));
                     //intent.putExtra("event_id", String.valueOf(event.get(position)));
                     startActivity(intent);

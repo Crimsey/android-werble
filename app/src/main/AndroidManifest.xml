@@ -42,7 +42,7 @@
             android:label="@string/title_activity_map"/>
 
         <activity
-            android:name=".SingleEventActivity"
+            android:name=".EventSingleActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
@@ -53,10 +53,14 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity
+            android:name=".ReviewCreateActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
             android:name=".UserActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CreateEventActivity"
+            android:name=".EventCreateActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />

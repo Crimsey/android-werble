@@ -1,7 +1,6 @@
 package com.example.android_werble;
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,11 +23,9 @@ import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -260,7 +254,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     //@OnClick(R.id.createEventSidebar)
     void gotoCreateEvent() {
         Toast.makeText(this,"CREATING",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(this, CreateEventActivity.class));
+        startActivity(new Intent(this, EventCreateActivity.class));
         finish();
         Log.w(TAG,"CREATE EVENT");
     }

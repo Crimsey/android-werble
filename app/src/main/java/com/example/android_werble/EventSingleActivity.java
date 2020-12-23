@@ -1,10 +1,12 @@
 package com.example.android_werble;
 
 import android.content.Intent;
+import android.media.Rating;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,15 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.EventParticipant;
+import com.example.android_werble.entities.EventReview;
 import com.example.android_werble.entities.Message;
-import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -38,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SingleEventActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class EventSingleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "SingleEventActivity";
     RecyclerView recyclerView;
@@ -48,18 +48,21 @@ public class SingleEventActivity extends AppCompatActivity implements Navigation
     ApiService service;
     Call<Event> call;
     Call<Data<EventParticipant>> callParticipant;
+    Call<Message> callReview;
 
     Call<AccessToken> callAccessToken;
     AwesomeValidation validator;
     TokenManager tokenManager;
 
-    //String event_id;
+    RatingBar rating;
+    TextView content;
+
     TextView name,location,zip_code,street_name,house_number,description,datetime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_singleevent);
+        setContentView(R.layout.activity_eventsingle);
 
         recyclerView = (RecyclerView) findViewById(R.id.participantRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -74,12 +77,15 @@ public class SingleEventActivity extends AppCompatActivity implements Navigation
         description = findViewById(R.id.singleEventDescription);
         datetime = findViewById(R.id.singleEventDatetime);
 
+        rating = findViewById(R.id.rating);
+        content = findViewById(R.id.reviewContent);
+
         Log.w(TAG, "My tu w ogóle wchodzimy?");
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
 
         if (tokenManager.getToken() == null) {
-            startActivity(new Intent(SingleEventActivity.this, LoginActivity.class));
+            startActivity(new Intent(EventSingleActivity.this, LoginActivity.class));
             finish();
         }
 
@@ -113,7 +119,6 @@ public class SingleEventActivity extends AppCompatActivity implements Navigation
 
                     if (TextUtils.isEmpty(event.getName())
                     ){
-
                         name.setText("no name :(");
                     }else{name.setText(event.getName());}
 
@@ -220,7 +225,7 @@ public class SingleEventActivity extends AppCompatActivity implements Navigation
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 Log.w(TAG, "You have joined!: " + response);
-                Toast.makeText(SingleEventActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
+                Toast.makeText(EventSingleActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
 
                 finish();
                 startActivity(getIntent());
@@ -235,10 +240,42 @@ public class SingleEventActivity extends AppCompatActivity implements Navigation
 
         }
 
+    @OnClick(R.id.addReview)
+    void gotoReview(){
+        startActivity(new Intent(EventSingleActivity.this,ReviewCreateActivity.class));
+        finish();
+        Log.w(TAG,"Going to Review");
+
+        /*Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+
+        String ratingString = String.valueOf(rating.getRating());
+        String contentString = content.getText().toString();
+
+        callReview = service.createReview(contentString,ratingString,event_id);
+        callReview.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                Log.w(TAG, "You have joined!: " + response);
+                Toast.makeText(EventSingleActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
+
+                finish();
+                startActivity(getIntent());
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+
+            }
+        });*/
+
+    }
+
         @OnClick(R.id.returntomap)
         void gotoMap() {
             //Toast.makeText(EventActivity.this,"MAP",Toast.LENGTH_LONG).show();
-            startActivity(new Intent(SingleEventActivity.this,MyLocationActivity.class));
+            startActivity(new Intent(EventSingleActivity.this,MyLocationActivity.class));
             finish();
             Log.w(TAG,"Returning to map");
         }
