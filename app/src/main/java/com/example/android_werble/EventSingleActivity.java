@@ -1,11 +1,13 @@
 package com.example.android_werble;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.media.Rating;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.EventParticipant;
 import com.example.android_werble.entities.EventReview;
 import com.example.android_werble.entities.Message;
+import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -47,6 +50,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     Call<Message> callJoin;
     ApiService service;
     Call<Event> call;
+    Call<User> callUser;
     Call<Data<EventParticipant>> callParticipant;
     Call<Message> callReview;
 
@@ -54,10 +58,11 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     AwesomeValidation validator;
     TokenManager tokenManager;
 
-    RatingBar rating;
-    TextView content;
 
     TextView name,location,zip_code,street_name,house_number,description,datetime;
+
+    Button addReview,SeeReviews;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +82,8 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         description = findViewById(R.id.singleEventDescription);
         datetime = findViewById(R.id.singleEventDatetime);
 
-        rating = findViewById(R.id.rating);
-        content = findViewById(R.id.reviewContent);
+        addReview = findViewById(R.id.addReview);
+
 
         Log.w(TAG, "My tu w ogóle wchodzimy?");
         ButterKnife.bind(this);
@@ -92,6 +97,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
         //validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
+
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
 
@@ -116,6 +122,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
 
                     //Log.w(TAG,"PÓŁNOCNICA"+ String.valueOf(event));
+
 
                     if (TextUtils.isEmpty(event.getName())
                     ){
@@ -158,32 +165,67 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
             }
         });
+
         Log.w(TAG, "PRE-PARTICIPANT");
 
-        callParticipant = service.getEventParticipant(Integer.parseInt(event_id));
-        callParticipant.enqueue(new Callback<Data<EventParticipant>>() {
-
+        callUser = service.user();
+        callUser.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<Data<EventParticipant>> call, Response<Data<EventParticipant>> response) {
-                Log.w(TAG, "PARTICIPANT" + response);
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
 
-                if (response.isSuccessful()){
-                    eventParticipantList = response.body().getData();
-                    recyclerView.setAdapter(new AdapterParticipant(eventParticipantList, recyclerView));
-                    Log.w(TAG, "PARTICIPANT2");
+                    User user = response.body();
+                    Integer user_id = user.getUserId();
+
+                    callParticipant = service.getEventParticipant(Integer.parseInt(event_id));
+                    callParticipant.enqueue(new Callback<Data<EventParticipant>>() {
+
+                        @Override
+                        public void onResponse(Call<Data<EventParticipant>> call, Response<Data<EventParticipant>> response) {
+                            Log.w(TAG, "PARTICIPANT" + response);
+
+                            if (response.isSuccessful()) {
+                                eventParticipantList = response.body().getData();
+                                recyclerView.setAdapter(new AdapterParticipant(eventParticipantList, recyclerView));
+                                Log.w(TAG, "PARTICIPANT2");
+
+                                //hide buttons if USER ISNT PARTICIPANT
+                                //AND IN FUTURE IF EVENT ISNT'T DONE!!!!!!!!!!1
+                                int help=0;
+                                for (EventParticipant eventParticipant : eventParticipantList) {
+                                    if (eventParticipant.getUserId() == user_id){
+                                        help++;
+                                    }
+                                }
+                                if (help>0){
+                                    addReview.setClickable(true);
+
+                                }else {addReview.setClickable(false);
+                                       addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));}
+
+
+                            } else {
+                                Log.w(TAG, "POST-PARTICIPANT");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Data<EventParticipant>> call, Throwable t) {
+                            Log.w(TAG, "onFailure: " + t.getMessage());
+
+                        }
+                    });
 
                 }
-             else {
-                Log.w(TAG, "POST-PARTICIPANT");
-            }
             }
 
             @Override
-            public void onFailure(Call<Data<EventParticipant>> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Log.w(TAG, "onFailure: " + t.getMessage());
-
             }
         });
+
+
 
         //setupRules();
 
@@ -242,33 +284,18 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
     @OnClick(R.id.addReview)
     void gotoReview(){
-        startActivity(new Intent(EventSingleActivity.this,ReviewCreateActivity.class));
-        finish();
-        Log.w(TAG,"Going to Review");
+        //startActivity(new Intent(EventSingleActivity.this,ReviewCreateActivity.class));
+        //finish();
+        //Log.w(TAG,"Going to Review");
 
-        /*Bundle b = getIntent().getExtras();
+        Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
 
-        String ratingString = String.valueOf(rating.getRating());
-        String contentString = content.getText().toString();
+        Intent intent = new Intent(EventSingleActivity.this, ReviewCreateActivity.class);
+        intent.putExtra("event_id",event_id);
 
-        callReview = service.createReview(contentString,ratingString,event_id);
-        callReview.enqueue(new Callback<Message>() {
-            @Override
-            public void onResponse(Call<Message> call, Response<Message> response) {
-                Log.w(TAG, "You have joined!: " + response);
-                Toast.makeText(EventSingleActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
-
-                finish();
-                startActivity(getIntent());
-            }
-
-            @Override
-            public void onFailure(Call<Message> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-
-            }
-        });*/
+        startActivity(intent);
+        finish();
 
     }
 
