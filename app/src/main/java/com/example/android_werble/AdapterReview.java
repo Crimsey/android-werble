@@ -3,6 +3,7 @@ package com.example.android_werble;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,13 +20,19 @@ public class AdapterReview extends  RecyclerView.Adapter {
     private RecyclerView mRecyclerView;
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView eRating;
+        public RatingBar eRating;
         public TextView eContent;
+        public TextView eAuthor;
+        public TextView eDatetime;
+
 
         public MyViewHolder(View pItem) {
             super(pItem);
-            eRating = (TextView) pItem.findViewById(R.id.reviewRating);
+            eRating = (RatingBar) pItem.findViewById(R.id.reviewRating);
             eContent = (TextView) pItem.findViewById(R.id.reviewContent);
+            eAuthor = (TextView) pItem.findViewById(R.id.reviewAuthor);
+            eDatetime = (TextView) pItem.findViewById(R.id.reviewDatetime);
+
         }
     }
 
@@ -47,14 +54,13 @@ public class AdapterReview extends  RecyclerView.Adapter {
             @Override
             public void onClick(View v) {
                 // odnajdujemy indeks klikniętego elementu
-                int positionToDelete = mRecyclerView.getChildAdapterPosition(v);
+                //int positionToDelete = mRecyclerView.getChildAdapterPosition(v);
                 // usuwamy element ze źródła danych
-                mReviews.remove(positionToDelete);
+                //mReviews.remove(positionToDelete);
                 // poniższa metoda w animowany sposób usunie element z listy
-                notifyItemRemoved(positionToDelete);
+                //notifyItemRemoved(positionToDelete);
             }
         });
-
 
         return new MyViewHolder(view);
     }
@@ -63,8 +69,11 @@ public class AdapterReview extends  RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         // uzupełniamy layout recenzji
         EventReview review = mReviews.get(position);
-        ((MyViewHolder) holder).eRating.setText(String.valueOf(review.getRating()));
+        ((MyViewHolder) holder).eRating.setRating(review.getRating());
         ((MyViewHolder) holder).eContent.setText(review.getContent());
+        //((MyViewHolder) holder).eAuthor.setText(review.getEventParticipantId());
+        ((MyViewHolder) holder).eDatetime.setText(review.getCreatedAt());
+
 
     }
 

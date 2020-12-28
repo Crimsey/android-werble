@@ -42,7 +42,7 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
 
     Button back;
 
-    TextView rating;
+    RatingBar rating;
     TextView content;
 
     @Override
