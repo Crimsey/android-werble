@@ -62,6 +62,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     TextView name,location,zip_code,street_name,house_number,description,datetime;
 
     Button addReview,SeeReviews;
+    Button joinSingleEvent;
 
 
     @Override
@@ -83,7 +84,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         datetime = findViewById(R.id.singleEventDatetime);
 
         addReview = findViewById(R.id.addReview);
-
+        joinSingleEvent = findViewById(R.id.joinSingleEvent);
 
         Log.w(TAG, "My tu w ogóle wchodzimy?");
         ButterKnife.bind(this);
@@ -176,7 +177,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
                     User user = response.body();
                     Integer user_id = user.getUserId();
-
+                    String login = user.getLogin();
                     callParticipant = service.getEventParticipant(Integer.parseInt(event_id));
                     callParticipant.enqueue(new Callback<Data<EventParticipant>>() {
 
@@ -191,17 +192,36 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
                                 //hide buttons if USER ISNT PARTICIPANT
                                 //AND IN FUTURE IF EVENT ISNT'T DONE!!!!!!!!!!1
-                                int help=0;
+                                int help=0,help2=0;
                                 for (EventParticipant eventParticipant : eventParticipantList) {
                                     if (eventParticipant.getUserId() == user_id){
                                         help++;
                                     }
+                                    if (eventParticipant.getLogin().equals(login)){
+                                        help2++;
+                                    }
                                 }
                                 if (help>0){
                                     addReview.setClickable(true);
+                                    joinSingleEvent.setClickable(false);
+                                    joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));
 
                                 }else {addReview.setClickable(false);
-                                       addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));}
+                                       addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+
+                                }
+
+                                if (help2>0){
+                                    addReview.setClickable(false);
+                                    addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+                                    Log.w(TAG,"help2>0 = "+help2);
+
+                                }else {
+                                    addReview.setClickable(true);
+                                    addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+                                    Log.w(TAG,"help2= "+help2);
+
+                                }
 
 
                             } else {

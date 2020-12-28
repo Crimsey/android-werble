@@ -86,7 +86,7 @@
                 android:id="@+id/addReview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/com_facebook_button_send_background_color"
+                android:backgroundTint="@color/blue"
                 android:text="add Review"
                 app:iconTint="#122063" />
 
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="166dp"
-                android:backgroundTint="@color/com_facebook_button_send_background_color"
+                android:backgroundTint="@color/blue"
                 android:text="See Reviews" />
         </LinearLayout>
     </LinearLayout>
@@ -119,7 +119,7 @@
         android:id="@+id/returntomap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/purple_500"
         android:text="BACK"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -22,6 +22,8 @@ public class EventReview {
     private String createdAt;
     @Json(name = "updated_at")
     private String updatedAt;
+    @Json(name = "login")
+    private String login;
 
     public Integer getEventReviewId() {
         return eventReviewId;
@@ -93,6 +95,14 @@ public class EventReview {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
 }

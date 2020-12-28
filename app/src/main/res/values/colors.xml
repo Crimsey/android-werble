@@ -24,5 +24,6 @@
     <color name="colorAccent">#CCCCDD</color>
     <color name="gold">#FFE500</color>
     <color name="darkYellow">#79BAA700</color>
-
+    <color name="blue">#0091EA</color>
+    <color name="blankblue">#6CAACF</color>
 </resources>
