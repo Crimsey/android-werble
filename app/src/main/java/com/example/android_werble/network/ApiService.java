@@ -4,6 +4,7 @@ import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.EventParticipant;
+import com.example.android_werble.entities.EventReview;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 
@@ -74,6 +75,9 @@ public interface ApiService {
 
     @GET("user/events/{id}/participants")
     Call<Data<EventParticipant>> getEventParticipant(@Path("id") Integer event_id);
+
+    @GET("user/events/{id}/reviews")
+    Call<Data<EventReview>> getEventReview(@Path("id") Integer event_id);
 
     @POST("user/event/{id}/join")
     @FormUrlEncoded

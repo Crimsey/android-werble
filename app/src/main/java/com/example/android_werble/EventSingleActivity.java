@@ -43,7 +43,7 @@ import retrofit2.Response;
 
 public class EventSingleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "SingleEventActivity";
+    private static final String TAG = "EventSingleActivity";
     RecyclerView recyclerView;
     List<EventParticipant> eventParticipantList;
 
@@ -297,6 +297,18 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         startActivity(intent);
         finish();
 
+    }
+
+    @OnClick(R.id.seeReviews)
+    void listReviews(){
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+
+        Intent intent = new Intent(EventSingleActivity.this, ReviewListActivity.class);
+        intent.putExtra("event_id",event_id);
+
+        startActivity(intent);
+        finish();
     }
 
         @OnClick(R.id.returntomap)

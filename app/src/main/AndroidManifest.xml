@@ -49,6 +49,9 @@
             android:name=".EventActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ReviewListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />

@@ -91,7 +91,7 @@
                 app:iconTint="#122063" />
 
             <Button
-                android:id="@+id/SeeReviews"
+                android:id="@+id/seeReviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="166dp"
