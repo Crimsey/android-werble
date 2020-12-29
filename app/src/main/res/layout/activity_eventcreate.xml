@@ -95,8 +95,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
+                    android:layout_marginBottom="10dp"
 
+                    android:drawablePadding="10dp"
                     android:inputType="text" />
 
 
@@ -106,6 +107,7 @@
                 android:id="@+id/eventVisibility"
                 android:layout_width="320dp"
                 android:layout_height="0dp"
+                android:layout_marginRight="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventDescription" />
 
@@ -113,6 +115,8 @@
                 android:id="@+id/eventType"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventVisibility" />
 
@@ -121,24 +125,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Visibility"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/eventVisibility"
-                app:layout_constraintHorizontal_bias="0.368"
+                app:layout_constraintHorizontal_bias="0.421"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.53" />
+                app:layout_constraintTop_toBottomOf="@+id/eventDescription" />
 
             <TextView
                 android:id="@+id/eventTypeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
                 android:text="Type"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/eventType"
-                app:layout_constraintHorizontal_bias="0.233"
+                app:layout_constraintHorizontal_bias="0.235"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.564" />
+                app:layout_constraintTop_toBottomOf="@+id/eventVisibilityText" />
 
             <Button
                 android:id="@+id/CreateEventButton"

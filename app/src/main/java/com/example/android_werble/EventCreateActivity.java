@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -52,10 +55,14 @@ public class EventCreateActivity extends AppCompatActivity {
     //EditText eventDatetime;
     Button calclockbutton;
 
+    Spinner eventType;
+
     ApiService service;
     Call<AccessToken> call;
     AwesomeValidation validator;
     TokenManager tokenManager;
+
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +83,25 @@ public class EventCreateActivity extends AppCompatActivity {
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
         setupRules();
 
+        eventType = findViewById(R.id.eventType);
+        ArrayAdapter eventTypeAdapter =  ArrayAdapter.createFromResource(EventCreateActivity.this,R.array.types,R.layout.arraytype);
+        eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
+        eventType.setAdapter(eventTypeAdapter);
+
+        eventType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                type = parent.getItemAtPosition(position).toString();
+                Log.w(TAG,"type: "+type);
+                System.out.println("TYPE: "+type);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         eventDatetime = findViewById(R.id.eventDatetime2);
         eventDatetime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,13 +110,13 @@ public class EventCreateActivity extends AppCompatActivity {
             }
         });
 
-        calclockbutton = findViewById(R.id.calclockbutton);
+        /*calclockbutton = findViewById(R.id.calclockbutton);
         calclockbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDateTimeDialog(eventDatetime);
             }
-        });
+        });*/
 
 
 
@@ -132,6 +158,8 @@ public class EventCreateActivity extends AppCompatActivity {
         String description = eventDescription.getEditText().getText().toString();
         //String datetime = eventDatetime.getEditText().getText().toString();
         String datetime = eventDatetime.getText().toString();
+
+
 
         eventName.setError(null);
         eventLocation.setError(null);
