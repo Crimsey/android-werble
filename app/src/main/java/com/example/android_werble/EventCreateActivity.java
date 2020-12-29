@@ -26,9 +26,12 @@ import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -141,7 +144,37 @@ public class EventCreateActivity extends AppCompatActivity {
 
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
 
-                        eventDatetime.setText(simpleDateFormat.format(calendar.getTime()));
+                        Date currentTime = new Date();
+                        System.out.println("currentTime: "+currentTime);
+                        System.out.println("choosenTime: "+calendar.getTime());
+                        if (currentTime.before(calendar.getTime())){
+                            eventDatetime.setText(simpleDateFormat.format(calendar.getTime()));
+
+                        }
+                        else{
+                            System.out.println("DATE NOT GREATER");
+                            Toast.makeText(EventCreateActivity.this,"Your date must be greater than todays date",Toast.LENGTH_LONG).show();
+                        }
+
+                        /*try {
+                            currentTime = simpleDateFormat.parse(String.valueOf(currentTime));
+                            System.out.println("currentTime: "+currentTime);
+                            System.out.println("choosenTime: "+simpleDateFormat.parse(String.valueOf(calendar.getTime())));
+
+                            if ((simpleDateFormat.parse(String.valueOf(calendar.getTime()))).after(currentTime)){
+                                eventDatetime.setText(simpleDateFormat.format(calendar.getTime()));}
+                            else {
+                                System.out.println("DATE NOT GREATER");
+                                Toast.makeText(EventCreateActivity.this,"Your date must be greater than todays date",Toast.LENGTH_LONG).show();
+                            }
+
+                            } catch (ParseException e) {
+                            e.printStackTrace();
+                        }*/
+
+                        //if ((simpleDateFormat.parse(String.valueOf(calendar.getTime()))).after(currentTime)){
+
+
                     }
                 };
 
