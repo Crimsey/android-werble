@@ -60,7 +60,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     TokenManager tokenManager;
 
 
-    TextView name,location,zip_code,street_name,house_number,description,datetime,status;
+    TextView name,location,zip_code,street_name,house_number,description,datetime,status,type;
 
     Button addReview,seeReviews;
     Button joinSingleEvent;
@@ -84,6 +84,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         description = findViewById(R.id.singleEventDescription);
         datetime = findViewById(R.id.singleEventDatetime);
         status = findViewById(R.id.singleEventStatus);
+        type = findViewById(R.id.singleEventType);
 
         addReview = findViewById(R.id.addReview);
         seeReviews = findViewById(R.id.seeReviews);
@@ -146,6 +147,10 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                     if (event.getDatetime()==null){
                         datetime.setText("no datetime :(");
                     }else {datetime.setText(event.getDatetime());}
+
+                    if (event.getEventTypeId()==null){
+                        type.setText("no type :(");
+                    }else {type.setText(getResources().getStringArray(R.array.types)[event.getEventTypeId()]);}
 
                     if (event.getEventStatusId()==null){
                         status.setText("no status :(");

@@ -63,6 +63,7 @@ public class EventCreateActivity extends AppCompatActivity {
     TokenManager tokenManager;
 
     String type;
+    Integer typeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,8 @@ public class EventCreateActivity extends AppCompatActivity {
         eventType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                type = parent.getItemAtPosition(position).toString();
+                typeId = ++position;
+                //type = parent.getItemAtPosition(position).toString();
                 Log.w(TAG,"type: "+type);
                 System.out.println("TYPE: "+type);
             }
@@ -176,7 +178,7 @@ public class EventCreateActivity extends AppCompatActivity {
            Log.w(TAG,b.getString("lat"));
            Log.w(TAG,b.getString("lon"));
 
-            call = service.createEventwithMarker(name, location, description, datetime,longitude,latitude);
+            call = service.createEventwithMarker(name, location, description, datetime,longitude,latitude,typeId);
             //call = service.createEvent(name, location, description, datetime);
             call.enqueue(new Callback<AccessToken>() {
                 @Override

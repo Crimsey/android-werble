@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="types">
-        <item>Siłownia</item>
-        <item>Bieganie</item>
-        <item>Urodziny</item>
-        <item>Impreza</item>
-        <item>Pływanie</item>
-        <item>Koncert</item>
-        <item>Festiwal</item>
+        <item>Gym</item>
+        <item>Running</item>
+        <item>Birthday</item>
+        <item>Party</item>
+        <item>Swimming</item>
+        <item>Concert</item>
+        <item>Festival</item>
+        <item>Biking</item>
+        <item>Board games</item>
+        <item>Walk</item>
     </string-array>
 </resources>

@@ -40,12 +40,13 @@ public interface ApiService {
 
     @POST("user/events/create")
     @FormUrlEncoded
-    Call<AccessToken> createEventwithMarker(@Field("name")String name,
-                                  @Field("location") String location,
-                                  @Field("description") String description,
-                                  @Field("datetime") String datetime,
-                                  @Field("longitude") String longitude,
-                                  @Field("latitude") String latitude);
+    Call<AccessToken> createEventwithMarker(@Field("name") String name,
+                                            @Field("location") String location,
+                                            @Field("description") String description,
+                                            @Field("datetime") String datetime,
+                                            @Field("longitude") String longitude,
+                                            @Field("latitude") String latitude,
+                                            @Field("event_type_id") Integer typeId);
 
     @GET("user/events")
     Call<Data<Event>> getUserEvents();
