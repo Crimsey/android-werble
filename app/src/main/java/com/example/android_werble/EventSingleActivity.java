@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,9 +60,9 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     TokenManager tokenManager;
 
 
-    TextView name,location,zip_code,street_name,house_number,description,datetime;
+    TextView name,location,zip_code,street_name,house_number,description,datetime,status;
 
-    Button addReview,SeeReviews;
+    Button addReview,seeReviews;
     Button joinSingleEvent;
 
 
@@ -82,8 +83,10 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         house_number = findViewById(R.id.singleEventHouseNumber);
         description = findViewById(R.id.singleEventDescription);
         datetime = findViewById(R.id.singleEventDatetime);
+        status = findViewById(R.id.singleEventStatus);
 
         addReview = findViewById(R.id.addReview);
+        seeReviews = findViewById(R.id.seeReviews);
         joinSingleEvent = findViewById(R.id.joinSingleEvent);
 
         Log.w(TAG, "My tu w ogóle wchodzimy?");
@@ -113,16 +116,6 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                     Log.e(TAG, "onResponse: " + response.body());
 
                     Event event = response.body();
-                    //Data2<Event> eventData2 = response.body();
-                    //event_id = event.getEventId().toString();
-                    //List<Event> eventList = response.body().getData2();
-
-
-                    //Event[] e = eventList.toArray(new Event[eventList.size()]);
-                    //Event event = e[0];
-
-
-                    //Log.w(TAG,"PÓŁNOCNICA"+ String.valueOf(event));
 
 
                     if (TextUtils.isEmpty(event.getName())
@@ -154,6 +147,48 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                         datetime.setText("no datetime :(");
                     }else {datetime.setText(event.getDatetime());}
 
+                    if (event.getEventStatusId()==null){
+                        status.setText("no status :(");
+                    }else {
+
+                        switch (event.getEventStatusId()) {
+                            case 1:
+                                status.setText("Jeszcze się nie zaczęło");
+                                seeReviews.setClickable(false);
+                                seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+
+                                addReview.setClickable(false);
+                                addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+
+                                joinSingleEvent.setClickable(true);
+                                joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.teal_700)));
+                            break;
+
+                            case 2:
+                                status.setText("Trwa");
+                                seeReviews.setClickable(false);
+                                seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+
+                                addReview.setClickable(false);
+                                addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+
+                                joinSingleEvent.setClickable(true);
+                                joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.teal_700)));
+                            break;
+
+                            case 3:
+                                status.setText("Zakonczyło się");
+                                seeReviews.setClickable(true);
+                                seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+
+                                addReview.setClickable(true);
+                                addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+
+                                joinSingleEvent.setClickable(true);
+                                joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));
+                            break;
+                        }
+                    }
 
                 } else {
                     handleErrors(response.errorBody());
@@ -244,6 +279,8 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                 Log.w(TAG, "onFailure: " + t.getMessage());
             }
         });
+
+
 
 
 

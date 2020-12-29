@@ -110,7 +110,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                     User user = response.body();
 
 
-                    if (user.getFirstName().toString()==null){
+                    if (user.getFirstName()==null ){
                         firstname.setText("nofirstname :(");
                     }else  {firstname.setText(user.getFirstName().toString());}
 

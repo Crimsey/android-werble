@@ -61,8 +61,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            String logoutMessage = intent.getStringExtra("logoutMessage");
-            Snackbar.make(findViewById(R.id.loginLayout), logoutMessage, Snackbar.LENGTH_LONG).show();
+            //String logoutMessage = intent.getStringExtra("logoutMessage");
+            //Snackbar.make(findViewById(R.id.loginLayout), logoutMessage, Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -90,9 +90,13 @@ public class LoginActivity extends AppCompatActivity {
                         tokenManager.saveToken(response.body());
                         startActivity(new Intent(LoginActivity.this, EventActivity.class));
                         finish();
+                        Toast.makeText(LoginActivity.this,"Successful login",Toast.LENGTH_LONG).show();
+
                     } else {
                         if (response.code() == 422) {
                             handleErrors(response.errorBody());
+                            //Toast.makeText(LoginActivity.this, "User doesnt exist!", Toast.LENGTH_LONG).show();
+
                         }
                         if (response.code() == 401) {
                             ApiError apiError = Utils.converErrors(response.errorBody());
@@ -112,19 +116,28 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.go_to_register)
     void goToRegister(){
         startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+        Toast.makeText(LoginActivity.this,"Registration",Toast.LENGTH_LONG).show();
     }
 
     private void handleErrors(ResponseBody response){
 
         ApiError apiError = Utils.converErrors(response);
 
-        for (Map.Entry<String, List<String>> error : apiError.getErrors().entrySet()){
-            if (error.getKey().equals("login")){
-                Login.setError(error.getValue().get(0));
+        if (apiError.getErrors() != null)
+        {
+            for (Map.Entry<String, List<String>> error : apiError.getErrors().entrySet()) {
+                if (error.getKey().equals("login")) {
+                    Login.setError(error.getValue().get(0));
+                }
+                if (error.getKey().equals("password")) {
+                    Password.setError(error.getValue().get(0));
+                }
             }
-            if (error.getKey().equals("password")){
-                Password.setError(error.getValue().get(0));
-            }
+        }
+        else {
+            Toast.makeText(LoginActivity.this,"Incorrect Login or Password",Toast.LENGTH_LONG).show();
+            Log.w(TAG,"Incorrect Login or Password");
+
         }
     }
 

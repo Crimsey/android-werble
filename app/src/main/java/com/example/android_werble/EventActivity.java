@@ -247,6 +247,7 @@ public class EventActivity extends AppCompatActivity implements
                     tokenManager.deleteToken();
                     startActivity(new Intent(EventActivity.this, LoginActivity.class));
                     finish();
+                    Toast.makeText(EventActivity.this,"Successful logout",Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -262,7 +263,7 @@ public class EventActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         Log.w(TAG, "SIDEBAR");
-        Toast.makeText(EventActivity.this, "TOST", Toast.LENGTH_LONG).show();
+        //Toast.makeText(EventActivity.this, "TOST", Toast.LENGTH_LONG).show();
         switch (item.getTitle().toString()) {
             case "Logout":
                 logout();

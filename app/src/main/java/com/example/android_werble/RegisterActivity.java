@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
+import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
@@ -90,6 +91,8 @@ public class RegisterActivity extends AppCompatActivity {
                         tokenManager.saveToken(response.body());
                         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                         finish();
+                        Toast.makeText(RegisterActivity.this,"Successful registration",Toast.LENGTH_LONG).show();
+
                     } else {
                         handleErrors(response.errorBody());
                     }
@@ -104,8 +107,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.go_to_login)
-    void goToRegister(){
+    void goToLogin(){
         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+        Toast.makeText(RegisterActivity.this,"Login",Toast.LENGTH_LONG).show();
+
     }
 
     private void handleErrors(ResponseBody response){

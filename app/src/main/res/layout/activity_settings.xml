@@ -12,7 +12,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="518dp"
+            android:layout_height="618dp"
             android:orientation="vertical">
 
             <TextView
@@ -20,12 +20,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="44dp"
+                android:layout_marginTop="64dp"
                 android:text="Edit your profile"
-                app:layout_constraintBottom_toTopOf="@+id/userFirstName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/userFirstName"
@@ -33,9 +33,9 @@
                 android:layout_height="wrap_content"
                 android:hint="First name"
                 android:text="@string/app_name"
-                app:layout_constraintBottom_toTopOf="@+id/userLastName"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/userFirstName2"
@@ -52,9 +52,9 @@
                 android:id="@+id/userLastName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/userBirthDate"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userFirstName">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/userLastName2"
@@ -73,9 +73,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Birth date"
-                app:layout_constraintBottom_toTopOf="@+id/userDescription"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userLastName">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/userBirthDate2"
@@ -94,21 +94,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="275dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/teal_700"
                 android:text="CALENDAR"
                 app:layout_constraintBottom_toBottomOf="@+id/userBirthDate"
                 app:layout_constraintEnd_toEndOf="@+id/userBirthDate"
                 app:layout_constraintStart_toStartOf="@+id/userBirthDate"
-                app:layout_constraintTop_toBottomOf="@+id/userLastName"
-                android:backgroundTint="@color/teal_700"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/userLastName" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/userDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Description"
-                app:layout_constraintBottom_toTopOf="@+id/SettingsButton"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userBirthDate">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/userDescription2"
@@ -127,10 +126,23 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/teal_700"
-                android:text="Create"
+                android:text="confirm"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userDescription" />
+
+            <Button
+                android:id="@+id/backtoevents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/purple_500"
+                android:text="back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/SettingsButton"
+                app:layout_constraintVertical_bias="0.915" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

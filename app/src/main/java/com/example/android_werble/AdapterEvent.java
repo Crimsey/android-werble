@@ -30,6 +30,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 public class AdapterEvent extends RecyclerView.Adapter{
 
     private List<Event> mEvents;
+
     private RecyclerView mRecyclerView;
     private OnNoteListener mOnNoteListener;
 
@@ -92,11 +93,11 @@ public class AdapterEvent extends RecyclerView.Adapter{
             @Override
             public void onClick(View v) {
                 // odnajdujemy indeks klikniętego elementu
-                int positionToDelete = mRecyclerView.getChildAdapterPosition(v);
+                //int positionToDelete = mRecyclerView.getChildAdapterPosition(v);
                 // usuwamy element ze źródła danych
-                mEvents.remove(positionToDelete);
+                //mEvents.remove(positionToDelete);
                 // poniższa metoda w animowany sposób usunie element z listy
-                notifyItemRemoved(positionToDelete);
+                //notifyItemRemoved(positionToDelete);
             }
         });
 
@@ -147,26 +148,7 @@ public class AdapterEvent extends RecyclerView.Adapter{
             //Intent intent = new Intent(this, EventActivity.class);
     }
 
-    //@OnClick(R.id.join)
-    //void join(){
 
-        /*callJoin = service.joinEvent(eId,"1");
-        callJoin.enqueue(new Callback<Message>() {
-            @Override
-            public void onResponse(Call<Message> call, Response<Message> response) {
-                Log.w(TAG, "You have joined!: " + response);
-
-            }
-
-            @Override
-            public void onFailure(Call<Message> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-
-            }
-        });*/
-        //startActivity();
-
-    //}
 
     @Override
     public int getItemCount() {
