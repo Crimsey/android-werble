@@ -2,15 +2,12 @@ package com.example.android_werble;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.media.Rating;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +23,6 @@ import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.EventParticipant;
-import com.example.android_werble.entities.EventReview;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
@@ -71,6 +67,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     Button editSingleEvent;
 
     int yet=0,ended=0,participant=0;
+    String latitude,longitude;
 
 
     @Override
@@ -114,7 +111,6 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
 
-
         call = service.getSingleEvent(Integer.parseInt(event_id));
 
         call.enqueue(new Callback<Event>() {
@@ -126,6 +122,8 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                     Log.e(TAG, "onResponse: " + response.body());
 
                     Event event = response.body();
+                    latitude = event.getLatitude().toString();
+                    longitude = event.getLongitude().toString();
 
 
                     if (TextUtils.isEmpty(event.getName())
@@ -453,6 +451,21 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
         Intent intent = new Intent(EventSingleActivity.this, ReviewCreateActivity.class);
         intent.putExtra("event_id",event_id);
+
+        startActivity(intent);
+        finish();
+
+    }
+
+    @OnClick(R.id.editSingleEvent)
+    void gotoEditSingleEvent(){
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+
+        Intent intent = new Intent(EventSingleActivity.this, EventEditActivity.class);
+        intent.putExtra("event_id",event_id);
+        intent.putExtra("lat",latitude);
+        intent.putExtra("lon",longitude);
 
         startActivity(intent);
         finish();

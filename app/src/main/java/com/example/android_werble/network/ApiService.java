@@ -93,4 +93,16 @@ public interface ApiService {
                         @Field("rating") String rating,
                         @Field("event_id") String event_id);
 
+    @PUT("events/{id}/edit")
+    @FormUrlEncoded
+    Call<Message> editEvent(
+                        @Path("id") Integer event_id,
+                        @Field("name") String name,
+                        @Field("location") String location,
+                        @Field("description") String description,
+                        @Field("datetime") String datetime,
+                        @Field("longitude") String longitude,
+                        @Field("latitude") String latitude,
+                        @Field("event_type_id") Integer typeId);
+
 }
