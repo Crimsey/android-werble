@@ -218,8 +218,7 @@ public class MyLocationActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
                 map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
@@ -264,10 +263,10 @@ public class MyLocationActivity extends AppCompatActivity
         if (clickCount !=null) {
             clickCount++;
             //if (clickCount == 2) {
-                Toast.makeText(this,
+                /*Toast.makeText(this,
                         marker.getTitle() +
                                 " has been clicked " + clickCount + " times.",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();*/
 
                 Intent intent = new Intent(MyLocationActivity.this, EventSingleActivity.class);
                 intent.putExtra("event_id", String.valueOf(marker.getTag()));

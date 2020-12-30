@@ -55,7 +55,8 @@ public class EventCreateActivity extends AppCompatActivity {
     TextInputLayout eventDescription;
     @BindView(R.id.eventDatetime2)
     TextInputEditText eventDatetime;
-    //EditText eventDatetime;
+
+
     Button calclockbutton;
 
     Spinner eventType;
@@ -193,7 +194,6 @@ public class EventCreateActivity extends AppCompatActivity {
         String description = eventDescription.getEditText().getText().toString();
         //String datetime = eventDatetime.getEditText().getText().toString();
         String datetime = eventDatetime.getText().toString();
-
 
 
         eventName.setError(null);

@@ -17,10 +17,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/editSingleEvent"
+        android:layout_width="73dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/purple_700"
+        android:text="edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="413dp"
-        android:layout_height="220dp"
+        android:layout_width="397dp"
+        android:layout_height="225dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/returntomap"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,10 +102,19 @@
             android:gravity="center_horizontal"
             android:text="singleEventType" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/seeReviews"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blue"
+                android:text="See Reviews"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/addReview"
@@ -101,21 +122,27 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/blue"
                 android:text="add Review"
-                app:iconTint="#122063" />
+                app:iconTint="#122063"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/seeReviews"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/seeReviews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="166dp"
-                android:backgroundTint="@color/blue"
-                android:text="See Reviews" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
         </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="385dp"
+        android:layout_width="411dp"
+        android:layout_height="355dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toTopOf="@+id/returntomap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
