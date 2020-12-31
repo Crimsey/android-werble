@@ -52,6 +52,9 @@
             android:name=".ReviewListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".EventEditActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />

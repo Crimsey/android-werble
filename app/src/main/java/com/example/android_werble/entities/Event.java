@@ -44,7 +44,7 @@ public class Event {
     @Json(name = "updated_at")
     private String updatedAt;
 
-    @Json(name = "disance")
+    @Json(name = "distance")
     private Double distance;
 
     public Double getDistance() {

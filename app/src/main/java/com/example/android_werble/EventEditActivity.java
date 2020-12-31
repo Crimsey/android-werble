@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,13 +15,14 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
-import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -29,10 +31,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,7 +60,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
     Button editMarker,edit,back;
 
     ApiService service;
-    Call<Event> callEvent;
+    Call<Event> call;
     Call<Message> callMessage;
     AwesomeValidation validator;
     TokenManager tokenManager;
@@ -63,6 +68,8 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
     String name,description,datetime,location;//,type;
     Integer type;
     Integer typeId;
+
+    String latitude,longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +87,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
-        eventType = findViewById(R.id.eventType);
+        eventType = findViewById(R.id.eventEditType);
         ArrayAdapter eventTypeAdapter =  ArrayAdapter.createFromResource(EventEditActivity.this,R.array.types,R.layout.arraytype);
         eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
         eventType.setAdapter(eventTypeAdapter);
@@ -90,15 +97,19 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
 
-        callEvent = service.getSingleEvent(Integer.parseInt(event_id));
-        callEvent.enqueue(new Callback<Event>() {
+        call = service.getSingleEvent(Integer.parseInt(event_id));
+        call.enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
                 if (response.isSuccessful()) {
-                    Log.e(TAG, "onResponse: " + response.body().getFirstName());
+                    Log.e(TAG, "onResponse: " + response.body());
 
                     Event event = response.body();
                     //user_id = user.getUserId().toString();
+                    event.getEventTypeId();
+
+                    latitude = event.getLatitude().toString();
+                    longitude = event.getLongitude().toString();
 
                     if (event.getName()!=null){
                         name = event.getName();
@@ -118,7 +129,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
                     }
                     if (event.getEventTypeId()!=null){
                         type = event.getEventTypeId();//.toString();
-                        eventType.setSelection(type);
+                        eventType.setSelection(type-1);
                     }
                     if (event.getLocation()!=null){
                         location = event.getLocation();//.toString();
@@ -153,7 +164,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
             }
         });
 
-        eventEditDatetime = findViewById(R.id.eventDatetime2);
+        eventEditDatetime = findViewById(R.id.eventEditDatetime2);
         eventEditDatetime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,12 +215,51 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         new DatePickerDialog(EventEditActivity.this,R.style.datepicker, dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    @OnClick(R.id.editMarker)
+    void editMarker(){
+        System.out.println("EDITINGMARKER");
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+        call = service.getSingleEvent(Integer.parseInt(event_id));
+        call.enqueue(new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> call, Response<Event> response) {
+                Log.w(TAG, "onResponse: " + response);
+
+                if (response.isSuccessful()){
+                    Event event = response.body();
+                    event.setLatitude(null);
+                    event.setLongitude(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+
+            }
+        });
+
+
+        Intent intent = new Intent(EventEditActivity.this, EditMarkerActivity.class);
+        intent.putExtra("event_id",event_id);
+        startActivity(intent);
+        finish();
+
+        //gotoEditEvent();
+    }
+
+    private void gotoEditEvent() {
+        startActivity(new Intent(EventEditActivity.this, EventEditActivity.class));
+        finish();
+    }
+
     @OnClick(R.id.editButton)
     void editEvent(){
-        name = eventEditName.getText().toString();
-        description = eventEditDescription.getText().toString();
-        datetime = eventEditDatetime.getText().toString();
-        location = eventEditLocation.getText().toString();
+        String name = eventEditName.getText().toString();
+        String description = eventEditDescription.getText().toString();
+        String datetime = eventEditDatetime.getText().toString();
+        String location = eventEditLocation.getText().toString();
         //type = eventType.getText().toString();
 
         eventEditName.setError(null);
@@ -222,32 +272,124 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
 
         if (validator.validate()) {
             Bundle b = getIntent().getExtras();
+
             String event_id = b.getString("event_id");
 
             //if () { button "change marker" not clicked
-                //String latitude = b.getString("lat");
-                //String longitude = b.getString("lon");
+                String latitude = b.getString("lat");
+                String longitude = b.getString("lon");
+
             //}
+            System.out.println("event_id: "+event_id);
+            System.out.println("name: "+name);
+            System.out.println("location: "+location);
+            System.out.println("description: "+description);
+            System.out.println("datetime: "+datetime);
+            System.out.println("longitude: "+longitude);
+            System.out.println("latitude: "+latitude);
+            System.out.println("typeId: "+typeId);
             callMessage = service.editEvent(Integer.parseInt(event_id),name,location,description,datetime,longitude,latitude,typeId);
+            System.out.println("callMessage: "+callMessage);
+
+
             callMessage.enqueue(new Callback<Message>() {
+
                 @Override
                 public void onResponse(Call<Message> call, Response<Message> response) {
+                    System.out.println("ANOTHER");
+                    Log.e(TAG, "onResponse: " + response);
+                    Log.e(TAG, "onResponse.body: " + response.body());
+
                     if (response.isSuccessful()){
                         Log.e(TAG, "onResponse: " + response);
+                        System.out.println("DURING CALL");
 
-                    }
+                    } else {
+                    handleErrors(response.errorBody());
+                }
                 }
 
                 @Override
                 public void onFailure(Call<Message> call, Throwable t) {
+                    Log.e(TAG, "onFailure: " + t.getMessage());
 
                 }
             });
         }
+        System.out.println("AFTER CALL");
+
         gotoEvent();
     }
 
+    private void gotoEvent() {
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+
+        Intent intent = new Intent(EventEditActivity.this,EventSingleActivity.class);
+        intent.putExtra("event_id",event_id);
+        intent.putExtra("lat",latitude);
+        intent.putExtra("lon",longitude);
+        startActivity(intent);
+
+        finish();
+    }
+
+    private void handleErrors(ResponseBody response) {
+
+        ApiError apiError = Utils.converErrors(response);
+        if (apiError.getErrors() != null) {
+            Log.w("no errors", "apiError.getErrors()"+apiError.getErrors());
+
+            for (Map.Entry<String, List<String>> error : apiError.getErrors().entrySet()) {
+                /*if (error.getKey().equals("first_name")) {
+                    userFirstName.setError(error.getValue().get(0));
+                }
+                if (error.getKey().equals("last_name")) {
+                    userLastName.setError(error.getValue().get(0));
+                }
+                if (error.getKey().equals("birth_date")) {
+                    userBirthDate.setError(error.getValue().get(0));
+                }
+                if (error.getKey().equals("description")) {
+                    userDescription.setError(error.getValue().get(0));
+                }*/
+            }
+        } else {
+            Log.e("no errors", "weird");
+        }
+    }
+
     private void setupRules() {
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Log.w(TAG,"SIDEBAR");
+        //Toast.makeText(this,"TOST",Toast.LENGTH_LONG).show();
+        switch (item.getTitle().toString()) {
+            //case "Logout": logout(); break;
+            /*case "Your profile": gotoProfile(); break;
+            //case "Your events":
+            case "Map": gotoMap(); break;
+            case "Create event": gotoCreateEvent(); break;
+            case "Settings": gotoSettings(); break;
+*/
+        }
+        return false;    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (call != null) {
+            call.cancel();
+            call = null;
+        }
     }
 
 }

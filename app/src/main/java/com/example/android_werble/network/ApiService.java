@@ -93,7 +93,7 @@ public interface ApiService {
                         @Field("rating") String rating,
                         @Field("event_id") String event_id);
 
-    @PUT("events/{id}/edit")
+    @PUT("user/events/{id}/edit")
     @FormUrlEncoded
     Call<Message> editEvent(
                         @Path("id") Integer event_id,
