@@ -68,7 +68,10 @@
                     android:id="@+id/eventEditDatetime2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Datetime" />
+                    android:hint="Datetime"
+                    android:focusable="false"
+
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,25 +130,23 @@
                 android:id="@+id/backToEventSingle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="148dp"
                 android:backgroundTint="@color/purple_500"
                 android:text="BACK"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editMarker"></Button>
+                app:layout_constraintStart_toStartOf="parent"></Button>
 
             <Button
                 android:id="@+id/editButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="148dp"
                 android:backgroundTint="@color/teal_700"
                 android:text="edit"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.95"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editMarker"></Button>
+                app:layout_constraintStart_toStartOf="parent"></Button>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

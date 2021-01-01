@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import com.example.android_werble.entities.Data;
@@ -32,7 +34,8 @@ import retrofit2.Response;
 
 public class EventActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        AdapterEvent.OnNoteListener {
+        AdapterEvent.OnNoteListener
+         {
 
     private static final String TAG = "EventActivity";
 
@@ -43,6 +46,7 @@ public class EventActivity extends AppCompatActivity implements
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private Context context;
 
     Call<Data<Event>> call;
     Call<Message> messageCall;
@@ -62,6 +66,7 @@ public class EventActivity extends AppCompatActivity implements
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        context=this;
 
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
@@ -113,7 +118,7 @@ public class EventActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventActivity.this::onNoteClick));
+                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventActivity.this::onNoteClick,context));
 
                 }
                 /*if (response.isSuccessful()) {
@@ -159,7 +164,7 @@ public class EventActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventActivity.this::onNoteClick));
+                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventActivity.this::onNoteClick,context));
 
                 }
             }

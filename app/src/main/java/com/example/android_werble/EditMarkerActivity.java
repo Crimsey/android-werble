@@ -24,6 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
@@ -295,6 +296,7 @@ public class EditMarkerActivity extends AppCompatActivity
         call = service.getLocalEvents();
         call.enqueue(new Callback<Data<Event>>() {
 
+            @SuppressLint("PotentialBehaviorOverride")
             @Override
             public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
                 Log.w(TAG, "onResponseLOCALEVENTS: " + response);
@@ -324,6 +326,7 @@ public class EditMarkerActivity extends AppCompatActivity
                             }
                         }
                     }
+
 
                     map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
                         @Override

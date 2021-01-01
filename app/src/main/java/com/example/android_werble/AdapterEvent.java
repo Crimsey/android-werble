@@ -1,5 +1,6 @@
 package com.example.android_werble;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_werble.entities.Event;
@@ -19,6 +21,7 @@ import com.example.android_werble.network.ApiService;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +37,7 @@ public class AdapterEvent extends RecyclerView.Adapter{
     private RecyclerView mRecyclerView;
     private OnNoteListener mOnNoteListener;
 
+    private Context contextAdapter;
 
     /*public AdapterEvent(List<Event> events, OnNoteListener onNoteListener){
         this.mEvents = events;
@@ -41,7 +45,7 @@ public class AdapterEvent extends RecyclerView.Adapter{
     }*/
 
     //private ArrayList<Note>
-
+    ConstraintLayout eventID;
     Call<Message> callJoin;
     ApiService service;
 
@@ -72,11 +76,12 @@ public class AdapterEvent extends RecyclerView.Adapter{
         }
     }
 
-    public AdapterEvent(List<Event> pEvents, RecyclerView pRecyclerView,OnNoteListener pOnNoteListener) {
+    public AdapterEvent(List<Event> pEvents, RecyclerView pRecyclerView,OnNoteListener pOnNoteListener,Context context) {
         //super();
         mEvents = pEvents;
         mRecyclerView = pRecyclerView;
         mOnNoteListener = pOnNoteListener;
+        contextAdapter=context;
 
     }
 
@@ -85,6 +90,9 @@ public class AdapterEvent extends RecyclerView.Adapter{
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event, parent, false);
+
+        eventID = view.findViewById(R.id.eventID);
+
 
         // dla elementu listy ustawiamy obiekt OnClickListener,
         // który usunie element z listy po kliknięciu na niego
@@ -116,14 +124,14 @@ public class AdapterEvent extends RecyclerView.Adapter{
         ((MyViewHolder) holder).eName.setText(event.getName());
         ((MyViewHolder) holder).eLocation.setText(event.getLocation());
         ((MyViewHolder) holder).eDatetime.setText(event.getDatetime());
-        //((MyViewHolder) holder).join.setOnClickListener();
-                /*new View.OnClickListener() {
+        ((MyViewHolder) holder).join.setOnClickListener(
+                new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //eId = event.getEventId();
                         //Intent i = new Intent(this, SingleEventActivity.class);
                         Log.w(TAG,"eId: "+eId);
-                        callJoin = service.joinEvent(8,"1");
+                        callJoin = service.joinEvent(eId,"1");
                         callJoin.enqueue(new Callback<Message>() {
                             @Override
                             public void onResponse(Call<Message> call, Response<Message> response) {
@@ -139,7 +147,21 @@ public class AdapterEvent extends RecyclerView.Adapter{
                         });
                     }
                 }
-        );*/
+        );
+
+        eventID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String variable = "1";
+                Intent myIntent = new Intent(contextAdapter, EventSingleActivity.class);
+                myIntent.putExtra("event_id",String.valueOf(eId));
+                myIntent.putExtra("variable",variable);
+                //send additional variable to check if click is from adapter or from map
+                contextAdapter.startActivity(myIntent);
+
+            }
+        });
+
     }
 
 
