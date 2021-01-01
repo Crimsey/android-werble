@@ -152,10 +152,10 @@ public class AdapterEvent extends RecyclerView.Adapter{
         eventID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String variable = "1";
+                int variable = 1;
                 Intent myIntent = new Intent(contextAdapter, EventSingleActivity.class);
                 myIntent.putExtra("event_id",String.valueOf(eId));
-                myIntent.putExtra("variable",variable);
+                myIntent.putExtra("variable",String.valueOf(variable));
                 //send additional variable to check if click is from adapter or from map
                 contextAdapter.startActivity(myIntent);
 

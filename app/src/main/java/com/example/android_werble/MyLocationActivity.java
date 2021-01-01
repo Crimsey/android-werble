@@ -268,8 +268,10 @@ public class MyLocationActivity extends AppCompatActivity
                                 " has been clicked " + clickCount + " times.",
                         Toast.LENGTH_SHORT).show();*/
 
+                int variable = 2;
                 Intent intent = new Intent(MyLocationActivity.this, EventSingleActivity.class);
                 intent.putExtra("event_id", String.valueOf(marker.getTag()));
+                intent.putExtra("variable",String.valueOf(variable));
 
                 startActivity(intent);
                 finish();

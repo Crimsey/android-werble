@@ -487,9 +487,28 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         @OnClick(R.id.returntomap)
         void gotoMap() {
             //Toast.makeText(EventActivity.this,"MAP",Toast.LENGTH_LONG).show();
-            startActivity(new Intent(EventSingleActivity.this,MyLocationActivity.class));
-            finish();
-            Log.w(TAG,"Returning to map");
+
+            Bundle b = getIntent().getExtras();
+            String variable = b.getString("variable");
+            System.out.println("variable: " + variable);
+
+            if (variable != null) {
+                Integer variableInt = Integer.parseInt(variable);
+
+                System.out.println("variableInt1: " + variableInt);
+                if (variableInt == 1) { //check if we came here from adapter
+                    System.out.println("variableInt2: " + variableInt);
+
+                    startActivity(new Intent(EventSingleActivity.this, EventActivity.class));
+                    finish();
+                } else {
+                    System.out.println("variableInt3: " + variableInt);
+
+                    startActivity(new Intent(EventSingleActivity.this, MyLocationActivity.class));
+                    finish();
+                    Log.w(TAG, "Returning to map");
+                }
+            }
         }
 
 
