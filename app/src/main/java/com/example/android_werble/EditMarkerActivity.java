@@ -7,11 +7,13 @@ import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -24,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -63,7 +66,7 @@ public class EditMarkerActivity extends AppCompatActivity
         GoogleMap.OnMarkerClickListener
 {
 
-    private static final String TAG = "MyLocationActivity";
+    private static final String TAG = "EditMarkerActivity";
 
     /**
      * Request code for location permission request.
@@ -92,6 +95,8 @@ public class EditMarkerActivity extends AppCompatActivity
     TokenManager tokenManager;
 
 
+    //private Geocoder geocoder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +114,38 @@ public class EditMarkerActivity extends AppCompatActivity
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        System.out.println("OUTSIDE FLOATING BUTTON");
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        /*MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.position(latLng);
+                        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+                        googleMap.addMarker(markerOptions);
+
+                        //ask if certain??
+                        Log.w(TAG,"goting to create event");*/
+                        System.out.println("INSIDE FLOATING BUTTON");
+
+                        Intent intent = new Intent(EditMarkerActivity.this, EventEditActivity.class);
+                        intent.putExtra("lat",Double.toString(latLng.latitude));
+                        intent.putExtra("lon",Double.toString(latLng.longitude));
+
+                        startActivity(intent);
+                        finish();
+
+                    }
+                });
+
+            }
+        });
 
     }
 
@@ -176,49 +213,7 @@ public class EditMarkerActivity extends AppCompatActivity
         enableMyLocation();
         map.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
 
-
-
-        call = service.getLocalEvents();
-        call.enqueue(new Callback<Data<Event>>() {
-
-            @Override
-            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-                Log.w(TAG, "onResponseLOCALEVENTS: " + response);
-                if (response.isSuccessful()){
-                    eventList = response.body().getData();
-                    Log.w(TAG,"ADDING MARKERS1");
-
-                    Bundle b = getIntent().getExtras();
-                    String event_id = b.getString("event_id");
-                    Integer event_idInt = Integer.parseInt(event_id);
-
-                    for (Event event : eventList){
-                        //if (event.getEventId() != event_idInt){ // don't create marker of this event on map anymore
-                        if (event.getLatitude() != null && event.getLongitude() != null ) {
-                            Double lat = event.getLatitude();
-
-                            Double lon = event.getLongitude();
-
-                            LatLng position = new LatLng(lat, lon); //event position
-                            MarkerOptions markerOptions = new MarkerOptions();//creating marker
-                            markerOptions.position(position);//add position to marker
-                            markerOptions.title(event.getName());//add title to marker
-                            //markerOptions.
-                            googleMap.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
-                            Log.w(TAG, "ADDING MARKERS2");
-                        }
-                        //}
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Data<Event>> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-            }
-        });
+        System.out.println("OUTSIDE FLOATING BUTTON");
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -228,13 +223,14 @@ public class EditMarkerActivity extends AppCompatActivity
                 map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
-                        MarkerOptions markerOptions = new MarkerOptions();
+                        /*MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
                         markerOptions.title(latLng.latitude + " : " + latLng.longitude);
                         googleMap.addMarker(markerOptions);
 
                         //ask if certain??
-                        Log.w(TAG,"goting to create event");
+                        Log.w(TAG,"goting to create event");*/
+                        System.out.println("INSIDE FLOATING BUTTON");
 
                         Intent intent = new Intent(EditMarkerActivity.this, EventEditActivity.class);
                         intent.putExtra("lat",Double.toString(latLng.latitude));
@@ -254,25 +250,11 @@ public class EditMarkerActivity extends AppCompatActivity
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-        // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
 
-        // Check if a click count was set, then display the click count.
-        /*if (clickCount != null) {
-            clickCount = clickCount + 1;
-            marker.setTag(clickCount);
-            Toast.makeText(this,
-                    marker.getTitle() +
-                            " has been clicked " + clickCount + " times.",
-                    Toast.LENGTH_SHORT).show();
-        }*/
+
         if (clickCount !=null) {
             clickCount++;
-            //if (clickCount == 2) {
-                /*Toast.makeText(this,
-                        marker.getTitle() +
-                                " has been clicked " + clickCount + " times.",
-                        Toast.LENGTH_SHORT).show();*/
 
             Intent intent = new Intent(EditMarkerActivity.this, EventSingleActivity.class);
             intent.putExtra("event_id", String.valueOf(marker.getTag()));
@@ -280,55 +262,10 @@ public class EditMarkerActivity extends AppCompatActivity
             startActivity(intent);
             finish();
             Log.w(TAG,"SINGLE EVENT ACTIVITY");
-            //}
+
         }
-        // Return false to indicate that we have not consumed the event and that we wish
-        // for the default behavior to occur (which is for the camera to move such that the
-        // marker is centered and for the marker's info window to open, if it has one).
         return false;
-        //return true;
     }
-
-
-    //void getLocalEvents() {
-
-/*
-        call = service.getLocalEvents();
-        call.enqueue(new Callback<Data<Event>>() {
-
-            @Override
-            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-                Log.w(TAG, "onResponse: " + response);
-                if (response.isSuccessful()){
-                    eventList = response.body().getData();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Data<Event>> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-*/
-    //}
-
-       /*(map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-
-            }
-        })
-    }
-
-    //FLOATING BUTTON PACK IT UP
-    private void addMapMarker(){
-        /*Marker marker = map.addMarker(new MarkerOptions()
-                .position(new LatLng())
-                .title("TEST")
-                .snippet("event-test")
-        );*/
-
 
     /**
      * Enables the My Location layer if the fine location permission has been granted.
@@ -361,28 +298,143 @@ public class EditMarkerActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
                 Log.w(TAG, "onResponseLOCALEVENTS: " + response);
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    Log.w(TAG,"ADDING MARKERS1");
+                    Log.w(TAG, "ADDING MARKERS1");
+
+                    Bundle b = getIntent().getExtras();
+                    String event_id = b.getString("event_id");
+                    Integer event_idInt = Integer.parseInt(event_id);
 
                     for (Event event : eventList) {
-                        if (event.getLatitude() != null && event.getLongitude() != null) {
+                        if (event.getEventId() == event_idInt) {
+                            if (event.getLatitude() != null && event.getLongitude() != null) {
+                                Double lat = event.getLatitude();
 
-                            Double lat = event.getLatitude();
-                            Double lon = event.getLongitude();
+                                Double lon = event.getLongitude();
 
-                            LatLng position = new LatLng(lat, lon); //event position
-                            MarkerOptions markerOptions = new MarkerOptions();//creating marker
-                            markerOptions.position(position);//add position to marker
-                            markerOptions.title(event.getName());//add title to marker
-                            //markerOptions.
-                            map.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
-                            Log.w(TAG, "ADDING MARKERS2");
+                                LatLng position = new LatLng(lat, lon); //event position
+                                MarkerOptions markerOptions = new MarkerOptions();//creating marker
+                                markerOptions.position(position);//add position to marker
+                                markerOptions.title(event.getName());//add title to marker
+                                markerOptions.draggable(true);
+                                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                                //markerOptions.
+                                map.addMarker(markerOptions).setTag(event.getEventId());
+                            }
                         }
                     }
 
-                }
+                    map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                        @Override
+                        public void onMarkerDragStart(Marker arg0) {
+                            Log.d("System out", "onMarkerDragStart..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
+                        }
 
+                        @SuppressWarnings("unchecked")
+                        @Override
+                        public void onMarkerDragEnd(Marker arg0) {
+                            // TODO Auto-generated method stub
+                            Log.d("System out", "onMarkerDragEnd..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
+
+                            map.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
+
+                            System.out.println("event_idInt"+event_idInt);
+                            System.out.println("arg0.getPosition().longitude"+arg0.getPosition().longitude);
+                            System.out.println("arg0.getPosition().latitude"+arg0.getPosition().latitude);
+
+                            /*callAccessToken = service.editEventLongLat( event_idInt,
+                                                                        String.valueOf(arg0.getPosition().longitude),
+                                                                        String.valueOf(arg0.getPosition().latitude));*/
+                            Bundle b = getIntent().getExtras();
+
+                            //String event_id = b.getString("event_id");
+                            String name = b.getString("name");
+                            String location = b.getString("location");
+                            String description = b.getString("description");
+                            String datetime = b.getString("datetime");
+                            //String lat = b.getString("lat");
+                            //String lon = b.getString("lon");
+                            String event_type_id = b.getString("event_type_id");
+
+                            System.out.println("event_idInt"+event_idInt);
+                            System.out.println("name"+name);
+                            System.out.println("location"+location);
+                            System.out.println("description"+description);
+                            System.out.println("event_idInt"+event_idInt);
+                            System.out.println("event_idInt"+event_idInt);
+
+
+                            callAccessToken = service.editEvent(
+                                    event_idInt,
+                                    name,
+                                    location,
+                                    description,
+                                    datetime,
+                                    String.valueOf(arg0.getPosition().latitude),
+                                    String.valueOf(arg0.getPosition().longitude),
+                                    Integer.parseInt(event_type_id));
+
+                            callAccessToken.enqueue(new Callback<Message>() {
+                                @Override
+                                public void onResponse(Call<Message> call, Response<Message> response) {
+                                    if (response.isSuccessful()){
+                                        Log.e(TAG, "onResponse!!!: " + response.body());
+                                    }
+                                    else{
+                                        Log.e(TAG, "notSuccessful: " + response.body());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Message> call, Throwable t) {
+                                    Log.e(TAG, "onFailure: " + t.getMessage());
+                                }
+                            });
+
+                            System.out.println("BEFORE");
+                            //floating button to approve
+                            FloatingActionButton fab = findViewById(R.id.fab);
+                            fab.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    System.out.println("INSIDE");
+
+                                    //map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                                     //   @Override
+                                     //   public void onMapClick(LatLng latLng) {
+
+                                            Intent intent = new Intent(EditMarkerActivity.this, EventEditActivity.class);
+                                            intent.putExtra("event_id",String.valueOf(event_idInt));
+                                            intent.putExtra("lat",String.valueOf(arg0.getPosition().latitude));
+                                            intent.putExtra("lon",String.valueOf(arg0.getPosition().longitude));
+
+                                            intent.putExtra("name", name);
+                                            intent.putExtra("location",location);
+                                            intent.putExtra("description",description);
+                                            intent.putExtra("datetime",datetime);
+                                            intent.putExtra("event_type_id",event_type_id);
+
+                                            startActivity(intent);
+                                            finish();
+
+                                        //}
+                                    //});
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onMarkerDrag(Marker arg0) {
+                            // TODO Auto-generated method stub
+                            Log.i("System out", "onMarkerDrag...");
+                            LatLng latLng = arg0.getPosition();
+
+                        }
+                    });
+
+                }
             }
 
             @Override
@@ -390,6 +442,8 @@ public class EditMarkerActivity extends AppCompatActivity
                 Log.w(TAG, "onFailure: " + t.getMessage());
             }
         });
+
+
 
         return false;
     }

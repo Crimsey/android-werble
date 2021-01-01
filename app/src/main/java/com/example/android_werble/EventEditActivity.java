@@ -108,6 +108,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
                     //user_id = user.getUserId().toString();
                     event.getEventTypeId();
 
+                    System.out.println();
                     latitude = event.getLatitude().toString();
                     longitude = event.getLongitude().toString();
 
@@ -218,31 +219,21 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
     @OnClick(R.id.editMarker)
     void editMarker(){
         System.out.println("EDITINGMARKER");
+
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-        call = service.getSingleEvent(Integer.parseInt(event_id));
-        call.enqueue(new Callback<Event>() {
-            @Override
-            public void onResponse(Call<Event> call, Response<Event> response) {
-                Log.w(TAG, "onResponse: " + response);
-
-                if (response.isSuccessful()){
-                    Event event = response.body();
-                    event.setLatitude(null);
-                    event.setLongitude(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Event> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-
-            }
-        });
 
 
         Intent intent = new Intent(EventEditActivity.this, EditMarkerActivity.class);
         intent.putExtra("event_id",event_id);
+        intent.putExtra("name",eventEditName.getText().toString());
+        intent.putExtra("location",eventEditLocation.getText().toString());
+        intent.putExtra("description",eventEditDescription.getText().toString());
+        intent.putExtra("datetime",eventEditDatetime.getText().toString());
+        //intent.putExtra("lat",latitude);
+        //intent.putExtra("lon",longitude);
+        intent.putExtra("event_type_id",String.valueOf(eventType.getSelectedItemId()));
+
         startActivity(intent);
         finish();
 
