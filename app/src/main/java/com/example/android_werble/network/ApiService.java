@@ -113,4 +113,16 @@ public interface ApiService {
                         @Field("latitude") String latitude,
                         @Field("event_type_id") Integer typeId);
 
+    @PUT("user/events/{id}/review/edit")
+    @FormUrlEncoded
+    Call<Message> editReview(
+            @Path("id") Integer event_id,
+            @Field("rating") Integer rating,
+            @Field("content") String content);
+
+    @GET("user/events/{id}/review")
+    Call<EventReview> getSingleReview(
+            @Path("id") Integer event_id);
+
+
 }

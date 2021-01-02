@@ -325,6 +325,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         finish();
     }
 
+
     private void handleErrors(ResponseBody response) {
 
         ApiError apiError = Utils.converErrors(response);

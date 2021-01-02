@@ -58,6 +58,9 @@
             android:name=".EditMarkerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ReviewEditActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />

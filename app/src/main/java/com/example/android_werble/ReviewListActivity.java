@@ -82,6 +82,7 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
                     eventReviewsList = response.body().getData();
                     recyclerView.setAdapter(new AdapterReview(eventReviewsList, recyclerView));
 
+
                 }
             }
 
@@ -103,6 +104,18 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
         intent.putExtra("event_id",event_id);
 
         startActivity(intent);
+        finish();
+    }
+
+    @OnClick(R.id.EditYourReview)
+    void EditYourReview(){
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+
+        Intent intent = new Intent(ReviewListActivity.this,ReviewEditActivity.class);
+        intent.putExtra("event_id",event_id);
+        startActivity(intent);
+
         finish();
     }
 
