@@ -31,8 +31,6 @@ public class Event {
     private Integer isActive;
     @Json(name = "event_visibility_level_id")
     private Integer eventVisibilityLevelId;
-    @Json(name = "event_status_id")
-    private Integer eventStatusId;
     @Json(name = "event_creator_id")
     private Integer eventCreatorId;
     @Json(name = "event_type_id")
@@ -151,14 +149,6 @@ public class Event {
 
     public void setEventVisibilityLevelId(Integer eventVisibilityLevelId) {
         this.eventVisibilityLevelId = eventVisibilityLevelId;
-    }
-
-    public Integer getEventStatusId() {
-        return eventStatusId;
-    }
-
-    public void setEventStatusId(Integer eventStatusId) {
-        this.eventStatusId = eventStatusId;
     }
 
     public Integer getEventCreatorId() {

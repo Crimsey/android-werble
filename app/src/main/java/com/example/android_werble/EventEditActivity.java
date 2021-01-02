@@ -222,6 +222,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
 
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
+        String variable = b.getString("variable");
 
 
         Intent intent = new Intent(EventEditActivity.this, EditMarkerActivity.class);
@@ -233,6 +234,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         //intent.putExtra("lat",latitude);
         //intent.putExtra("lon",longitude);
         intent.putExtra("event_type_id",String.valueOf(eventType.getSelectedItemId()));
+        intent.putExtra("variable",variable);
 
         startActivity(intent);
         finish();
@@ -312,18 +314,26 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         gotoEvent();
     }
 
-    private void gotoEvent() {
+    @OnClick(R.id.backToEventSingle)
+    void gotoEvent() {
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
+        String variable = b.getString("variable");
+        System.out.println("variable: " + variable);
 
         Intent intent = new Intent(EventEditActivity.this,EventSingleActivity.class);
         intent.putExtra("event_id",event_id);
         intent.putExtra("lat",latitude);
         intent.putExtra("lon",longitude);
+        intent.putExtra("variable",variable);
+        System.out.println("variable: " + variable);
+
         startActivity(intent);
 
         finish();
     }
+
+
 
 
     private void handleErrors(ResponseBody response) {

@@ -12,7 +12,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="668dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
 
@@ -130,6 +130,8 @@
                 android:id="@+id/backToEventSingle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="16dp"
                 android:backgroundTint="@color/purple_500"
                 android:text="BACK"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -141,6 +143,8 @@
                 android:id="@+id/editButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
                 android:backgroundTint="@color/teal_700"
                 android:text="edit"
                 app:layout_constraintBottom_toBottomOf="parent"

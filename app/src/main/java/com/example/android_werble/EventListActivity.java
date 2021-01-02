@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Adapter;
 import android.widget.Toast;
 
 import com.example.android_werble.entities.Data;
@@ -32,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventActivity extends AppCompatActivity implements
+public class EventListActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         AdapterEvent.OnNoteListener
          {
@@ -72,13 +71,11 @@ public class EventActivity extends AppCompatActivity implements
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
 
         if (tokenManager.getToken() == null) {
-            startActivity(new Intent(EventActivity.this, LoginActivity.class));
+            startActivity(new Intent(EventListActivity.this, LoginActivity.class));
             finish();
         }
 
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
-        //service = RetrofitBuilder.createService(ApiService.class);
-        Log.w(TAG, "LAST LINE" + tokenManager.getToken().getAccessToken());
 
         //implementation of sidebar
         toolbar = findViewById(R.id.main_toolbar);
@@ -118,7 +115,7 @@ public class EventActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventActivity.this::onNoteClick,context));
+                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventListActivity.this::onNoteClick,context));
 
                 }
                 /*if (response.isSuccessful()) {
@@ -164,7 +161,7 @@ public class EventActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventActivity.this::onNoteClick,context));
+                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventListActivity.this::onNoteClick,context));
 
                 }
             }
@@ -179,17 +176,17 @@ public class EventActivity extends AppCompatActivity implements
 
     //@OnClick(R.id.profileSidebar)
     void gotoProfile() {
-        Toast.makeText(EventActivity.this, "YOUR PROFILE", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventActivity.this, UserActivity.class));
+        Toast.makeText(EventListActivity.this, "YOUR PROFILE", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(EventListActivity.this, UserActivity.class));
         finish();
         Log.w(TAG, "USERACTIVITY");
     }
 
     //@OnClick(R.id.mapSidebar)
     void gotoMap() {
-        Toast.makeText(EventActivity.this, "MAP", Toast.LENGTH_LONG).show();
+        Toast.makeText(EventListActivity.this, "MAP", Toast.LENGTH_LONG).show();
         //startActivity(new Intent(EventActivity.this, MapActivity.class));
-        startActivity(new Intent(EventActivity.this, MyLocationActivity.class));
+        startActivity(new Intent(EventListActivity.this, MyLocationActivity.class));
         //startActivity(new Intent(EventActivity.this,MyLocationLayerActivity.class));
 
         finish();
@@ -198,15 +195,15 @@ public class EventActivity extends AppCompatActivity implements
 
     @OnClick(R.id.CreateEventButton)
     void gotoCreateEvent() {
-        Toast.makeText(EventActivity.this, "CREATING", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventActivity.this, EventCreateActivity.class));
+        Toast.makeText(EventListActivity.this, "CREATING", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(EventListActivity.this, EventCreateActivity.class));
         finish();
         Log.w(TAG, "CREATE EVENT");
     }
 
     void gotoSettings() {
-        Toast.makeText(EventActivity.this, "SETTINGS", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventActivity.this, SettingsActivity.class));
+        Toast.makeText(EventListActivity.this, "SETTINGS", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(EventListActivity.this, SettingsActivity.class));
         finish();
         Log.w(TAG, "SETTINGS");
     }
@@ -245,14 +242,14 @@ public class EventActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     String message = response.body().getMessage();
-                    Intent i = new Intent(EventActivity.this, LoginActivity.class);
+                    Intent i = new Intent(EventListActivity.this, LoginActivity.class);
                     i.putExtra("logoutMessage", message);
                     Log.w(TAG, "MESS: " + message);
 
                     tokenManager.deleteToken();
-                    startActivity(new Intent(EventActivity.this, LoginActivity.class));
+                    startActivity(new Intent(EventListActivity.this, LoginActivity.class));
                     finish();
-                    Toast.makeText(EventActivity.this,"Successful logout",Toast.LENGTH_LONG).show();
+                    Toast.makeText(EventListActivity.this,"Successful logout",Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -325,7 +322,7 @@ public class EventActivity extends AppCompatActivity implements
                     eventList = response.body().getData();
                     //recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView,EventActivity.this::onNoteClick));
 
-                    Intent intent = new Intent(EventActivity.this, EventSingleActivity.class);
+                    Intent intent = new Intent(EventListActivity.this, EventSingleActivity.class);
                     intent.putExtra("event_id", String.valueOf(position));
                     //intent.putExtra("event_id", String.valueOf(event.get(position)));
                     startActivity(intent);

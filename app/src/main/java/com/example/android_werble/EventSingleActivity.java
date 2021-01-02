@@ -68,7 +68,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
     int yet=0,ended=0,participant=0;
     String latitude,longitude;
-
+    Integer participantId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +159,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                         type.setText("no type :(");
                     }else {type.setText(getResources().getStringArray(R.array.types)[event.getEventTypeId()-1]);}
 
-                    if (event.getEventStatusId()==null){
+                    if (event.getIsActive()==null){
                         status.setText("no status :(");
                     }else {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
@@ -171,54 +171,25 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
                         //currentTime = simpleDateFormat.parse(String.valueOf(currentTime));
                         if (currentTime.after(eventDate)){
-                            event.setEventStatusId(2);
+                            event.setIsActive(1);
                         }else{
-                            event.setEventStatusId(1);
+                            event.setIsActive(0);
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                        System.out.println("event.getEventStatusId(): "+event.getEventStatusId());
 
 
-                        switch (event.getEventStatusId()) {
-                            case 1:
+                        switch (event.getIsActive()) {
+                            case 0:
                                 status.setText("Not started yet");
                                 yet++;
-                                /*seeReviews.setClickable(false);
-                                seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+                                break;
 
-                                addReview.setClickable(false);
-                                addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
-
-                                joinSingleEvent.setClickable(true);
-                                joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.teal_700)));*/
-                            break;
-
-                            /*case 2:
-                                status.setText("Trwa");
-                                seeReviews.setClickable(false);
-                                seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
-
-                                addReview.setClickable(false);
-                                addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
-
-                                joinSingleEvent.setClickable(true);
-                                joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.teal_700)));
-                            break;*/
-
-                            case 2:
+                            case 1:
                                 status.setText("Ended");
                                 ended++;
-                                /*seeReviews.setClickable(true);
-                                seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
-
-                                addReview.setClickable(true);
-                                addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
-
-                                joinSingleEvent.setClickable(true);
-                                joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));*/
-                            break;
+                                break;
                         }
                     }
 
@@ -293,6 +264,8 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                                 int help=0,help2=0;
                                 for (EventParticipant eventParticipant : eventParticipantList) {
                                     if (eventParticipant.getUserId() == user_id){
+
+                                        participantId =  eventParticipant.getEventParticipantId();
                                         help++;
                                         System.out.println("help"+help);
                                     }
@@ -309,6 +282,8 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                                 if (help>0){ //participant
                                     System.out.println("help>0");
                                     addReview.setClickable(true);
+                                    addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+
                                     joinSingleEvent.setClickable(false);
                                     joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));
                                     Log.w(TAG,"help>0 = "+help);
@@ -461,11 +436,13 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     void gotoEditSingleEvent(){
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
+        String variable = b.getString("variable");
 
         Intent intent = new Intent(EventSingleActivity.this, EventEditActivity.class);
         intent.putExtra("event_id",event_id);
         intent.putExtra("lat",latitude);
         intent.putExtra("lon",longitude);
+        intent.putExtra("variable",variable);
 
         startActivity(intent);
         finish();
@@ -479,12 +456,13 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
         Intent intent = new Intent(EventSingleActivity.this, ReviewListActivity.class);
         intent.putExtra("event_id",event_id);
+        intent.putExtra("event_participant_id",participantId);
 
         startActivity(intent);
         finish();
     }
 
-        @OnClick(R.id.returntomap)
+        @OnClick(R.id.returntomaporlist)
         void gotoMap() {
             //Toast.makeText(EventActivity.this,"MAP",Toast.LENGTH_LONG).show();
 
@@ -499,7 +477,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                 if (variableInt == 1) { //check if we came here from adapter
                     System.out.println("variableInt2: " + variableInt);
 
-                    startActivity(new Intent(EventSingleActivity.this, EventActivity.class));
+                    startActivity(new Intent(EventSingleActivity.this, EventListActivity.class));
                     finish();
                 } else {
                     System.out.println("variableInt3: " + variableInt);

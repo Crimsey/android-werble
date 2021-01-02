@@ -1,6 +1,7 @@
 package com.example.android_werble;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.media.Rating;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_werble.entities.Data;
+import com.example.android_werble.entities.EventParticipant;
 import com.example.android_werble.entities.EventReview;
+import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -36,11 +39,12 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
     List<EventReview> eventReviewsList;
 
     Call<Data<EventReview>> callReview;
+    Call<User> callUser;
     ApiService service;
 
     TokenManager tokenManager;
 
-    Button back;
+    Button back,editUserReview;
 
     RatingBar rating;
     TextView content;
@@ -57,7 +61,9 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
 
         rating = findViewById(R.id.reviewRating);
         content = findViewById(R.id.reviewContent);
+
         back = findViewById(R.id.back);
+        editUserReview = findViewById(R.id.editYourReview);
 
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
@@ -82,6 +88,28 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
                     eventReviewsList = response.body().getData();
                     recyclerView.setAdapter(new AdapterReview(eventReviewsList, recyclerView));
 
+                    int isThereUsersReview=0;
+                    Bundle b = getIntent().getExtras();
+                    String event_participant_id = b.getString("event_participant_id");
+                    if (event_participant_id!=null){
+                    Integer event_participant_idInteger = Integer.parseInt(event_participant_id);
+
+                    for (EventReview eventReview : eventReviewsList){
+                        if (eventReview.getEventParticipantId() == event_participant_idInteger){
+                            isThereUsersReview++;
+                        }
+                    }
+                    if (isThereUsersReview>0) { //user added review  = button blank
+                        editUserReview.setClickable(true);
+                        editUserReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+                    }else {
+                        editUserReview.setClickable(false);
+                        editUserReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+                    }}
+                    else {
+                        editUserReview.setClickable(false);
+                        editUserReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+                    }
 
                 }
             }
@@ -92,6 +120,7 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
 
             }
         });
+
     }
 
     @OnClick(R.id.back)
@@ -107,7 +136,7 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
         finish();
     }
 
-    @OnClick(R.id.EditYourReview)
+    @OnClick(R.id.editYourReview)
     void EditYourReview(){
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");

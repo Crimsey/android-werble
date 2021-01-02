@@ -26,12 +26,10 @@ import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -237,7 +235,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
     void gotoEvent() {
         Toast.makeText(EventCreateActivity.this,"CREATING",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventCreateActivity.this, EventActivity.class));
+        startActivity(new Intent(EventCreateActivity.this, EventListActivity.class));
         finish();
         Log.w(TAG,"CREATE EVENT");
     }

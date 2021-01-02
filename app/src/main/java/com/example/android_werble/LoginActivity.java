@@ -14,7 +14,6 @@ import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
@@ -55,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         setupRules();
 
         if (tokenManager.getToken().getAccessToken() != null){
-            startActivity(new Intent(LoginActivity.this, EventActivity.class));
+            startActivity(new Intent(LoginActivity.this, EventListActivity.class));
             finish();
         }
 
@@ -88,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (response.isSuccessful()) {
                         tokenManager.saveToken(response.body());
-                        startActivity(new Intent(LoginActivity.this, EventActivity.class));
+                        startActivity(new Intent(LoginActivity.this, EventListActivity.class));
                         finish();
                         Toast.makeText(LoginActivity.this,"Successful login",Toast.LENGTH_LONG).show();
 

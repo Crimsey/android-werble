@@ -4,6 +4,9 @@ import com.squareup.moshi.Json;
 
 public class EventParticipant {
 
+
+    @Json(name = "event_participant_id")
+    private Integer event_participant_id;
     @Json(name = "user_id")
     private Integer userId;
     @Json(name = "login")
@@ -20,6 +23,14 @@ public class EventParticipant {
     private String description;
     @Json(name = "is_admin")
     private Integer isAdmin;
+
+    public Integer getEventParticipantId() {
+        return event_participant_id;
+    }
+
+    public void setEventParticipantId() {
+        this.event_participant_id = event_participant_id;
+    }
 
     public Integer getUserId() {
         return userId;

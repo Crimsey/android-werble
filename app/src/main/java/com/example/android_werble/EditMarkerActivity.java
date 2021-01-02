@@ -21,13 +21,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -118,36 +116,6 @@ public class EditMarkerActivity extends AppCompatActivity
 
         System.out.println("OUTSIDE FLOATING BUTTON");
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        /*MarkerOptions markerOptions = new MarkerOptions();
-                        markerOptions.position(latLng);
-                        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-                        googleMap.addMarker(markerOptions);
-
-                        //ask if certain??
-                        Log.w(TAG,"goting to create event");*/
-                        System.out.println("INSIDE FLOATING BUTTON");
-
-                        Intent intent = new Intent(EditMarkerActivity.this, EventEditActivity.class);
-                        intent.putExtra("lat",Double.toString(latLng.latitude));
-                        intent.putExtra("lon",Double.toString(latLng.longitude));
-
-                        startActivity(intent);
-                        finish();
-
-                    }
-                });
-
-            }
-        });
-
     }
 
 
@@ -216,42 +184,14 @@ public class EditMarkerActivity extends AppCompatActivity
 
         System.out.println("OUTSIDE FLOATING BUTTON");
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        /*MarkerOptions markerOptions = new MarkerOptions();
-                        markerOptions.position(latLng);
-                        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-                        googleMap.addMarker(markerOptions);
-
-                        //ask if certain??
-                        Log.w(TAG,"goting to create event");*/
-                        System.out.println("INSIDE FLOATING BUTTON");
-
-                        Intent intent = new Intent(EditMarkerActivity.this, EventEditActivity.class);
-                        intent.putExtra("lat",Double.toString(latLng.latitude));
-                        intent.putExtra("lon",Double.toString(latLng.longitude));
-
-                        startActivity(intent);
-                        finish();
-
-                    }
-                });
-
-            }
-        });
     }
 
     /** Called when the user clicks a marker. */
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-        Integer clickCount = (Integer) marker.getTag();
+        /*Integer clickCount = (Integer) marker.getTag();
 
 
         if (clickCount !=null) {
@@ -264,7 +204,7 @@ public class EditMarkerActivity extends AppCompatActivity
             finish();
             Log.w(TAG,"SINGLE EVENT ACTIVITY");
 
-        }
+        }*/
         return false;
     }
 
@@ -406,8 +346,11 @@ public class EditMarkerActivity extends AppCompatActivity
                                     //map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                                      //   @Override
                                      //   public void onMapClick(LatLng latLng) {
+                                            //int variable = 2;
+                                    Bundle b = getIntent().getExtras();
+                                    String variable = b.getString("variable");
 
-                                            Intent intent = new Intent(EditMarkerActivity.this, EventEditActivity.class);
+                                    Intent intent = new Intent(EditMarkerActivity.this, EventEditActivity.class);
                                             intent.putExtra("event_id",String.valueOf(event_idInt));
                                             intent.putExtra("lat",String.valueOf(arg0.getPosition().latitude));
                                             intent.putExtra("lon",String.valueOf(arg0.getPosition().longitude));
@@ -417,6 +360,7 @@ public class EditMarkerActivity extends AppCompatActivity
                                             intent.putExtra("description",description);
                                             intent.putExtra("datetime",datetime);
                                             intent.putExtra("event_type_id",event_type_id);
+                                            intent.putExtra("variable",variable);
 
                                             startActivity(intent);
                                             finish();
@@ -498,7 +442,7 @@ public class EditMarkerActivity extends AppCompatActivity
 
     void gotoEvent(){
         //Toast.makeText(MapLocat.this,"TUTAJ",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EditMarkerActivity.this, EventActivity.class));
+        startActivity(new Intent(EditMarkerActivity.this, EventListActivity.class));
         finish();
     }
 

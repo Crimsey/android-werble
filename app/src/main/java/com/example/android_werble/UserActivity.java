@@ -13,22 +13,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android_werble.entities.AccessToken;
-import com.example.android_werble.entities.Data;
-import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Collections;
-import java.util.List;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -185,7 +176,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     }
 
     void gotoEvent() {
-        startActivity(new Intent(UserActivity.this, EventActivity.class));
+        startActivity(new Intent(UserActivity.this, EventListActivity.class));
         finish();
     }
 

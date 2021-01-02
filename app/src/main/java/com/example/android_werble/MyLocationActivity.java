@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.Manifest;
 import android.content.Intent;
@@ -437,7 +436,7 @@ public class MyLocationActivity extends AppCompatActivity
 
     void gotoEvent(){
         //Toast.makeText(MapLocat.this,"TUTAJ",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(MyLocationActivity.this, EventActivity.class));
+        startActivity(new Intent(MyLocationActivity.this, EventListActivity.class));
         finish();
     }
 
