@@ -264,14 +264,17 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                                 int help=0,help2=0;
                                 for (EventParticipant eventParticipant : eventParticipantList) {
                                     if (eventParticipant.getUserId() == user_id){
+                                        System.out.println(TAG+" user_id "+user_id);
+                                        System.out.println(TAG+" eventParticipant.getUserId() "+eventParticipant.getUserId());
 
                                         participantId =  eventParticipant.getEventParticipantId();
                                         help++;
                                         System.out.println("help"+help);
+                                        System.out.println(TAG+" participantId1 "+participantId);
+                                        System.out.println(TAG+" eventParticipant.getEventParticipantId() "+eventParticipant.getEventParticipantId());
+
                                     }
-                                    /*if (eventParticipant.getLogin().equals(login)){
-                                        help2++;
-                                    }*/
+
                                 }
 
                                 addReview.setClickable(false);
@@ -281,8 +284,8 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
                                 if (help>0){ //participant
                                     System.out.println("help>0");
-                                    addReview.setClickable(true);
-                                    addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+                                    //addReview.setClickable(true);
+                                    //addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
 
                                     joinSingleEvent.setClickable(false);
                                     joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));
@@ -304,37 +307,6 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
                                 }
 
-
-
-
-
-
-                                /*else {addReview.setClickable(false);
-                                       addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
-                                        Log.w(TAG,"help=0 = "+help);
-
-                                    seeReviews.setClickable(false);
-                                    seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
-
-
-                                    joinSingleEvent.setClickable(true);
-                                    joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.teal_700)));
-
-                                }*/
-
-                                /*if (help2>0){
-                                    addReview.setClickable(false);
-                                    addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
-                                    Log.w(TAG,"help2>0 = "+help2);
-
-                                }else {
-                                    addReview.setClickable(true);
-                                    addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
-                                    Log.w(TAG,"help2= "+help2);
-
-                                }*/
-
-
                             } else {
                                 Log.w(TAG, "POST-PARTICIPANT");
                             }
@@ -350,12 +322,14 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                 }
             }
 
+
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.w(TAG, "onFailure: " + t.getMessage());
             }
         });
 
+        System.out.println(TAG+"XXXXXXXXXXXXX participantId2 "+participantId);
 
 
 
@@ -453,10 +427,15 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     void listReviews(){
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
+        String variable = b.getString("variable");
+
+        System.out.println(TAG+" participantId3 "+participantId);
+
 
         Intent intent = new Intent(EventSingleActivity.this, ReviewListActivity.class);
         intent.putExtra("event_id",event_id);
-        intent.putExtra("event_participant_id",participantId);
+        intent.putExtra("event_participant_id",String.valueOf(participantId));
+        intent.putExtra("variable",variable);
 
         startActivity(intent);
         finish();

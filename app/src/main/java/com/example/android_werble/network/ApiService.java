@@ -9,6 +9,7 @@ import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -123,6 +124,11 @@ public interface ApiService {
     @GET("user/events/{id}/review")
     Call<EventReview> getSingleReview(
             @Path("id") Integer event_id);
+
+    @DELETE("user/events/review/{id}/softdelete")
+    Call<Message> deleteReview(
+            @Path("event_participant_id") Integer event_participant_id
+    );
 
 
 }

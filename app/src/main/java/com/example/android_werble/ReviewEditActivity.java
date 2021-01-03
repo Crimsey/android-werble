@@ -64,7 +64,7 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
 
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-        //have to parse review id...
+
         callEventReview = service.getSingleReview(Integer.parseInt(event_id));
         callEventReview.enqueue(new Callback<EventReview>() {
             @Override
@@ -116,13 +116,42 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
         gotoReviewList();
     }
 
-    private void gotoReviewList() {
+    @OnClick(R.id.deleteReview)
+    void deleteReview(){
+        Bundle b = getIntent().getExtras();
+        String event_participant_id = b.getString("event_participant_id");
+
+        Integer event_participant_idInteger = Integer.parseInt(event_participant_id);
+        callMessage = service.deleteReview(event_participant_idInteger);
+        callMessage.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                if (response.isSuccessful()){
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+
+            }
+        });
+        gotoReviewList();
+    }
+    @OnClick(R.id.BackFromEditReview)
+    void gotoReviewList() {
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
+        String variable = b.getString("variable");
+        String event_participant_id = b.getString("event_participant_id");
+
 
         Intent intent = new Intent(ReviewEditActivity.this, ReviewListActivity.class);
         intent.putExtra("event_id",event_id);
+        intent.putExtra("variable",variable);
+        intent.putExtra("event_participant_id",event_participant_id);
 
+        startActivity(intent);
         finish();
     }
 

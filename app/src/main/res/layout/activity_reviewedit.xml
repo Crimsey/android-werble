@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="ReviewEditTitle"
+                android:text="Edit Your Review"
                 app:layout_constraintBottom_toTopOf="@+id/reviewRatingEdit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -58,12 +58,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="56dp"
+                android:backgroundTint="@color/teal_700"
+                android:text="EDIT REVIEW"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.912"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ReviewEditContent"
-                android:text="EDIT REVIEW"
-                android:backgroundTint="@color/teal_700"
 
                 ></Button>
 
@@ -71,15 +71,27 @@
                 android:id="@+id/BackFromEditReview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="84dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/EditReviewButton"
-                android:text="back"
+                android:layout_marginBottom="16dp"
                 android:backgroundTint="@color/purple_500"
+                android:text="back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
 
-                ></Button>
+                app:layout_constraintHorizontal_bias="0.049"
+                app:layout_constraintStart_toStartOf="parent"></Button>
+
+            <Button
+                android:id="@+id/deleteReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:backgroundTint="@color/purple_700"
+                android:text="delete"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.102"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ReviewEditContent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
