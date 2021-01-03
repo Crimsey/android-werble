@@ -47,7 +47,10 @@ public interface ApiService {
                                             @Field("datetime") String datetime,
                                             @Field("longitude") String longitude,
                                             @Field("latitude") String latitude,
-                                            @Field("event_type_id") Integer typeId);
+                                            @Field("event_type_id") Integer typeId,
+                                            @Field("zip_code") String zipCode,
+                                            @Field("street_name") String streetName,
+                                            @Field("house_number") String houseNumber);
 
     @GET("user/events")
     Call<Data<Event>> getUserEvents();

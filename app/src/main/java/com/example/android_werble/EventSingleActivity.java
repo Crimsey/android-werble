@@ -150,8 +150,8 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                     }else {house_number.setText(event.getHouseNumber());}
 
                     if (event.getDescription()==null){
-                        street_name.setText("no description :(");
-                    }else {street_name.setText(event.getDescription());}
+                        description.setText("no description :(");
+                    }else {description.setText(event.getDescription());}
 
                     if (event.getDatetime()==null){
                         datetime.setText("no datetime :(");

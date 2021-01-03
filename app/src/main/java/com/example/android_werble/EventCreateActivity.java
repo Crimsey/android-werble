@@ -53,7 +53,12 @@ public class EventCreateActivity extends AppCompatActivity {
     TextInputLayout eventDescription;
     @BindView(R.id.eventDatetime2)
     TextInputEditText eventDatetime;
-
+    @BindView(R.id.eventZipcode)
+    TextInputLayout eventZipcode;
+    @BindView(R.id.eventHouseNum)
+    TextInputLayout eventHouseNum;
+    @BindView(R.id.eventStreet)
+    TextInputLayout eventStreet;
 
     Button calclockbutton;
 
@@ -154,26 +159,6 @@ public class EventCreateActivity extends AppCompatActivity {
                             System.out.println("DATE NOT GREATER");
                             Toast.makeText(EventCreateActivity.this,"Your date must be greater than todays date",Toast.LENGTH_LONG).show();
                         }
-
-                        /*try {
-                            currentTime = simpleDateFormat.parse(String.valueOf(currentTime));
-                            System.out.println("currentTime: "+currentTime);
-                            System.out.println("choosenTime: "+simpleDateFormat.parse(String.valueOf(calendar.getTime())));
-
-                            if ((simpleDateFormat.parse(String.valueOf(calendar.getTime()))).after(currentTime)){
-                                eventDatetime.setText(simpleDateFormat.format(calendar.getTime()));}
-                            else {
-                                System.out.println("DATE NOT GREATER");
-                                Toast.makeText(EventCreateActivity.this,"Your date must be greater than todays date",Toast.LENGTH_LONG).show();
-                            }
-
-                            } catch (ParseException e) {
-                            e.printStackTrace();
-                        }*/
-
-                        //if ((simpleDateFormat.parse(String.valueOf(calendar.getTime()))).after(currentTime)){
-
-
                     }
                 };
 
@@ -190,8 +175,10 @@ public class EventCreateActivity extends AppCompatActivity {
         String name = eventName.getEditText().getText().toString();
         String location = eventLocation.getEditText().getText().toString();
         String description = eventDescription.getEditText().getText().toString();
-        //String datetime = eventDatetime.getEditText().getText().toString();
         String datetime = eventDatetime.getText().toString();
+        String zipCode = eventZipcode.getEditText().getText().toString();
+        String streetName = eventStreet.getEditText().getText().toString();
+        String houseNumber = eventHouseNum.getEditText().getText().toString();
 
 
         eventName.setError(null);
@@ -209,7 +196,7 @@ public class EventCreateActivity extends AppCompatActivity {
            Log.w(TAG,b.getString("lat"));
            Log.w(TAG,b.getString("lon"));
 
-            call = service.createEventwithMarker(name, location, description, datetime,longitude,latitude,typeId);
+            call = service.createEventwithMarker(name, location, description, datetime,longitude,latitude,typeId,zipCode,streetName,houseNumber);
             //call = service.createEvent(name, location, description, datetime);
             call.enqueue(new Callback<AccessToken>() {
                 @Override
@@ -217,6 +204,8 @@ public class EventCreateActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         Log.e(TAG, "onResponse: " + response.body());
                         Toast.makeText(EventCreateActivity.this,"Created event!",Toast.LENGTH_LONG).show();
+                        gotoEvent();
+
                     } else {
                         handleErrors(response.errorBody());
                     }
@@ -230,7 +219,6 @@ public class EventCreateActivity extends AppCompatActivity {
             });
         }
 
-        gotoEvent();
     }
 
     void gotoEvent() {
@@ -257,19 +245,16 @@ public class EventCreateActivity extends AppCompatActivity {
                 if (error.getKey().equals("description")) {
                     eventDescription.setError(error.getValue().get(0));
                 }
-                /*if (error.getKey().equals("datetime")) {
-                    eventDatetime.setError(error.getValue().get(0));
-                }*/
             }
         } else {
-            Log.e("no errors", "weird");
+            Log.e("no errors", "No errors occured");
         }
     }
 
     public void setupRules() {
         validator.addValidation(this, R.id.eventName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.eventLocation, RegexTemplate.NOT_EMPTY, R.string.err_event_location);
-        //validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
+        validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
 
     }
 

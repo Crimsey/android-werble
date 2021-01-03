@@ -67,6 +67,7 @@ public class AdapterEvent extends RecyclerView.Adapter implements Filterable {
                     if(mEvents!=null && mEvents.size()>0){
                         for(final Event e:mEvents){
                             if(e.getName().toLowerCase().contains(constraint.toString())){
+                            //|| e.getLocation().toLowerCase().contains(constraint.toString()))
                                 results.add(e);
                             }
                         }
