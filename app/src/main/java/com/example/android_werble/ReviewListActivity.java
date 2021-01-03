@@ -91,22 +91,35 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
                     int isThereUsersReview=0;
                     Bundle b = getIntent().getExtras();
                     String event_participant_id = b.getString("event_participant_id");
+
+                    System.out.println("event_participant_id1 "+event_participant_id);
+
                     if (event_participant_id!=null){
+
                     Integer event_participant_idInteger = Integer.parseInt(event_participant_id);
+                        System.out.println("event_participant_id2 "+event_participant_id);
 
                     for (EventReview eventReview : eventReviewsList){
                         if (eventReview.getEventParticipantId() == event_participant_idInteger){
                             isThereUsersReview++;
+                            System.out.println("event_participant_id3 "+event_participant_id);
+
                         }
                     }
                     if (isThereUsersReview>0) { //user added review  = button blank
+                        System.out.println("Q "+isThereUsersReview);
+
                         editUserReview.setClickable(true);
                         editUserReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
                     }else {
+                        System.out.println("w "+isThereUsersReview);
+
                         editUserReview.setClickable(false);
                         editUserReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
                     }}
                     else {
+                        System.out.println("E "+isThereUsersReview);
+
                         editUserReview.setClickable(false);
                         editUserReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
                     }
@@ -128,9 +141,13 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
 
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
+        String event_participant_id = b.getString("event_participant_id");
+        String variable = b.getString("variable");
 
         Intent intent = new Intent(ReviewListActivity.this, EventSingleActivity.class);
         intent.putExtra("event_id",event_id);
+        intent.putExtra("event_participant_id",event_participant_id);
+        intent.putExtra("variable",variable);
 
         startActivity(intent);
         finish();
@@ -140,9 +157,14 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
     void EditYourReview(){
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
+        String event_participant_id = b.getString("event_participant_id");
+        String variable = b.getString("variable");
 
         Intent intent = new Intent(ReviewListActivity.this,ReviewEditActivity.class);
         intent.putExtra("event_id",event_id);
+        intent.putExtra("event_participant_id",event_participant_id);
+        intent.putExtra("variable",variable);
+
         startActivity(intent);
 
         finish();
