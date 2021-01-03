@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.EventParticipant;
 import com.example.android_werble.entities.EventReview;
+import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
@@ -41,10 +42,11 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
     Call<Data<EventReview>> callReview;
     Call<User> callUser;
     ApiService service;
+    Call<Message> callMessage;
 
     TokenManager tokenManager;
 
-    Button back,editUserReview;
+    Button back,editUserReview,deleteUserReview;
 
     RatingBar rating;
     TextView content;
@@ -64,6 +66,7 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
 
         back = findViewById(R.id.back);
         editUserReview = findViewById(R.id.editYourReview);
+        deleteUserReview = findViewById(R.id.deleteReview);
 
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
@@ -164,11 +167,11 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
         intent.putExtra("event_id",event_id);
         intent.putExtra("event_participant_id",event_participant_id);
         intent.putExtra("variable",variable);
-
         startActivity(intent);
-
         finish();
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

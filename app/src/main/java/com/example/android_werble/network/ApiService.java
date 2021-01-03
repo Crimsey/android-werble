@@ -127,7 +127,7 @@ public interface ApiService {
 
     @DELETE("user/events/review/{id}/softdelete")
     Call<Message> deleteReview(
-            @Path("event_participant_id") Integer event_participant_id
+            @Path("id") Integer event_participant_id
     );
 
 

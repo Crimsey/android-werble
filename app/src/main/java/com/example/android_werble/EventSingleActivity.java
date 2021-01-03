@@ -23,6 +23,7 @@ import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.EventParticipant;
+import com.example.android_werble.entities.EventReview;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
@@ -47,13 +48,14 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     private static final String TAG = "EventSingleActivity";
     RecyclerView recyclerView;
     List<EventParticipant> eventParticipantList;
+    List<EventReview> eventReviewList;
 
     Call<Message> callJoin;
     ApiService service;
     Call<Event> call;
     Call<User> callUser;
     Call<Data<EventParticipant>> callParticipant;
-    Call<Message> callReview;
+    Call<Data<EventReview>> callReview;
 
     Call<AccessToken> callAccessToken;
     AwesomeValidation validator;
@@ -297,6 +299,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                                     System.out.println("ended==1");
                                     seeReviews.setClickable(true);
                                     seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+
                                 }
 
                                 if (help>0 && ended==1)//participant+ended
@@ -305,6 +308,28 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                                     addReview.setClickable(true);
                                     addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
 
+                                    Bundle b = getIntent().getExtras();
+                                    String event_id = b.getString("event_id");
+                                    callReview = service.getEventReview(Integer.parseInt(event_id));
+                                    callReview.enqueue(new Callback<Data<EventReview>>() {
+                                        @Override
+                                        public void onResponse(Call<Data<EventReview>> call, Response<Data<EventReview>> response) {
+                                            if (response.isSuccessful()){
+                                                eventReviewList = response.body().getData();
+                                                for (EventReview eventReview : eventReviewList){
+                                                    if (eventReview.getEventParticipantId() == participantId){
+                                                        addReview.setClickable(false);
+                                                        addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Data<EventReview>> call, Throwable t) {
+
+                                        }
+                                    });
                                 }
 
                             } else {

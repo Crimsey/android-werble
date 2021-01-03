@@ -120,24 +120,27 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
     void deleteReview(){
         Bundle b = getIntent().getExtras();
         String event_participant_id = b.getString("event_participant_id");
-
+        System.out.println("deleteReview() event_participant_id "+event_participant_id);
         Integer event_participant_idInteger = Integer.parseInt(event_participant_id);
         callMessage = service.deleteReview(event_participant_idInteger);
         callMessage.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 if (response.isSuccessful()){
+                    Log.e(TAG, "onResponse: " + response);
 
                 }
             }
 
             @Override
             public void onFailure(Call<Message> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
 
             }
         });
         gotoReviewList();
     }
+
     @OnClick(R.id.BackFromEditReview)
     void gotoReviewList() {
         Bundle b = getIntent().getExtras();

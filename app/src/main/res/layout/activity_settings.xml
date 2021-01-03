@@ -84,7 +84,10 @@
 
                     android:drawablePadding="10dp"
                     android:imeOptions="actionNext"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:focusable="false"
+
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
