@@ -143,11 +143,15 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
         String variable = b.getString("variable");
+        String event_participant_id = b.getString("event_participant_id");
+
 
         Intent intent = new Intent(ReviewEditActivity.this, ReviewListActivity.class);
         intent.putExtra("event_id",event_id);
         intent.putExtra("variable",variable);
+        intent.putExtra("event_participant_id",event_participant_id);
 
+        startActivity(intent);
         finish();
     }
 

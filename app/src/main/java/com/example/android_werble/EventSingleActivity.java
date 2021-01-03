@@ -264,6 +264,8 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                                 int help=0,help2=0;
                                 for (EventParticipant eventParticipant : eventParticipantList) {
                                     if (eventParticipant.getUserId() == user_id){
+                                        System.out.println(TAG+" user_id "+user_id);
+                                        System.out.println(TAG+" eventParticipant.getUserId() "+eventParticipant.getUserId());
 
                                         participantId =  eventParticipant.getEventParticipantId();
                                         help++;
@@ -327,7 +329,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
             }
         });
 
-        System.out.println(TAG+" participantId2 "+participantId);
+        System.out.println(TAG+"XXXXXXXXXXXXX participantId2 "+participantId);
 
 
 
