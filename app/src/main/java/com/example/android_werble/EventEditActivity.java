@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;

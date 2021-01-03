@@ -49,22 +49,25 @@
                 app:layout_constraintStart_toEndOf="@+id/join"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/CreateEventButton"
-                android:layout_width="wrap_content"
+            <SearchView
+                android:id="@+id/searchEvent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/teal_700"
-                android:text="CREATE EVENT"
+                android:layout_marginBottom="4dp"
+                android:backgroundTint="@color/blue"
+                android:focusable="true"
+                android:iconifiedByDefault="false"
+                android:minHeight="40dp"
+                android:queryHint="Search name of event"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_conversion_absoluteHeight="605dp"
-                tools:layout_conversion_absoluteWidth="411dp" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <RelativeLayout
+                android:id="@+id/relativeLayout2"
                 android:layout_width="0dp"
-                android:layout_height="600dp"
+                android:layout_height="570dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/join">
@@ -72,7 +75,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/eventsRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"
+                    />
             </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

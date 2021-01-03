@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.android_werble.entities.Data;
@@ -33,7 +34,8 @@ import retrofit2.Response;
 
 public class EventListActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        AdapterEvent.OnNoteListener
+        AdapterEvent.OnNoteListener,
+        SearchView.OnQueryTextListener
          {
 
     private static final String TAG = "EventActivity";
@@ -53,6 +55,10 @@ public class EventListActivity extends AppCompatActivity implements
     ApiService service;
     TokenManager tokenManager;
 
+    AdapterEvent adapterEvent;
+    SearchView searchEvent;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +71,10 @@ public class EventListActivity extends AppCompatActivity implements
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        searchEvent = findViewById(R.id.searchEvent);
+        searchEvent.setOnQueryTextListener(this);
         context=this;
+
 
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
@@ -115,7 +124,8 @@ public class EventListActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventListActivity.this::onNoteClick,context));
+                    adapterEvent = new AdapterEvent(eventList, recyclerView, EventListActivity.this::onNoteClick,context);
+                    recyclerView.setAdapter(adapterEvent);
 
                 }
                 /*if (response.isSuccessful()) {
@@ -161,7 +171,7 @@ public class EventListActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView, EventListActivity.this::onNoteClick,context));
+                    recyclerView.setAdapter(adapterEvent);
 
                 }
             }
@@ -191,14 +201,6 @@ public class EventListActivity extends AppCompatActivity implements
 
         finish();
         Log.w(TAG, "GOINGTOMAP");
-    }
-
-    @OnClick(R.id.CreateEventButton)
-    void gotoCreateEvent() {
-        Toast.makeText(EventListActivity.this, "CREATING", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventListActivity.this, EventCreateActivity.class));
-        finish();
-        Log.w(TAG, "CREATE EVENT");
     }
 
     void gotoSettings() {
@@ -337,4 +339,21 @@ public class EventListActivity extends AppCompatActivity implements
             }
         });
     }
-}
+
+             @Override
+             public boolean onQueryTextSubmit(String query) {
+                 return false;
+             }
+
+             @Override
+             public boolean onQueryTextChange(String newText) {
+                 if(newText.length()==0){
+                     adapterEvent.getFilter().filter(newText);
+                     //recyclerView.
+                 }else{
+                     adapterEvent.getFilter().filter(newText);
+                 }
+                 adapterEvent.notifyDataSetChanged();
+                 return true;
+             }
+         }

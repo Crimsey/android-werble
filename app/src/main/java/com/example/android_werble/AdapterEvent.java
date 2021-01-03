@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +32,11 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 import static androidx.core.content.ContextCompat.startActivity;
 
-public class AdapterEvent extends RecyclerView.Adapter{
+public class AdapterEvent extends RecyclerView.Adapter implements Filterable {
 
     private List<Event> mEvents;
+    private List<Event> displayedList;
+
 
     private RecyclerView mRecyclerView;
     private OnNoteListener mOnNoteListener;
@@ -48,6 +52,54 @@ public class AdapterEvent extends RecyclerView.Adapter{
     ConstraintLayout eventID;
     Call<Message> callJoin;
     ApiService service;
+
+    @NonNull
+    @Override
+    public Filter getFilter() {
+        System.out.println("performuje");
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults filtered=new FilterResults();
+                List<Event> results = new ArrayList<>();
+
+                if(constraint.toString().length()>0){
+                    if(mEvents!=null && mEvents.size()>0){
+                        for(final Event e:mEvents){
+                            if(e.getName().toLowerCase().contains(constraint.toString())){
+                                results.add(e);
+                            }
+                        }
+                    }
+                    filtered.values=results;
+                    filtered.count=results.size();
+                }
+                else {
+                    filtered.values= new ArrayList<>(displayedList);
+                    filtered.count=displayedList.size();
+                    System.out.println("count : "+filtered.count);
+                }
+                return filtered;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                if(constraint.length()>0 && results.count>0){
+                    System.out.println("constraint: "+constraint+" len: "+constraint.length());
+                    mEvents.clear();
+                    mEvents.addAll((ArrayList<Event>) results.values);
+                    notifyDataSetChanged();
+                }
+                else{
+                    mEvents=new ArrayList<>(displayedList);
+                    notifyDataSetChanged();
+                }
+            }
+        };
+    }
+
+
+
 
     private class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView eName;
@@ -82,6 +134,8 @@ public class AdapterEvent extends RecyclerView.Adapter{
         mRecyclerView = pRecyclerView;
         mOnNoteListener = pOnNoteListener;
         contextAdapter=context;
+
+        displayedList = new ArrayList<>(mEvents);
 
     }
 
@@ -170,8 +224,6 @@ public class AdapterEvent extends RecyclerView.Adapter{
         void  onNoteClick(int position);
             //Intent intent = new Intent(this, EventActivity.class);
     }
-
-
 
     @Override
     public int getItemCount() {
