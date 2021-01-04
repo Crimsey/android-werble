@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
@@ -57,6 +58,12 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
     TextInputEditText eventEditLocation;
     @BindView(R.id.eventEditType)
     Spinner eventType;
+    @BindView(R.id.eventEditZipcode2)
+    TextInputEditText eventEditZipcode;
+    @BindView(R.id.eventEditHouseNum2)
+    TextInputEditText eventEditHouseNum;
+    @BindView(R.id.eventEditStreet2)
+    TextInputEditText eventEditStreet;
 
     Button editMarker,edit,back;
 
@@ -66,7 +73,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
     AwesomeValidation validator;
     TokenManager tokenManager;
 
-    String name,description,datetime,location;//,type;
+    String name,description,datetime,location,zip_code,house_number,street_name;//,type;
     Integer type;
     Integer typeId;
 
@@ -88,7 +95,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
-        eventType = findViewById(R.id.eventEditType);
+        //eventType = findViewById(R.id.eventEditType);
         ArrayAdapter eventTypeAdapter =  ArrayAdapter.createFromResource(EventEditActivity.this,R.array.types,R.layout.arraytype);
         eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
         eventType.setAdapter(eventTypeAdapter);
@@ -125,10 +132,6 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
                         datetime = event.getDatetime();
                         eventEditDatetime.setText(datetime);
                     }
-                    if (event.getDatetime()!=null){
-                        datetime = event.getDatetime();
-                        eventEditDatetime.setText(datetime);
-                    }
                     if (event.getEventTypeId()!=null){
                         type = event.getEventTypeId();//.toString();
                         eventType.setSelection(type-1);
@@ -137,8 +140,18 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
                         location = event.getLocation();//.toString();
                         eventEditLocation.setText(location);
                     }
-
-
+                    if (event.getZipCode()!=null){
+                        zip_code = event.getZipCode();//.toString();
+                        eventEditZipcode.setText(zip_code);
+                    }
+                    if (event.getHouseNumber()!=null){
+                        house_number = event.getHouseNumber();//.toString();
+                        eventEditHouseNum.setText(house_number);
+                    }
+                    if (event.getStreetName()!=null){
+                        street_name = event.getStreetName();//.toString();
+                        eventEditStreet.setText(street_name);
+                    }
                 } else {
                     handleErrors(response.errorBody());
                 }
@@ -166,7 +179,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
             }
         });
 
-        eventEditDatetime = findViewById(R.id.eventEditDatetime2);
+        //eventEditDatetime = findViewById(R.id.eventEditDatetime2);
         eventEditDatetime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,10 +245,11 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         intent.putExtra("location",eventEditLocation.getText().toString());
         intent.putExtra("description",eventEditDescription.getText().toString());
         intent.putExtra("datetime",eventEditDatetime.getText().toString());
-        //intent.putExtra("lat",latitude);
-        //intent.putExtra("lon",longitude);
         intent.putExtra("event_type_id",String.valueOf(eventType.getSelectedItemId()));
         intent.putExtra("variable",variable);
+        intent.putExtra("zip_code",eventEditZipcode.getText().toString());
+        intent.putExtra("street_name",eventEditStreet.getText().toString());
+        intent.putExtra("house_number",eventEditHouseNum.getText().toString());
 
         startActivity(intent);
         finish();
@@ -254,13 +268,15 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         String description = eventEditDescription.getText().toString();
         String datetime = eventEditDatetime.getText().toString();
         String location = eventEditLocation.getText().toString();
+        String zipCode = eventEditZipcode.getText().toString();
+        String streetName = eventEditStreet.getText().toString();
+        String houseNumber = eventEditHouseNum.getText().toString();
         //type = eventType.getText().toString();
 
         eventEditName.setError(null);
         eventEditDescription.setError(null);
         eventEditDatetime.setError(null);
         eventEditLocation.setError(null);
-        //userDescription.setError(null);
 
         validator.clear();
 
@@ -268,35 +284,16 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
             Bundle b = getIntent().getExtras();
 
             String event_id = b.getString("event_id");
+            String latitude = b.getString("lat");
+            String longitude = b.getString("lon");
 
-            //if () { button "change marker" not clicked
-                String latitude = b.getString("lat");
-                String longitude = b.getString("lon");
-
-            //}
-            System.out.println("event_id: "+event_id);
-            System.out.println("name: "+name);
-            System.out.println("location: "+location);
-            System.out.println("description: "+description);
-            System.out.println("datetime: "+datetime);
-            System.out.println("longitude: "+longitude);
-            System.out.println("latitude: "+latitude);
-            System.out.println("typeId: "+typeId);
-            callMessage = service.editEvent(Integer.parseInt(event_id),name,location,description,datetime,longitude,latitude,typeId);
-            System.out.println("callMessage: "+callMessage);
-
-
+            callMessage = service.editEvent(Integer.parseInt(event_id),name,location,description,datetime,longitude,latitude,typeId,zipCode,streetName,houseNumber);
             callMessage.enqueue(new Callback<Message>() {
 
                 @Override
                 public void onResponse(Call<Message> call, Response<Message> response) {
-                    System.out.println("ANOTHER");
-                    Log.e(TAG, "onResponse: " + response);
-                    Log.e(TAG, "onResponse.body: " + response.body());
-
                     if (response.isSuccessful()){
                         Log.e(TAG, "onResponse: " + response);
-                        System.out.println("DURING CALL");
 
                     } else {
                     handleErrors(response.errorBody());
@@ -310,8 +307,6 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
                 }
             });
         }
-        System.out.println("AFTER CALL");
-
         gotoEvent();
     }
 
@@ -327,10 +322,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         intent.putExtra("lat",latitude);
         intent.putExtra("lon",longitude);
         intent.putExtra("variable",variable);
-        System.out.println("variable: " + variable);
-
         startActivity(intent);
-
         finish();
     }
 
@@ -344,18 +336,15 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
             Log.w("no errors", "apiError.getErrors()"+apiError.getErrors());
 
             for (Map.Entry<String, List<String>> error : apiError.getErrors().entrySet()) {
-                /*if (error.getKey().equals("first_name")) {
-                    userFirstName.setError(error.getValue().get(0));
+                if (error.getKey().equals("name")) {
+                    eventEditName.setError(error.getValue().get(0));
                 }
-                if (error.getKey().equals("last_name")) {
-                    userLastName.setError(error.getValue().get(0));
-                }
-                if (error.getKey().equals("birth_date")) {
-                    userBirthDate.setError(error.getValue().get(0));
+                if (error.getKey().equals("location")) {
+                    eventEditLocation.setError(error.getValue().get(0));
                 }
                 if (error.getKey().equals("description")) {
-                    userDescription.setError(error.getValue().get(0));
-                }*/
+                    eventEditDescription.setError(error.getValue().get(0));
+                }
             }
         } else {
             Log.e("no errors", "weird");
@@ -363,6 +352,9 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void setupRules() {
+        validator.addValidation(this, R.id.eventName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
+        validator.addValidation(this, R.id.eventLocation, RegexTemplate.NOT_EMPTY, R.string.err_event_location);
+        validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
     }
 
     @Override

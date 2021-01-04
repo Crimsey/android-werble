@@ -286,9 +286,7 @@ public class EditMarkerActivity extends AppCompatActivity
                             System.out.println("arg0.getPosition().longitude"+arg0.getPosition().longitude);
                             System.out.println("arg0.getPosition().latitude"+arg0.getPosition().latitude);
 
-                            /*callAccessToken = service.editEventLongLat( event_idInt,
-                                                                        String.valueOf(arg0.getPosition().longitude),
-                                                                        String.valueOf(arg0.getPosition().latitude));*/
+
                             Bundle b = getIntent().getExtras();
 
                             //String event_id = b.getString("event_id");
@@ -296,9 +294,10 @@ public class EditMarkerActivity extends AppCompatActivity
                             String location = b.getString("location");
                             String description = b.getString("description");
                             String datetime = b.getString("datetime");
-                            //String lat = b.getString("lat");
-                            //String lon = b.getString("lon");
                             String event_type_id = b.getString("event_type_id");
+                            String zip_code = b.getString("zip_code");
+                            String street_name = b.getString("street_name");
+                            String house_number = b.getString("house_number");
 
                             System.out.println("event_idInt"+event_idInt);
                             System.out.println("name"+name);
@@ -316,7 +315,10 @@ public class EditMarkerActivity extends AppCompatActivity
                                     datetime,
                                     String.valueOf(arg0.getPosition().latitude),
                                     String.valueOf(arg0.getPosition().longitude),
-                                    Integer.parseInt(event_type_id));
+                                    Integer.parseInt(event_type_id),
+                                    zip_code,
+                                    street_name,
+                                    house_number);
 
                             callAccessToken.enqueue(new Callback<Message>() {
                                 @Override
@@ -360,6 +362,9 @@ public class EditMarkerActivity extends AppCompatActivity
                                             intent.putExtra("description",description);
                                             intent.putExtra("datetime",datetime);
                                             intent.putExtra("event_type_id",event_type_id);
+                                            intent.putExtra("zip_code",zip_code);
+                                            intent.putExtra("street_name",street_name);
+                                            intent.putExtra("house_number",house_number);
                                             intent.putExtra("variable",variable);
 
                                             startActivity(intent);

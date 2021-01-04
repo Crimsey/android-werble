@@ -59,10 +59,12 @@ public class EventCreateActivity extends AppCompatActivity {
     TextInputLayout eventHouseNum;
     @BindView(R.id.eventStreet)
     TextInputLayout eventStreet;
+    @BindView(R.id.eventType)
+    Spinner eventType;
+
 
     Button calclockbutton;
 
-    Spinner eventType;
 
     ApiService service;
     Call<AccessToken> call;
@@ -91,7 +93,7 @@ public class EventCreateActivity extends AppCompatActivity {
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
         setupRules();
 
-        eventType = findViewById(R.id.eventType);
+        //eventType = findViewById(R.id.eventType);
         ArrayAdapter eventTypeAdapter =  ArrayAdapter.createFromResource(EventCreateActivity.this,R.array.types,R.layout.arraytype);
         eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
         eventType.setAdapter(eventTypeAdapter);
@@ -111,7 +113,6 @@ public class EventCreateActivity extends AppCompatActivity {
             }
         });
 
-        eventDatetime = findViewById(R.id.eventDatetime2);
         eventDatetime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,7 +256,6 @@ public class EventCreateActivity extends AppCompatActivity {
         validator.addValidation(this, R.id.eventName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.eventLocation, RegexTemplate.NOT_EMPTY, R.string.err_event_location);
         validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
-
     }
 
     @Override

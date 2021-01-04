@@ -21,10 +21,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
-                android:text="eventEditTitle"
+                android:text="Editing event"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="24sp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/eventEditName"
@@ -79,8 +81,6 @@
                 android:id="@+id/eventEditLocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:layout_constraintBottom_toTopOf="@+id/eventEditTypeTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventEditDatetime">
@@ -93,31 +93,71 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/eventEditZipcode"
+                android:layout_width="153dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventEditLocation">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/eventEditZipcode2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Zipcode" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/eventEditHouseNum"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/eventEditZipcode"
+                app:layout_constraintTop_toBottomOf="@+id/eventEditLocation">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/eventEditHouseNum2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="House Number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/eventEditStreet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/eventEditZipcode">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/eventEditStreet2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Street Name" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:id="@+id/eventEditTypeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:text="Type"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.042"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/eventEditType"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditLocation" />
+                app:layout_constraintTop_toBottomOf="@+id/eventEditStreet" />
 
             <Spinner
                 android:id="@+id/eventEditType"
                 android:layout_width="340dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/eventEditTypeTitle"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditLocation" />
+                app:layout_constraintTop_toBottomOf="@+id/eventEditStreet" />
 
             <Button
                 android:id="@+id/editMarker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/gold"
                 android:text="edit marker"
