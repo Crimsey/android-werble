@@ -111,9 +111,17 @@ public class EventListActivity extends AppCompatActivity implements
 
     @OnClick(R.id.join)
     void getLocalEvents() {
+        if (getIntent().hasExtra("range")){
+            Bundle b = getIntent().getExtras();
+            String range = b.getString("range");
+            call = service.getLocalEvents(Integer.parseInt(range));
+        }
+        else
+        {
+            call = service.getLocalEvents(10);
+        }
 
 
-        call = service.getLocalEvents();
         call.enqueue(new Callback<Data<Event>>() {
 
             @Override
@@ -311,7 +319,7 @@ public class EventListActivity extends AppCompatActivity implements
         Log.d(TAG, "onNoteClick: clicked.");
 
 
-        call = service.getLocalEvents();
+        call = service.getLocalEvents(10);
         call.enqueue(new Callback<Data<Event>>() {
 
 
@@ -347,12 +355,12 @@ public class EventListActivity extends AppCompatActivity implements
 
              @Override
              public boolean onQueryTextChange(String newText) {
-                 if(newText.length()==0){
-                     adapterEvent.getFilter().filter(newText);
+                 //if(newText.length()==0){
+                     //adapterEvent.getFilter().filter(newText);
                      //recyclerView.
-                 }else{
+                 //}else{
                      adapterEvent.getFilter().filter(newText);
-                 }
+                 //}
                  adapterEvent.notifyDataSetChanged();
                  return true;
              }

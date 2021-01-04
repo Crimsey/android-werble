@@ -7,11 +7,15 @@ import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -21,30 +25,38 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import android.os.Handler;
 
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-//import com.google.appengine.api.search.GeoPoint;
-
-
 
 /**
  * This demo shows how GMS Location can be used to check for changes to the users location.  The
@@ -89,6 +101,21 @@ public class MyLocationActivity extends AppCompatActivity
     String longitude;
     String latitude;
     TokenManager tokenManager;
+    @BindView(R.id.seekBar)
+    SeekBar seekBar;
+    @BindView(R.id.rangeText)
+    TextView rangeText;
+    Integer range;
+
+    //variables for sidebar
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Context context;
+
+    //doubleclick
+    boolean doubleBackToExitPressedOnce = false;
+    Circle mapCircle=null;
 
 
     @Override
@@ -108,6 +135,104 @@ public class MyLocationActivity extends AppCompatActivity
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        ButterKnife.bind(this);
+        seekBar.setProgress(10);
+        seekBar.refreshDrawableState();
+        rangeText.setText(seekBar.getProgress()+"km");
+
+
+        System.out.println("seekBar.getProgress()"+seekBar.getProgress());
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            //Circle mapCircle=null;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                range = seekBar.getProgress();
+                rangeText.setText(seekBar.getProgress()+"km");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                range = seekBar.getProgress();
+                rangeText.setText(seekBar.getProgress()+"km");
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                range = seekBar.getProgress();
+                rangeText.setText(seekBar.getProgress()+"km");
+
+
+
+                call = service.getLocalEvents(range);
+                call.enqueue(new Callback<Data<Event>>() {
+
+                    @Override
+                    public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                        Log.w(TAG, "onResponseLOCALEVENTS: " + response);
+                        if (response.isSuccessful()){
+                            eventList = response.body().getData();
+                            Log.w(TAG,"ADDING MARKERS1");
+                            map.clear();
+
+                            if (mapCircle!=null) {
+                                mapCircle.remove();
+                            }
+                            mapCircle = map.addCircle(new CircleOptions()
+                                    .center(new LatLng(Double.parseDouble(latitude),Double.parseDouble(longitude)))
+                                    .radius(range*1000)
+                                    .strokeWidth(0f)
+                                    .fillColor(0x500084d3));
+
+                            for (Event event : eventList){
+                                if (event.getLatitude() != null && event.getLongitude() != null ) {
+                                    Double lat = event.getLatitude();
+
+                                    Double lon = event.getLongitude();
+
+                                    LatLng position = new LatLng(lat, lon); //event position
+                                    MarkerOptions markerOptions = new MarkerOptions();//creating marker
+                                    markerOptions.position(position);//add position to marker
+                                    markerOptions.title("Name: "+event.getName()+" Distance:"+event.getDistance().toString());//add title to marker
+                                    //markerOptions.
+                                    map.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
+                                    Log.w(TAG, "ADDING MARKERS2");
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Data<Event>> call, Throwable t) {
+                        Log.w(TAG, "onFailure: " + t.getMessage());
+                    }
+                });
+
+            }
+        });
+
+        //implementation of sidebar
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout_map);
+        navigationView = findViewById(R.id.nav_view);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.openNavDrawer,
+                R.string.closeNavDrawer
+        );
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
     }
 
@@ -129,11 +254,11 @@ public class MyLocationActivity extends AppCompatActivity
         mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Location location = task.getResult();
                     //GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-                    LatLng latLng  = new LatLng(location.getLatitude(), location.getLongitude());
-                    System.out.println("WSPÓŁRZĘDNE"+latLng);
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    System.out.println("WSPÓŁRZĘDNE" + latLng);
 
                     longitude = String.valueOf(location.getLongitude());
 
@@ -142,12 +267,16 @@ public class MyLocationActivity extends AppCompatActivity
                     latitude = String.valueOf(location.getLatitude());
                     Log.e(TAG, "location.getLatitude(): " + location.getLatitude());
 
-                    callAccessToken = service.userPosition(longitude,latitude);
+                    Integer range = seekBar.getProgress();
+                    rangeText.setText(range.toString() + "km");
+
+
+                    callAccessToken = service.userPosition(longitude, latitude);
 
                     callAccessToken.enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {
-                            Log.w(TAG,"CHECK2");
+                            Log.w(TAG, "CHECK2");
                             if (response.isSuccessful()) {
                                 Log.e(TAG, "onResponse: " + response.body().getMessage());
 
@@ -162,8 +291,21 @@ public class MyLocationActivity extends AppCompatActivity
                             Log.e(TAG, "onFailure: " + t.getMessage());
                         }
                     });
+
+                    //Location location = task.getResult();
+                    //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
+
+                    if (mapCircle!=null) {
+                        mapCircle.remove();
+                    }
+                    mapCircle = map.addCircle(new CircleOptions()
+                            .center(new LatLng(Double.parseDouble(latitude),Double.parseDouble(longitude)))
+                            .radius(range*1000)
+                            .strokeWidth(0f)
+                            .fillColor(0x500084d3));
                 }
-            }
+                }
         });
     }
 
@@ -175,9 +317,18 @@ public class MyLocationActivity extends AppCompatActivity
         enableMyLocation();
         map.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
 
+        getLastKnownLocation();
+
+        Integer range = seekBar.getProgress();
+        rangeText.setText(range.toString()+"km");
 
 
-        call = service.getLocalEvents();
+
+
+        callAccessToken = service.userPosition(longitude,latitude);
+
+
+        call = service.getLocalEvents(range);
         call.enqueue(new Callback<Data<Event>>() {
 
             @Override
@@ -196,7 +347,7 @@ public class MyLocationActivity extends AppCompatActivity
                             LatLng position = new LatLng(lat, lon); //event position
                             MarkerOptions markerOptions = new MarkerOptions();//creating marker
                             markerOptions.position(position);//add position to marker
-                            markerOptions.title(event.getName());//add title to marker
+                            markerOptions.title("Name: "+event.getName()+" Distance:"+event.getDistance().toString());//add title to marker
                             //markerOptions.
                             googleMap.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
                             Log.w(TAG, "ADDING MARKERS2");
@@ -223,7 +374,7 @@ public class MyLocationActivity extends AppCompatActivity
                     public void onMapClick(LatLng latLng) {
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
-                        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+                        //markerOptions.title(latLng.latitude + " : " + latLng.longitude);
                         googleMap.addMarker(markerOptions);
 
                         //ask if certain??
@@ -241,6 +392,8 @@ public class MyLocationActivity extends AppCompatActivity
 
             }
         });
+
+
     }
 
     /** Called when the user clicks a marker. */
@@ -250,80 +403,51 @@ public class MyLocationActivity extends AppCompatActivity
         // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
 
-        // Check if a click count was set, then display the click count.
-        /*if (clickCount != null) {
-            clickCount = clickCount + 1;
-            marker.setTag(clickCount);
-            Toast.makeText(this,
-                    marker.getTitle() +
-                            " has been clicked " + clickCount + " times.",
-                    Toast.LENGTH_SHORT).show();
-        }*/
-        if (clickCount !=null) {
-            clickCount++;
-            //if (clickCount == 2) {
-                /*Toast.makeText(this,
-                        marker.getTitle() +
-                                " has been clicked " + clickCount + " times.",
-                        Toast.LENGTH_SHORT).show();*/
 
+
+        /*if (clickCount !=null) {
+            clickCount++;*/
+
+
+            if (doubleBackToExitPressedOnce)
+            {
                 int variable = 2;
                 Intent intent = new Intent(MyLocationActivity.this, EventSingleActivity.class);
                 intent.putExtra("event_id", String.valueOf(marker.getTag()));
-                intent.putExtra("variable",String.valueOf(variable));
+                intent.putExtra("variable", String.valueOf(variable));
 
                 startActivity(intent);
                 finish();
-                Log.w(TAG,"SINGLE EVENT ACTIVITY");
-            //}
-        }
+                Log.w(TAG, "SINGLE EVENT ACTIVITY");
+            }
+            else {
+
+                this.doubleBackToExitPressedOnce = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 1000);
+
+
+            }
+
+            clickCount = 0;
+            /*else{
+                marker.getTitle();
+            }*/
+
+
+
+
+
         // Return false to indicate that we have not consumed the event and that we wish
         // for the default behavior to occur (which is for the camera to move such that the
         // marker is centered and for the marker's info window to open, if it has one).
         return false;
         //return true;
     }
-
-
-    //void getLocalEvents() {
-
-/*
-        call = service.getLocalEvents();
-        call.enqueue(new Callback<Data<Event>>() {
-
-            @Override
-            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-                Log.w(TAG, "onResponse: " + response);
-                if (response.isSuccessful()){
-                    eventList = response.body().getData();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Data<Event>> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-*/
-    //}
-
-       /*(map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-
-            }
-        })
-    }
-
-    //FLOATING BUTTON PACK IT UP
-    private void addMapMarker(){
-        /*Marker marker = map.addMarker(new MarkerOptions()
-                .position(new LatLng())
-                .title("TEST")
-                .snippet("event-test")
-        );*/
-
 
     /**
      * Enables the My Location layer if the fine location permission has been granted.
@@ -350,7 +474,8 @@ public class MyLocationActivity extends AppCompatActivity
         // (the camera animates to the user's current position).
         getLastKnownLocation();
 
-        call = service.getLocalEvents();
+
+        /*call = service.getLocalEvents(range);
         call.enqueue(new Callback<Data<Event>>() {
 
             @Override
@@ -358,7 +483,7 @@ public class MyLocationActivity extends AppCompatActivity
                 Log.w(TAG, "onResponseLOCALEVENTS: " + response);
                 if (response.isSuccessful()){
                     eventList = response.body().getData();
-                    Log.w(TAG,"ADDING MARKERS1");
+                    Log.w(TAG,"ADDING MARKERS1.0");
 
                     for (Event event : eventList) {
                         if (event.getLatitude() != null && event.getLongitude() != null) {
@@ -369,10 +494,10 @@ public class MyLocationActivity extends AppCompatActivity
                             LatLng position = new LatLng(lat, lon); //event position
                             MarkerOptions markerOptions = new MarkerOptions();//creating marker
                             markerOptions.position(position);//add position to marker
-                            markerOptions.title(event.getName());//add title to marker
+                            markerOptions.title(event.getDistance()+"\n");//add title to marker
                             //markerOptions.
                             map.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
-                            Log.w(TAG, "ADDING MARKERS2");
+                            Log.w(TAG, "ADDING MARKERS2.0");
                         }
                     }
 
@@ -384,14 +509,14 @@ public class MyLocationActivity extends AppCompatActivity
             public void onFailure(Call<Data<Event>> call, Throwable t) {
                 Log.w(TAG, "onFailure: " + t.getMessage());
             }
-        });
+        });*/
 
         return false;
     }
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
-        Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Current location:" + location, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -435,9 +560,14 @@ public class MyLocationActivity extends AppCompatActivity
     }
 
     void gotoEvent(){
-        //Toast.makeText(MapLocat.this,"TUTAJ",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(MyLocationActivity.this, EventListActivity.class));
+        range = seekBar.getProgress();
+        String rangeString = String.valueOf(seekBar.getProgress());
+        Intent i = new Intent(MyLocationActivity.this, EventListActivity.class);
+        i.putExtra("range", rangeString);
+        startActivity(i);
         finish();
+        Log.w(TAG,"GOTOEVENT");
+
     }
 
     void gotoProfile() {

@@ -233,7 +233,7 @@ public class EditMarkerActivity extends AppCompatActivity
         // (the camera animates to the user's current position).
         getLastKnownLocation();
 
-        call = service.getLocalEvents();
+        call = service.getLocalEvents(10);
         call.enqueue(new Callback<Data<Event>>() {
 
             @SuppressLint("PotentialBehaviorOverride")

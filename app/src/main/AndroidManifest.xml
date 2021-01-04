@@ -39,7 +39,9 @@
 
         <activity
             android:name=".MyLocationActivity"
-            android:label="@string/title_activity_map"/>
+            android:label="@string/title_activity_map"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
         <activity
             android:name=".EventSingleActivity"

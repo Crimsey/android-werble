@@ -16,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -56,7 +57,7 @@ public interface ApiService {
     Call<Data<Event>> getUserEvents();
 
     @GET("user/events/local")
-    Call<Data<Event>> getLocalEvents();
+    Call<Data<Event>> getLocalEvents(@Query("distance") Integer distance);
 
     @GET("user")
     Call<User> user();
