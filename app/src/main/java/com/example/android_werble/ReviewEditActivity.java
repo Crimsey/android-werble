@@ -28,7 +28,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReviewEditActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ReviewEditActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        ViewDialog.ViewDialogListener {
 
     private static final String TAG = "EventEditActivity";
 
@@ -84,6 +85,8 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
 
             }
         });
+
+
         setupRules();
 
     }
@@ -118,31 +121,30 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
 
     @OnClick(R.id.deleteReview)
     void deleteReview(){
-        Bundle b = getIntent().getExtras();
-        String event_participant_id = b.getString("event_participant_id");
-        System.out.println("deleteReview() event_participant_id "+event_participant_id);
-        Integer event_participant_idInteger = Integer.parseInt(event_participant_id);
-        callMessage = service.deleteReview(event_participant_idInteger);
-        callMessage.enqueue(new Callback<Message>() {
-            @Override
-            public void onResponse(Call<Message> call, Response<Message> response) {
-                if (response.isSuccessful()){
-                    Log.e(TAG, "onResponse: " + response);
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Message> call, Throwable t) {
-                Log.e(TAG, "onFailure: " + t.getMessage());
-
-            }
-        });
-        gotoReviewList();
+        //DeleteReviewDialog deleteReviewDialog = new DeleteReviewDialog();
+        //deleteReviewDialog.show(getSupportFragmentManager(),"delete review");
+        ViewDialog alert = new ViewDialog();
+        alert.showDialog(this);
     }
 
     @OnClick(R.id.BackFromEditReview)
     void gotoReviewList() {
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+        String variable = b.getString("variable");
+        String event_participant_id = b.getString("event_participant_id");
+
+
+        Intent intent = new Intent(ReviewEditActivity.this, ReviewListActivity.class);
+        intent.putExtra("event_id",event_id);
+        intent.putExtra("variable",variable);
+        intent.putExtra("event_participant_id",event_participant_id);
+
+        startActivity(intent);
+        finish();
+    }
+
+    void gotoReviewEdit() {
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
         String variable = b.getString("variable");
@@ -170,4 +172,36 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
 
     private void setupRules() {
     }
+
+    @Override
+    public void onDeleteClick() {
+        Bundle b = getIntent().getExtras();
+        String event_participant_id = b.getString("event_participant_id");
+        System.out.println("deleteReview() event_participant_id "+event_participant_id);
+        Integer event_participant_idInteger = Integer.parseInt(event_participant_id);
+        callMessage = service.deleteReview(event_participant_idInteger);
+        callMessage.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                if (response.isSuccessful()) {
+                    Log.e(TAG, "onResponse: " + response);
+
+                }
+            }
+
+
+        @Override
+        public void onFailure(Call<Message> call, Throwable t) {
+            Log.e(TAG, "onFailure: " + t.getMessage());
+
+        }
+    });
+    gotoReviewList();
+    }
+
+
+
+
+
+
 }

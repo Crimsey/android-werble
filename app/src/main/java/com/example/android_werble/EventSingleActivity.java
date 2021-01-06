@@ -422,9 +422,11 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
+        String variable = b.getString("variable");
 
         Intent intent = new Intent(EventSingleActivity.this, ReviewCreateActivity.class);
         intent.putExtra("event_id",event_id);
+        intent.putExtra("variable",variable);
 
         startActivity(intent);
         finish();

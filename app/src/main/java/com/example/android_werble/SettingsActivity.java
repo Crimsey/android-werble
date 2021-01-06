@@ -142,12 +142,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick(View v) {
 
-                public void openDialog() {
-                    final Dialog dialog = new Dialog(context); // Context, this, etc.
-                    dialog.setContentView(R.layout.dialog_demo);
-                    dialog.setTitle(R.string.dialog_title);
-                    dialog.show();
-                }
+
 
                 callMessage = service.deactivateProfile();
                 callMessage.enqueue(new Callback<Message>() {

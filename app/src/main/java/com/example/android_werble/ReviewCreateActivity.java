@@ -78,8 +78,9 @@ public class ReviewCreateActivity extends AppCompatActivity {
                 Log.w(TAG, "You have joined!: " + response);
                 Toast.makeText(ReviewCreateActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
 
-                finish();
-                startActivity(getIntent());
+                //finish();
+                //startActivity(getIntent());
+
             }
 
             @Override
@@ -88,6 +89,7 @@ public class ReviewCreateActivity extends AppCompatActivity {
 
             }
         });
+        gotoReviewList();
 
     }
 
@@ -96,5 +98,21 @@ public class ReviewCreateActivity extends AppCompatActivity {
         //validator.addValidation(this, R.id.eventLocation, RegexTemplate.NOT_EMPTY, R.string.err_event_location);
         //validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
 
+    }
+
+    void gotoReviewList() {
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+        String variable = b.getString("variable");
+        String event_participant_id = b.getString("event_participant_id");
+
+
+        Intent intent = new Intent(ReviewCreateActivity.this, ReviewListActivity.class);
+        intent.putExtra("event_id",event_id);
+        intent.putExtra("variable",variable);
+        intent.putExtra("event_participant_id",event_participant_id);
+
+        startActivity(intent);
+        finish();
     }
 }
