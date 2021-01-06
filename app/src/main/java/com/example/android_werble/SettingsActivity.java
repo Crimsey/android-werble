@@ -18,6 +18,7 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
+import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
@@ -51,11 +52,12 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     @BindView(R.id.userDescription2)
     TextInputEditText userDescription;
 
-    Button calbutton;
+    Button calbutton,deactivateProfile;
 
     ApiService service;
     Call<User> call;
     Call<AccessToken> callAccessToken;
+    Call<Message> callMessage;
     AwesomeValidation validator;
     TokenManager tokenManager;
     String user_id,firstName,lastName,birthDate,description;
@@ -132,6 +134,39 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick(View v) {
                 showDateDialog(userBirthDate);
+            }
+        });
+
+        deactivateProfile = findViewById(R.id.deactivateProfile);
+        deactivateProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                public void openDialog() {
+                    final Dialog dialog = new Dialog(context); // Context, this, etc.
+                    dialog.setContentView(R.layout.dialog_demo);
+                    dialog.setTitle(R.string.dialog_title);
+                    dialog.show();
+                }
+
+                callMessage = service.deactivateProfile();
+                callMessage.enqueue(new Callback<Message>() {
+                    @Override
+                    public void onResponse(Call<Message> call, Response<Message> response) {
+                        if (response.isSuccessful()){
+                            Log.e(TAG, "onResponse: " + response);
+                            startActivity(new Intent(SettingsActivity.this,RegisterActivity.class));
+                            finish();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Message> call, Throwable t) {
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+
+                    }
+                });
             }
         });
 

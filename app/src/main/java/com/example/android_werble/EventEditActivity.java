@@ -326,6 +326,44 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         finish();
     }
 
+    @OnClick(R.id.deleteEvent)
+    void deleteEvent() {
+
+        public void openDialog() {
+            final Dialog dialog = new Dialog(context); // Context, this, etc.
+            dialog.setContentView(R.layout.dialog_demo);
+            dialog.setTitle(R.string.dialog_title);
+            dialog.show();
+        }
+
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+        String variable = b.getString("variable");
+        System.out.println("variable: " + variable);
+
+        callMessage = service.deleteEvent(Integer.parseInt((event_id)));
+        Intent intent;
+        if (Integer.parseInt(variable)==1) {
+            intent = new Intent(EventEditActivity.this, EventSingleActivity.class);
+            intent.putExtra("event_id",event_id);
+            intent.putExtra("lat",latitude);
+            intent.putExtra("lon",longitude);
+            intent.putExtra("variable",variable);
+            startActivity(intent);
+        }
+        else {
+            intent = new Intent(EventEditActivity.this, EventSingleActivity.class);
+            intent.putExtra("event_id",event_id);
+            intent.putExtra("lat",latitude);
+            intent.putExtra("lon",longitude);
+            intent.putExtra("variable",variable);
+            startActivity(intent);
+        }
+
+        startActivity(intent);
+        finish();
+    }
+
 
 
 

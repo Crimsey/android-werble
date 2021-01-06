@@ -1,6 +1,7 @@
 package com.example.android_werble;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -34,7 +35,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
 
    // @BindView(R.id.firstname)
-    TextView firstname,lastname,login,email,birthdate,description;
+    TextView firstname,lastname,login,email,birthdate,description,createdat;
 
     Call<User> call;
     Call<Message> messageCall;
@@ -47,6 +48,11 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(false);
+        }
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
 
@@ -54,6 +60,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(UserActivity.this, LoginActivity.class));
             finish();
         }
+
 
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
         Log.w(TAG, "LAST LINE" + tokenManager.getToken().getAccessToken());
@@ -64,6 +71,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         birthdate = findViewById(R.id.birthdate);
         description = findViewById(R.id.description);
         login = findViewById(R.id.login);
+        createdat = findViewById(R.id.createdat);
 
         //implementation of sidebar
         toolbar = findViewById(R.id.main_toolbar);
@@ -102,31 +110,33 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
 
                     if (user.getFirstName()==null ){
-                        firstname.setText("nofirstname :(");
+                        firstname.setText("YOUR_FIRST_NAME");
                     }else  {firstname.setText(user.getFirstName().toString());}
 
                     if (user.getLastName()==null){
-                        lastname.setText("nolastname :(");
+                        lastname.setText("YOUR_LAST_NAME");
                     }else  {lastname.setText(user.getLastName().toString());}
 
                     if (user.getBirthDate()==null){
-                        birthdate.setText("nobirthdate :(");
-                    }else  {birthdate.setText("Birthdate: "+user.getBirthDate().toString());}
+                        birthdate.setText("BIRTHDATE:  ");
+                    }else  {birthdate.setText("BIRTHDATE:  "+user.getBirthDate().toString());}
 
                     if (user.getDescription()==null){
-                        description.setText("nodescription :(");
-                    }else  {description.setText("Description: "+user.getDescription().toString());}
+                        description.setText("DESCRIPTION:  ");
+                    }else  {description.setText("DESCRIPTION:  "+user.getDescription().toString());}
 
-                    email.setText(user.getEmail());
-                    login.setText(user.getLogin());
-                      /*  content += "Id :" + user.getUserId().toString() + "\n" +
-                                "login: " + user.getLogin() + "\n" //.getData().get(i).getEventId() + "\n";
-                                + "email: " + user.getEmail() + "\n"
-                                + "first_name: " + user.getFirstName() + "\n"
-                                + "last_name: " + user.getLastName() + "\n"
-                                + "birth_date: " + user.getBirthDate() + "\n"
-                                + "description: " + user.getDescription() + "\n";*/
-                    //userTitle.setText(content);
+                    if (user.getLogin()==null){
+                        login.setText("LOGIN:  ");
+                    }else  {login.setText("LOGIN:  "+user.getLogin());}
+
+                    if (user.getEmail()==null){
+                        email.setText("EMAIL:  ");
+                    }else  {email.setText("EMAIL:  "+user.getEmail());}
+                    if (user.getCreatedAt()==null){
+                        createdat.setText("CREATED AT:  ");
+                    }else  {createdat.setText("CREATED AT:  "+user.getCreatedAt());}
+
+
                     }
                 }
 

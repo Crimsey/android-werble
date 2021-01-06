@@ -160,7 +160,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                     if (event.getEventTypeId()==null){
                         type.setText("no type :(");
                     }else {type.setText(getResources().getStringArray(R.array.types)[event.getEventTypeId()-1]);}
-
+                    //
                     if (event.getIsActive()==null){
                         status.setText("no status :(");
                     }else {

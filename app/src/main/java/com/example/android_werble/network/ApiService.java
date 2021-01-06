@@ -75,7 +75,7 @@ public interface ApiService {
                         @Field("longitude") String longitude,
                         @Field("latitude") String latitude);
 
-    @GET("user/event/{id}")
+    @GET("user/events/{id}")
     Call<Event> getSingleEvent(
                         @Path("id") Integer event_id);
 
@@ -85,7 +85,7 @@ public interface ApiService {
     @GET("user/events/{id}/reviews")
     Call<Data<EventReview>> getEventReview(@Path("id") Integer event_id);
 
-    @POST("user/event/{id}/join")
+    @POST("user/events/{id}/join")
     @FormUrlEncoded
     Call<Message> joinEvent(
                     @Path("id") Integer event_id,
@@ -97,14 +97,6 @@ public interface ApiService {
                         @Field("content") String content,
                         @Field("rating") String rating,
                         @Field("event_id") String event_id);
-
-    /*@PUT("user/events/{id}/edit/marker")
-    @FormUrlEncoded
-    Call<Message> editEventLongLat(
-            @Path("id") Integer event_id,
-            @Field("longitude") String longitude,
-            @Field("latitude") String latitude
-    );*/
 
     @PUT("user/events/{id}/edit")
     @FormUrlEncoded
@@ -136,6 +128,14 @@ public interface ApiService {
     Call<Message> deleteReview(
             @Path("id") Integer event_participant_id
     );
+
+    @DELETE("user/events/{id}/softdelete")
+    Call<Message> deleteEvent(
+            @Path("id") Integer event_id
+    );
+
+    @DELETE("user/profile/deactivate")
+    Call<Message> deactivateProfile();
 
 
 }

@@ -117,7 +117,6 @@ public class AdapterEvent extends RecyclerView.Adapter implements Filterable {
             eLocation = (TextView) pItem.findViewById(R.id.eventLocation);
             eDatetime = (TextView) pItem.findViewById(R.id.eventDatetime);
             join = (Button) pItem.findViewById(R.id.join);
-            review = (Button) pItem.findViewById(R.id.review);
 
             this.onNoteListener = onNoteListener;
             pItem.setOnClickListener(this);

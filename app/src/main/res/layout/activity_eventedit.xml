@@ -21,12 +21,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="Editing event"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="24sp"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/eventEditName"
@@ -70,8 +70,8 @@
                     android:id="@+id/eventEditDatetime2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Datetime"
                     android:focusable="false"
+                    android:hint="Datetime"
 
                     />
 
@@ -158,6 +158,7 @@
                 android:id="@+id/editMarker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/gold"
                 android:text="edit marker"
@@ -183,7 +184,7 @@
                 android:id="@+id/editButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="4dp"
                 android:layout_marginBottom="16dp"
                 android:backgroundTint="@color/teal_700"
                 android:text="edit"
@@ -191,6 +192,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.95"
                 app:layout_constraintStart_toStartOf="parent"></Button>
+
+            <Button
+                android:id="@+id/deleteEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:backgroundTint="@color/purple_700"
+                android:text="delete event"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/backToEventSingle"
+                app:layout_constraintTop_toBottomOf="@+id/editMarker"
+                app:layout_constraintVertical_bias="0.87" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

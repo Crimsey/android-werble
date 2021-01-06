@@ -24,25 +24,13 @@
             app:layout_constraintTop_toTopOf="parent"
             android:backgroundTint="@color/teal_700"/>
 
-        <Button
-            android:id="@+id/review"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:insetRight="10dp"
-            android:text="REVIEW"
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
-            app:layout_constraintEnd_toStartOf="@+id/join"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout2"
-            android:backgroundTint="@color/purple_700"
-            />
-
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
