@@ -28,19 +28,21 @@
                 android:layout_height="wrap_content"
                 android:text="Drag marker to new place and confirm"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.022" />
 
             <fragment
                 android:id="@+id/map2"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="403dp"
                 android:layout_height="690dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="75dp"
+
+
                 android:paddingLeft="8dp"
-
-
                 android:paddingTop="20dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
@@ -56,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
+                android:backgroundTint="@color/gold"
                 android:contentDescription="@string/todo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,9 +66,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.992"
-                app:srcCompat="@drawable/check"
-                android:backgroundTint="@color/gold"
-                />
+                app:srcCompat="@drawable/check" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
