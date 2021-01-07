@@ -137,7 +137,7 @@ public class MyLocationActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
 
         ButterKnife.bind(this);
-        seekBar.setProgress(10);
+        //seekBar.setProgress(10);
         seekBar.refreshDrawableState();
         rangeText.setText(seekBar.getProgress()+"km");
 

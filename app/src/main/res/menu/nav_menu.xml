@@ -7,32 +7,35 @@
             <item
                 android:id="@+id/mapSidebar"
                 android:title="Map"
-                android:icon="@drawable/messenger_bubble_large_blue"/>
+                android:icon="@drawable/world"/>
             <item
                 android:id="@+id/profileSidebar"
                 android:title="Your profile"
-                android:icon="@drawable/messenger_bubble_large_blue"/>
+                android:icon="@drawable/profile"/>
             <item
-                android:id="@+id/got"
-                android:title="Your events"
-                android:icon="@drawable/messenger_bubble_large_blue"/>
+                android:id="@+id/localSidebar"
+                android:title="Local events"
+                android:icon="@drawable/local"/>
+            <item
+                android:id="@+id/ownedSidebar"
+                android:title="Owned events"
+                android:icon="@drawable/owned"/>
             <item
                 android:id="@+id/participantSidebar"
                 android:title="Participating"
-                android:icon="@drawable/messenger_bubble_large_blue"/>
+                android:icon="@drawable/participant"/>
 
-            <item android:title="Your friends"
-                android:icon="@drawable/messenger_bubble_large_blue"/>
+
         </menu>
     </item>
     <item android:title="APP">
         <menu>
             <item android:title="Settings"
-                android:icon="@drawable/messenger_bubble_large_blue"/>
+                android:icon="@drawable/settings"/>
             <item
                 android:id="@+id/logoutButton"
                 android:title="Logout"
-                android:icon="@drawable/messenger_bubble_large_blue"/>
+                android:icon="@drawable/logout"/>
         </menu>
     </item>
 </menu>

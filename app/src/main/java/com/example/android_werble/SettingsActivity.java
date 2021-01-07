@@ -293,7 +293,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
             }
         });
     }
-    
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.w(TAG,"SIDEBAR");
