@@ -33,7 +33,6 @@
                 android:isIndicator="false"
                 android:numStars="5"
                 android:stepSize="1"
-                android:min="1"
                 android:theme="@style/RatingBar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"

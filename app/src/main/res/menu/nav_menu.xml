@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="STORAGE">
+    <item android:title="EXPLORE">
         <menu>
 
             <item
@@ -24,11 +24,9 @@
                 android:id="@+id/participantSidebar"
                 android:title="Participating"
                 android:icon="@drawable/participant"/>
-
-
         </menu>
     </item>
-    <item android:title="APP">
+    <item android:title="TECHNICAL">
         <menu>
             <item android:title="Settings"
                 android:icon="@drawable/settings"/>

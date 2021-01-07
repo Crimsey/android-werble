@@ -99,7 +99,7 @@ public class EditMarkerActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_editmarker);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
@@ -111,7 +111,7 @@ public class EditMarkerActivity extends AppCompatActivity
 
 
         SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2);
         mapFragment.getMapAsync(this);
 
         System.out.println("OUTSIDE FLOATING BUTTON");
@@ -339,7 +339,7 @@ public class EditMarkerActivity extends AppCompatActivity
 
                             System.out.println("BEFORE");
                             //floating button to approve
-                            FloatingActionButton fab = findViewById(R.id.fab);
+                            FloatingActionButton fab = findViewById(R.id.fab2);
                             fab.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
