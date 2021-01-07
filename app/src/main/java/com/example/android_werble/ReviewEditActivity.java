@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.android_werble.entities.EventReview;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.network.ApiService;
@@ -62,6 +64,7 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
         }
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
+        setupRules();
 
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
@@ -77,6 +80,7 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
                     System.out.println("reviewEditContent"+reviewEditContent);
 
                     reviewRatingEdit.setRating(eventReview.getRating());
+
                 }
             }
 
@@ -85,10 +89,6 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
 
             }
         });
-
-
-        setupRules();
-
     }
 
     @OnClick(R.id.EditReviewButton)
@@ -96,17 +96,20 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
         String content = reviewEditContent.getText().toString();
         Integer rating = (int) reviewRatingEdit.getRating();
 
+        if (reviewRatingEdit.getRating()==0){
+            Toast.makeText(ReviewEditActivity.this, "Rating cannot be zero", Toast.LENGTH_LONG).show();
+        }else {
         reviewEditContent.setError(null);
-
         validator.clear();
         if (validator.validate()){
             Bundle b = getIntent().getExtras();
             String event_id = b.getString("event_id");
-            callMessage = service. editReview(Integer.parseInt(event_id),rating,content);
+            callMessage = service.editReview(Integer.parseInt(event_id),rating,content);
             callMessage.enqueue(new Callback<Message>() {
                 @Override
                 public void onResponse(Call<Message> call, Response<Message> response) {
                     Log.e(TAG, "onResponse: " + response);
+                    gotoReviewList();
                 }
 
                 @Override
@@ -115,8 +118,7 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
                 }
             });
         }
-        //or to map
-        gotoReviewList();
+        }
     }
 
     @OnClick(R.id.deleteReview)
@@ -169,6 +171,7 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
     }
 
     private void setupRules() {
+        validator.addValidation(this, R.id.ReviewEditContent, RegexTemplate.NOT_EMPTY, R.string.err_reviewcontent);
     }
 
     @Override

@@ -469,7 +469,9 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                 Log.w(TAG, "You have left event!: " + response);
                 Toast.makeText(EventSingleActivity.this,"LEAVING EVENT",Toast.LENGTH_LONG).show();
                 //finish();
-                gotoMap();
+                //gotoMap();
+                finish();
+                startActivity(getIntent());
             }
 
             @Override

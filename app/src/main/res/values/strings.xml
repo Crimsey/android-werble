@@ -7,6 +7,10 @@
     <string name="err_login2">Login cannot be empty</string>
     <string name="err_password2">Password cannot be empty</string>
 
+    <string name="err_reviewcontent">Review cannot be empty</string>
+    <string name="err_reviewrating">Rating cannot be empty</string>
+
+
     <string name="openNavDrawer">Navigation Drawer Open</string>
     <string name="closeNavDrawer">Navigation Drawer Close</string>
     <string name="title_activity_map">Map</string>

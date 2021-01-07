@@ -9,7 +9,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
@@ -20,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="ReviewTitle"
+                android:text="Add the review"
                 app:layout_constraintBottom_toTopOf="@+id/rating"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -51,7 +53,9 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:maxLength="280"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -80,6 +84,8 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
     </FrameLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

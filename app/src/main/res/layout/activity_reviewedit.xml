@@ -50,7 +50,9 @@
                     android:id="@+id/ReviewEditContent2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Edit your review" />
+                    android:hint="Edit your review"
+                    android:maxLength="280"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

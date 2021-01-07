@@ -71,33 +71,36 @@ public class ReviewCreateActivity extends AppCompatActivity {
         String ratingString = String.valueOf(rating.getRating());
         String contentString = content.getEditText().getText().toString();
 
-        callReview = service.createReview(contentString,ratingString,event_id);
-        callReview.enqueue(new Callback<Message>() {
-            @Override
-            public void onResponse(Call<Message> call, Response<Message> response) {
-                Log.w(TAG, "You have joined!: " + response);
-                Toast.makeText(ReviewCreateActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
+        if (rating.getRating()==0){
+            Toast.makeText(ReviewCreateActivity.this, "Rating cannot be zero", Toast.LENGTH_LONG).show();
+        }else {
+            content.setError(null);
+            validator.clear();
+            if (validator.validate()) {
+                callReview = service.createReview(contentString, ratingString, event_id);
+                callReview.enqueue(new Callback<Message>() {
+                    @Override
+                    public void onResponse(Call<Message> call, Response<Message> response) {
+                        Log.w(TAG, "You have created review!: " + response);
+                        Toast.makeText(ReviewCreateActivity.this, "CREATING REVIEW", Toast.LENGTH_LONG).show();
+                        gotoReviewList();
+                        //finish();
+                        //startActivity(getIntent());
+                    }
 
-                //finish();
-                //startActivity(getIntent());
+                    @Override
+                    public void onFailure(Call<Message> call, Throwable t) {
+                        Log.w(TAG, "onFailure: " + t.getMessage());
 
+                    }
+                });
             }
-
-            @Override
-            public void onFailure(Call<Message> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-
-            }
-        });
-        gotoReviewList();
+        }
 
     }
 
     public void setupRules() {
-        //validator.addValidation(this, R.id.eventName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
-        //validator.addValidation(this, R.id.eventLocation, RegexTemplate.NOT_EMPTY, R.string.err_event_location);
-        //validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
-
+        validator.addValidation(this, R.id.reviewContent, RegexTemplate.NOT_EMPTY, R.string.err_reviewcontent);
     }
 
     void gotoReviewList() {

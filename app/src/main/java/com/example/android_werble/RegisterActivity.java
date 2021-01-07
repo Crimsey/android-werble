@@ -71,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = Email.getEditText().getText().toString();
         String password = Password.getEditText().getText().toString();
         //String password_confirmation = PasswordConfirmation().getText().toString();
+
         Login.setError(null);
         Email.setError(null);
         Password.setError(null);
