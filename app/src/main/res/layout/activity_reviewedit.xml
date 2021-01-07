@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
                 android:text="Edit Your Review"
+                android:textColor="#0E0E0E"
                 app:layout_constraintBottom_toTopOf="@+id/reviewRatingEdit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

@@ -14,6 +14,7 @@
         android:layout_marginTop="4dp"
         android:fontFamily="sans-serif-medium"
         android:text="singleEventName"
+        android:textColor="#0E0E0E"
         android:textSize="23sp"
         app:layout_constraintEnd_toStartOf="@+id/editSingleEvent"
         app:layout_constraintHorizontal_bias="0.035"
@@ -49,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="singleEventDatetime"
+            android:textColor="#0E0E0E"
             android:textSize="16sp" />
 
         <TextView
@@ -56,6 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="singleEventLocation"
+            android:textColor="#0E0E0E"
             android:textSize="16sp" />
 
         <TextView
@@ -63,6 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="singleEventStreetName"
+            android:textColor="#0E0E0E"
             android:textSize="16sp" />
 
         <TextView
@@ -70,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="singleEventHouseNumber"
+            android:textColor="#0E0E0E"
             android:textSize="16sp" />
 
         <TextView
@@ -77,6 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="singleEventZipcode"
+            android:textColor="#0E0E0E"
             android:textSize="16sp" />
 
         <TextView
@@ -84,6 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="singleEventStatus"
+            android:textColor="#0E0E0E"
             android:textSize="16sp" />
 
         <TextView
@@ -91,6 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="singleEventType"
+            android:textColor="#0E0E0E"
             android:textSize="16sp" />
 
         <TextView
@@ -98,6 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="singleEventDistance"
+            android:textColor="#0E0E0E"
             android:textSize="16sp" />
 
         <TextView
@@ -105,6 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="singleEventDescription"
+            android:textColor="#0E0E0E"
             android:textSize="16sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

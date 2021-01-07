@@ -57,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     ApiService service;
     Call<User> call;
-    Call<AccessToken> callAccessToken;
+    //Call<Message> callAccessToken;
     Call<Message> callMessage;
     AwesomeValidation validator;
     TokenManager tokenManager;
@@ -174,11 +174,11 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
         if (validator.validate()) {
 
-            callAccessToken = service.userEdit(firstName, lastName, birthDate, description);//,password);
+            callMessage = service.userEdit(firstName, lastName, birthDate, description);//,password);
 
-            callAccessToken.enqueue(new Callback<AccessToken>() {
+            callMessage.enqueue(new Callback<Message>() {
                 @Override
-                public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
+                public void onResponse(Call<Message> call, Response<Message> response) {
                     Log.w(TAG,"CHECK2");
                     if (response.isSuccessful()) {
                         Log.e(TAG, "onResponse: " + response);
@@ -191,7 +191,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                 }
 
                 @Override
-                public void onFailure(Call<AccessToken> call, Throwable t) {
+                public void onFailure(Call<Message> call, Throwable t) {
                     Log.e(TAG, "onFailure: " + t.getMessage());
 
                 }

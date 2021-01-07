@@ -20,11 +20,13 @@
                 android:id="@+id/eventEditTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Editing event"
+                android:textColor="#0C0C0C"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -141,6 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Type"
+                android:textColor="#0C0C0C"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/eventEditType"
                 app:layout_constraintStart_toStartOf="parent"
@@ -158,10 +161,10 @@
                 android:id="@+id/editMarker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/gold"
                 android:text="edit marker"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
@@ -204,7 +207,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/backToEventSingle"
                 app:layout_constraintTop_toBottomOf="@+id/editMarker"
-                app:layout_constraintVertical_bias="0.87" />
+                app:layout_constraintVertical_bias="0.741" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -217,14 +220,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/main_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/teal_700" />
-        </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="wrap_content"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView

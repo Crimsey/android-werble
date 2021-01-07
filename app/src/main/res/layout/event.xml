@@ -12,18 +12,6 @@
         android:id="@+id/eventID"
         >
 
-        <Button
-            android:id="@+id/join"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:insetRight="5dp"
-            android:text="JOIN"
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="@color/teal_700"/>
-
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
@@ -43,16 +31,23 @@
                 android:id="@+id/eventName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
                 android:text="eventName"
-                android:textSize="19dp"
+                android:textColor="#000000"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/eventLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
                 android:paddingTop="4dp"
-                android:text="eventLocation" />
+                android:text="eventLocation"
+                android:textColor="#000000"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="16sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -63,7 +58,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:paddingLeft="10dp"
                     android:text="eventDatetime"
+                    android:textColor="#000000"
+                    android:textColorHighlight="#FFFFFF"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -74,8 +73,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="eventDatetime"
+                    android:textColor="#000000"
+                    android:textColorHighlight="#FFFFFF"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.273"
+                    app:layout_constraintHorizontal_bias="0.869"
                     app:layout_constraintStart_toEndOf="@+id/eventDatetime"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

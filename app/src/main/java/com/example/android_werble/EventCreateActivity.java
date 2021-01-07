@@ -21,6 +21,7 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
+import com.example.android_werble.entities.Message;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -67,7 +68,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
 
     ApiService service;
-    Call<AccessToken> call;
+    Call<Message> call;
     AwesomeValidation validator;
     TokenManager tokenManager;
 
@@ -199,9 +200,9 @@ public class EventCreateActivity extends AppCompatActivity {
 
             call = service.createEventwithMarker(name, location, description, datetime,longitude,latitude,typeId,zipCode,streetName,houseNumber);
             //call = service.createEvent(name, location, description, datetime);
-            call.enqueue(new Callback<AccessToken>() {
+            call.enqueue(new Callback<Message>() {
                 @Override
-                public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
+                public void onResponse(Call<Message> call, Response<Message> response) {
                     if (response.isSuccessful()) {
                         Log.e(TAG, "onResponse: " + response.body());
                         Toast.makeText(EventCreateActivity.this,"Created event!",Toast.LENGTH_LONG).show();
@@ -213,7 +214,7 @@ public class EventCreateActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<AccessToken> call, Throwable t) {
+                public void onFailure(Call<Message> call, Throwable t) {
                     Log.e(TAG, "onFailure: " + t.getMessage());
 
                 }

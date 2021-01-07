@@ -181,10 +181,12 @@ public class AdapterEvent extends RecyclerView.Adapter implements Filterable {
         ((MyViewHolder) holder).eDatetime.setText("Datetime: "+event.getDatetime());
         ((MyViewHolder) holder).eDistance.setText("Distance: "+event.getDistance().toString());
 
-        ((MyViewHolder) holder).join.setOnClickListener(
+        /*((MyViewHolder) holder).join.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //int eId = event.getEventId();
+
                         //eId = event.getEventId();
                         //Intent i = new Intent(this, SingleEventActivity.class);
                         Log.w(TAG,"eId: "+eId);
@@ -204,7 +206,7 @@ public class AdapterEvent extends RecyclerView.Adapter implements Filterable {
                         });
                     }
                 }
-        );
+        );*/
 
         eventID.setOnClickListener(new View.OnClickListener() {
             @Override

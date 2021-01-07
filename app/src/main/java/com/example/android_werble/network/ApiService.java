@@ -42,7 +42,7 @@ public interface ApiService {
 
     @POST("user/events/create")
     @FormUrlEncoded
-    Call<AccessToken> createEventwithMarker(@Field("name") String name,
+    Call<Message> createEventwithMarker(@Field("name") String name,
                                             @Field("location") String location,
                                             @Field("description") String description,
                                             @Field("datetime") String datetime,
@@ -64,7 +64,7 @@ public interface ApiService {
 
     @PUT("user/profile/edit")
     @FormUrlEncoded
-    Call<AccessToken> userEdit(
+    Call<Message> userEdit(
                         @Field("first_name") String first_name,
                         @Field("last_name") String last_name,
                         @Field("birth_date") String birth_date,
