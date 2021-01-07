@@ -11,96 +11,101 @@
         android:id="@+id/singleEventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif-medium"
         android:text="singleEventName"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toStartOf="@+id/editSingleEvent"
+        app:layout_constraintHorizontal_bias="0.035"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/editSingleEvent"
-        android:layout_width="73dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="8dp"
-        android:backgroundTint="@color/purple_700"
+        android:layout_width="72dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="4dp"
+        android:backgroundTint="@color/purple_500"
         android:text="edit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.976"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/constraintLayout"
         android:layout_width="397dp"
-        android:layout_height="225dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/returntomaporlist"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/singleEventName"
-        app:layout_constraintVertical_bias="0.062">
-
-        <TextView
-            android:id="@+id/singleEventLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:text="singleEventLocation" />
-
-        <TextView
-            android:id="@+id/singleEventZipcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:text="singleEventZipcode" />
-
-        <TextView
-            android:id="@+id/singleEventStreetName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:text="singleEventStreetName" />
-
-        <TextView
-            android:id="@+id/singleEventHouseNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:text="singleEventHouseNumber" />
-
-        <TextView
-            android:id="@+id/singleEventDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:text="singleEventDescription" />
+        app:layout_constraintVertical_bias="0.043">
 
         <TextView
             android:id="@+id/singleEventDatetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:text="singleEventDatetime" />
+            android:text="singleEventDatetime"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/singleEventLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="singleEventLocation"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/singleEventStreetName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="singleEventStreetName"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/singleEventHouseNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="singleEventHouseNumber"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/singleEventZipcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="singleEventZipcode"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/singleEventStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="singleEventStatus" />
+            android:text="singleEventStatus"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/singleEventType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="singleEventType" />
+            android:text="singleEventType"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/singleEventDistance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="singleEventDistance"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/singleEventDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="singleEventDescription"
+            android:textSize="16sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -127,8 +132,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/seeReviews"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -179,5 +183,16 @@
 
 
         />
+
+    <Button
+        android:id="@+id/leaveSingleEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_500"
+        android:text="leave"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

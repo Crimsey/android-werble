@@ -134,7 +134,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                     }else  {email.setText("EMAIL:  "+user.getEmail());}
                     if (user.getCreatedAt()==null){
                         createdat.setText("CREATED AT:  ");
-                    }else  {createdat.setText("CREATED AT:  "+user.getCreatedAt());}
+                    }else  {createdat.setText("CREATED AT:  "+user.getCreatedAt().substring(0,10));}
 
 
                     }

@@ -591,7 +591,7 @@ public class MyLocationActivity extends AppCompatActivity
         switch (item.getTitle().toString()) {
             //case "Logout": logout(); break;
             case "Your profile": gotoProfile(); break;
-            case "Your events": gotoEvent(); break;
+            case "Local events": gotoEvent(); break;
             //case "Map": gotoMap(); break;
             //case "Create event": gotoCreateEvent(); break;
             case "Settings": gotoSettings(); break;

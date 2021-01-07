@@ -2,8 +2,13 @@ package com.example.android_werble;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,11 +67,12 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     TokenManager tokenManager;
 
 
-    TextView name,location,zip_code,street_name,house_number,description,datetime,status,type;
+    TextView name,location,zip_code,street_name,house_number,description,datetime,status,type,distance;
 
     Button addReview,seeReviews;
     Button joinSingleEvent;
     Button editSingleEvent;
+    Button leaveSingleEvent;
 
     int yet=0,ended=0,participant=0;
     String latitude,longitude;
@@ -91,11 +97,14 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         datetime = findViewById(R.id.singleEventDatetime);
         status = findViewById(R.id.singleEventStatus);
         type = findViewById(R.id.singleEventType);
+        distance = findViewById(R.id.singleEventDistance);
+
 
         addReview = findViewById(R.id.addReview);
         seeReviews = findViewById(R.id.seeReviews);
         joinSingleEvent = findViewById(R.id.joinSingleEvent);
         editSingleEvent = findViewById(R.id.editSingleEvent);
+        leaveSingleEvent = findViewById(R.id.leaveSingleEvent);
 
         Log.w(TAG, "My tu w ogóle wchodzimy?");
         ButterKnife.bind(this);
@@ -127,51 +136,50 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                     latitude = event.getLatitude().toString();
                     longitude = event.getLongitude().toString();
 
-
                     if (TextUtils.isEmpty(event.getName())
                     ){
-                        name.setText("no name :(");
+                        name.setText("Name: ");
                     }else{name.setText(event.getName());}
 
                     if (event.getLocation()==null){
-                        location.setText("no location :(");
-                    }else {location.setText(event.getLocation());}
+                        location.setText("Location: ");
+                    }else {location.setText("Location: "+event.getLocation());}
 
                     if (event.getZipCode()==null){
-                        zip_code.setText("no zipcode :(");
-                    }else {zip_code.setText(event.getZipCode());}
+                        zip_code.setText("Zipcode: ");
+                    }else {zip_code.setText("Zipcode: "+event.getZipCode());}
 
                     if (event.getStreetName()==null){
-                        street_name.setText("no street name :(");
-                    }else {street_name.setText(event.getStreetName());}
+                        street_name.setText("Street: ");
+                    }else {street_name.setText("Street: "+event.getStreetName());}
 
                     if (event.getHouseNumber()==null){
-                        house_number.setText("no house number :(");
-                    }else {house_number.setText(event.getHouseNumber());}
+                        house_number.setText("House number: ");
+                    }else {house_number.setText("House number: "+event.getHouseNumber());}
 
                     if (event.getDescription()==null){
-                        description.setText("no description :(");
-                    }else {description.setText(event.getDescription());}
+                        description.setText("Description: ");
+                    }else {description.setText("Description: "+event.getDescription());}
 
                     if (event.getDatetime()==null){
-                        datetime.setText("no datetime :(");
-                    }else {datetime.setText(event.getDatetime());}
+                        datetime.setText("Datetime: ");
+                    }else {datetime.setText("Datetime: "+event.getDatetime());}
+
+                    if (event.getDistance()==null){
+                        distance.setText("Distance: ");
+                    }else {distance.setText("Distance: "+event.getDistance().toString()+"km");}
 
                     if (event.getEventTypeId()==null){
-                        type.setText("no type :(");
-                    }else {type.setText(getResources().getStringArray(R.array.types)[event.getEventTypeId()-1]);}
+                        type.setText("Type: ");
+                    }else {type.setText("Type: "+getResources().getStringArray(R.array.types)[event.getEventTypeId()-1]);}
                     //
                     if (event.getIsActive()==null){
-                        status.setText("no status :(");
+                        status.setText("Status: ");
                     }else {
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
+                        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
                         Date currentTime = new Date();
-
-
                     try {
                         Date eventDate = simpleDateFormat.parse(event.getDatetime());
-
-                        //currentTime = simpleDateFormat.parse(String.valueOf(currentTime));
                         if (currentTime.after(eventDate)){
                             event.setIsActive(1);
                         }else{
@@ -179,22 +187,53 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
-                    }
-
+                    }*/
 
                         switch (event.getIsActive()) {
                             case 0:
-                                status.setText("Not started yet");
-                                yet++;
+                                status.setText("Status: Ended");
+                                ended++;
                                 break;
 
                             case 1:
-                                status.setText("Ended");
-                                ended++;
+                                status.setText("Status: Not started yet");
+                                yet++;
                                 break;
                         }
                     }
+                    StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
 
+                    //SpannableString spannableName = new SpannableString(name.getText());
+                    SpannableString spannableLocation = new SpannableString(location.getText());
+                    SpannableString spannableZipCode = new SpannableString(zip_code.getText());
+                    SpannableString spannableStreet = new SpannableString(street_name.getText());
+                    SpannableString spannableHouseNum = new SpannableString(house_number.getText());
+                    SpannableString spannableDescription = new SpannableString(description.getText());
+                    SpannableString spannableDatetime = new SpannableString(datetime.getText());
+                    SpannableString spannableDistance = new SpannableString(distance.getText());
+                    SpannableString spannableType = new SpannableString(type.getText());
+                    SpannableString spannableStatus = new SpannableString(status.getText());
+
+                    //spannableName.setSpan(boldSpan,0,4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableLocation.setSpan(boldSpan,0,8, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                    spannableZipCode.setSpan(boldSpan,0,7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableStreet.setSpan(boldSpan,0,6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableHouseNum.setSpan(boldSpan,0,12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableDescription.setSpan(boldSpan,0,11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableDatetime.setSpan(boldSpan,0,8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableDistance.setSpan(boldSpan,0,8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableType.setSpan(boldSpan,0,4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableStatus.setSpan(boldSpan,0,6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    location.setText(spannableLocation);
+                    zip_code.setText(spannableZipCode);
+                    street_name.setText(spannableStreet);
+                    house_number.setText(spannableHouseNum);
+                    description.setText(spannableDescription);
+                    datetime.setText(spannableDatetime);
+                    distance.setText(spannableDistance);
+                    type.setText(spannableType);
+                    status.setText(spannableStatus);
 
                     callUser = service.user();
                     callUser.enqueue(new Callback<User>() {
@@ -283,14 +322,17 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                                 seeReviews.setClickable(false);
                                 addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
                                 seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+                                leaveSingleEvent.setVisibility(View.GONE);
 
                                 if (help>0){ //participant
                                     System.out.println("help>0");
                                     //addReview.setClickable(true);
                                     //addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
 
-                                    joinSingleEvent.setClickable(false);
-                                    joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));
+                                    //joinSingleEvent.setClickable(false);
+                                    //joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));
+                                    joinSingleEvent.setVisibility(View.GONE);
+                                    leaveSingleEvent.setVisibility(View.VISIBLE);
                                     Log.w(TAG,"help>0 = "+help);
 
 
@@ -299,6 +341,8 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                                     System.out.println("ended==1");
                                     seeReviews.setClickable(true);
                                     seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+                                    joinSingleEvent.setClickable(false);
+                                    joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));
 
                                 }
 
@@ -394,7 +438,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         void joinSingleEvent(){
             Bundle b = getIntent().getExtras();
             String event_id = b.getString("event_id");
-        callJoin = service.joinEvent(Integer.parseInt(event_id),"1");
+        callJoin = service.joinEvent(Integer.parseInt(event_id));
         callJoin.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
@@ -413,6 +457,29 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         });
 
         }
+
+    @OnClick(R.id.leaveSingleEvent)
+    void leaveSingleEvent(){
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+        callJoin = service.leaveEvent(Integer.parseInt(event_id));
+        callJoin.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                Log.w(TAG, "You have left event!: " + response);
+                Toast.makeText(EventSingleActivity.this,"LEAVING EVENT",Toast.LENGTH_LONG).show();
+                //finish();
+                gotoMap();
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+
+            }
+        });
+
+    }
 
     @OnClick(R.id.addReview)
     void gotoReview(){

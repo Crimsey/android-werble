@@ -86,10 +86,13 @@ public interface ApiService {
     Call<Data<EventReview>> getEventReview(@Path("id") Integer event_id);
 
     @POST("user/events/{id}/join")
-    @FormUrlEncoded
     Call<Message> joinEvent(
-                    @Path("id") Integer event_id,
-                    @Field("participant_status_id") String participant_status_id);
+                    @Path("id") Integer event_id
+                    );
+
+    @DELETE("user/events/{id}/leave")
+    Call<Message> leaveEvent(
+            @Path("id") Integer event_id);
 
     @POST("user/events/review/create")
     @FormUrlEncoded

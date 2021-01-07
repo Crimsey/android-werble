@@ -91,7 +91,7 @@ public class AdapterReview extends  RecyclerView.Adapter {
         ((MyViewHolder) holder).eRating.setRating(review.getRating());
         ((MyViewHolder) holder).eContent.setText(review.getContent());
         ((MyViewHolder) holder).eAuthor.setText(review.getLogin());
-        ((MyViewHolder) holder).eDatetime.setText(review.getCreatedAt());
+        ((MyViewHolder) holder).eDatetime.setText(review.getCreatedAt().substring(0,10)+" ");
 
 
     }

@@ -106,8 +106,8 @@ public class AdapterEvent extends RecyclerView.Adapter implements Filterable {
         public TextView eName;
         public TextView eLocation;
         public TextView eDatetime;
-        public Button join,review;
-        public Integer eId;
+        public Button join;
+        public TextView eDistance;
 
         OnNoteListener onNoteListener;
 
@@ -117,6 +117,7 @@ public class AdapterEvent extends RecyclerView.Adapter implements Filterable {
             eLocation = (TextView) pItem.findViewById(R.id.eventLocation);
             eDatetime = (TextView) pItem.findViewById(R.id.eventDatetime);
             join = (Button) pItem.findViewById(R.id.join);
+            eDistance = (TextView) pItem.findViewById(R.id.eventDistance);
 
             this.onNoteListener = onNoteListener;
             pItem.setOnClickListener(this);
@@ -176,8 +177,10 @@ public class AdapterEvent extends RecyclerView.Adapter implements Filterable {
         int eId = event.getEventId();
 
         ((MyViewHolder) holder).eName.setText(event.getName());
-        ((MyViewHolder) holder).eLocation.setText(event.getLocation());
-        ((MyViewHolder) holder).eDatetime.setText(event.getDatetime());
+        ((MyViewHolder) holder).eLocation.setText("Location: "+event.getLocation());
+        ((MyViewHolder) holder).eDatetime.setText("Datetime: "+event.getDatetime());
+        ((MyViewHolder) holder).eDistance.setText("Distance: "+event.getDistance().toString());
+
         ((MyViewHolder) holder).join.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -185,7 +188,7 @@ public class AdapterEvent extends RecyclerView.Adapter implements Filterable {
                         //eId = event.getEventId();
                         //Intent i = new Intent(this, SingleEventActivity.class);
                         Log.w(TAG,"eId: "+eId);
-                        callJoin = service.joinEvent(eId,"1");
+                        callJoin = service.joinEvent(eId);
                         callJoin.enqueue(new Callback<Message>() {
                             @Override
                             public void onResponse(Call<Message> call, Response<Message> response) {
