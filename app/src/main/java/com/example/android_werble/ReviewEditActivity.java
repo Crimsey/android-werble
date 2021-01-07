@@ -121,8 +121,6 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
 
     @OnClick(R.id.deleteReview)
     void deleteReview(){
-        //DeleteReviewDialog deleteReviewDialog = new DeleteReviewDialog();
-        //deleteReviewDialog.show(getSupportFragmentManager(),"delete review");
         ViewDialog alert = new ViewDialog();
         alert.showDialog(this);
     }
@@ -198,10 +196,5 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
     });
     gotoReviewList();
     }
-
-
-
-
-
 
 }

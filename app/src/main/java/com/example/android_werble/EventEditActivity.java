@@ -44,7 +44,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventEditActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class EventEditActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        ViewDialog.ViewDialogListener{
 
     private static final String TAG = "EventEditActivity";
 
@@ -328,10 +329,9 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
 
     @OnClick(R.id.deleteEvent)
     void deleteEvent() {
-
-
-
-        Bundle b = getIntent().getExtras();
+        ViewDialog alert = new ViewDialog();
+        alert.showDialog(this);
+        /*Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
         String variable = b.getString("variable");
         System.out.println("variable: " + variable);
@@ -356,10 +356,35 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         }
 
         startActivity(intent);
-        finish();
+        finish();*/
+
     }
 
+    @Override
+    public void onDeleteClick() {
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
 
+        Integer event_participant_idInteger = Integer.parseInt(event_id);
+        callMessage = service.deleteEvent(event_participant_idInteger);
+        callMessage.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                if (response.isSuccessful()) {
+                    Log.e(TAG, "onResponse: " + response);
+
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+
+            }
+        });
+        gotoEventList();
+    }
 
 
     private void handleErrors(ResponseBody response) {
@@ -388,6 +413,30 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         validator.addValidation(this, R.id.eventName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this, R.id.eventLocation, RegexTemplate.NOT_EMPTY, R.string.err_event_location);
         validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
+    }
+
+    void gotoEventList(){
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+        String variable = b.getString("variable");
+        String range = b.getString("range");
+
+
+        Intent intent = new Intent(EventEditActivity.this, MyLocationActivity.class);
+        intent.putExtra("event_id",event_id);
+        intent.putExtra("name",eventEditName.getText().toString());
+        intent.putExtra("location",eventEditLocation.getText().toString());
+        intent.putExtra("description",eventEditDescription.getText().toString());
+        intent.putExtra("datetime",eventEditDatetime.getText().toString());
+        intent.putExtra("event_type_id",String.valueOf(eventType.getSelectedItemId()));
+        intent.putExtra("variable",variable);
+        intent.putExtra("zip_code",eventEditZipcode.getText().toString());
+        intent.putExtra("street_name",eventEditStreet.getText().toString());
+        intent.putExtra("house_number",eventEditHouseNum.getText().toString());
+        intent.putExtra("range",range);
+
+        startActivity(intent);
+        finish();
     }
 
     @Override

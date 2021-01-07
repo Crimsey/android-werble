@@ -38,7 +38,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SettingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SettingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        ViewDialog.ViewDialogListener{
 
     private static final String TAG = "SettingsActivity";
 
@@ -137,35 +138,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
-        deactivateProfile = findViewById(R.id.deactivateProfile);
-        deactivateProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-                callMessage = service.deactivateProfile();
-                callMessage.enqueue(new Callback<Message>() {
-                    @Override
-                    public void onResponse(Call<Message> call, Response<Message> response) {
-                        if (response.isSuccessful()){
-                            Log.e(TAG, "onResponse: " + response);
-                            startActivity(new Intent(SettingsActivity.this,RegisterActivity.class));
-                            finish();
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Message> call, Throwable t) {
-                            Log.e(TAG, "onFailure: " + t.getMessage());
-
-                    }
-                });
-            }
-        });
-
-
         setupRules();
     }
 
@@ -262,6 +234,12 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     }
 
+    @OnClick(R.id.deactivateProfile)
+    void DeactivateProfile(){
+        ViewDialog alert = new ViewDialog();
+        alert.showDialog(this);
+    }
+
     //@OnClick(R.id.profileSidebar)
     void gotoProfile() {
         Toast.makeText(SettingsActivity.this,"TUTAJ",Toast.LENGTH_LONG).show();
@@ -296,6 +274,26 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         Log.w(TAG,"SETTINGS");
     }
 
+    @Override
+    public void onDeleteClick() {
+        callMessage = service.deactivateProfile();
+        callMessage.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                if (response.isSuccessful()){
+                    Log.e(TAG, "onResponse: " + response);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+
+            }
+        });
+    }
+    
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.w(TAG,"SIDEBAR");
