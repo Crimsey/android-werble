@@ -23,7 +23,9 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.android_werble.entities.ApiError;
+import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
+import com.example.android_werble.entities.EventType;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
@@ -69,6 +71,7 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
 
     ApiService service;
     Call<Event> call;
+    Call<Data<EventType>> callEventType;
     Call<Message> callMessage;
     AwesomeValidation validator;
     TokenManager tokenManager;
@@ -78,6 +81,7 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
     Integer typeId;
 
     String latitude,longitude;
+    List<EventType> eventTypeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +100,27 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
         //eventType = findViewById(R.id.eventEditType);
-        ArrayAdapter eventTypeAdapter =  ArrayAdapter.createFromResource(EventEditActivity.this,R.array.types,R.layout.arraytype);
-        eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
-        eventType.setAdapter(eventTypeAdapter);
+        //ArrayAdapter eventTypeAdapter =  ArrayAdapter.createFromResource(EventEditActivity.this,R.array.types,R.layout.arraytype);
+        //eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
+        //eventType.setAdapter(eventTypeAdapter);
+        callEventType = service.getEventTypes();
+        callEventType.enqueue(new Callback<Data<EventType>>() {
+            @Override
+            public void onResponse(Call<Data<EventType>> call, Response<Data<EventType>> response) {
+                if (response.isSuccessful())
+                {
+                    eventTypeList = response.body().getData();
+                    ArrayAdapter eventTypeAdapter =  new ArrayAdapter(EventEditActivity.this, R.layout.arraytype, eventTypeList);
+                    eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
+                    eventType.setAdapter(eventTypeAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Data<EventType>> call, Throwable t) {
+
+            }
+        });
 
 
 

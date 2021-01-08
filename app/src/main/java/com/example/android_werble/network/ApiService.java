@@ -5,6 +5,7 @@ import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.EventParticipant;
 import com.example.android_werble.entities.EventReview;
+import com.example.android_werble.entities.EventType;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 
@@ -84,6 +85,9 @@ public interface ApiService {
 
     @GET("user/events/{id}/reviews")
     Call<Data<EventReview>> getEventReview(@Path("id") Integer event_id);
+
+    @GET("user/types")
+    Call<Data<EventType>> getEventTypes();
 
     @POST("user/events/{id}/join")
     Call<Message> joinEvent(

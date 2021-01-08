@@ -20,6 +20,8 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.android_werble.entities.ApiError;
+import com.example.android_werble.entities.Data;
+import com.example.android_werble.entities.EventType;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
@@ -68,8 +70,11 @@ public class EventCreateActivity extends AppCompatActivity {
 
     ApiService service;
     Call<Message> call;
+    Call<Data<EventType>> callEventType;
+
     AwesomeValidation validator;
     TokenManager tokenManager;
+    List<EventType> eventTypeList;
 
     String type;
     Integer typeId;
@@ -128,7 +133,24 @@ public class EventCreateActivity extends AppCompatActivity {
             }
         });*/
 
+        callEventType = service.getEventTypes();
+        callEventType.enqueue(new Callback<Data<EventType>>() {
+            @Override
+            public void onResponse(Call<Data<EventType>> call, Response<Data<EventType>> response) {
+                if (response.isSuccessful())
+                {
+                    eventTypeList = response.body().getData();
+                    ArrayAdapter eventTypeAdapter =  new ArrayAdapter(EventCreateActivity.this, R.layout.arraytype, eventTypeList);
+                    eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
+                    eventType.setAdapter(eventTypeAdapter);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Data<EventType>> call, Throwable t) {
+
+            }
+        });
 
     }
 
