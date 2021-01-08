@@ -23,7 +23,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class RetrofitBuilder {
     //private static final String BASE_URL = "http://192.168.10.10/api/";//"http://werble.test/api/";
-    private static final String BASE_URL = "http://192.168.100.222/api/";//"http://werble.test/api/";
+    private static final String BASE_URL = "http://192.168.10.10/api/";//"http://werble.test/api/";
 
 
 

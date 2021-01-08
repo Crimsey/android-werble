@@ -34,7 +34,6 @@ import retrofit2.Response;
 
 public class EventOwnedListActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        AdapterEvent.OnNoteListener,
         SearchView.OnQueryTextListener
 {
 
@@ -130,7 +129,7 @@ public class EventOwnedListActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    adapterEvent = new AdapterEvent(eventList, recyclerView, EventOwnedListActivity.this::onNoteClick,context);
+                    adapterEvent = new AdapterEvent(eventList,context);
                     recyclerView.setAdapter(adapterEvent);
 
                 }
@@ -374,39 +373,39 @@ public class EventOwnedListActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onNoteClick(int position) {
-        Log.d(TAG, "onNoteClick: clicked.");
-
-
-        call = service.getLocalEvents(10);
-        call.enqueue(new Callback<Data<Event>>() {
-
-
-            @Override
-            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-                Log.w(TAG, "onResponse: " + response);
-
-                //List<Event> event = response.body().getData();
-                if (response.isSuccessful()) {
-                    eventList = response.body().getData();
-                    //recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView,EventActivity.this::onNoteClick));
-
-                    Intent intent = new Intent(EventOwnedListActivity.this, EventSingleActivity.class);
-                    intent.putExtra("event_id", String.valueOf(position));
-                    //intent.putExtra("event_id", String.valueOf(event.get(position)));
-                    startActivity(intent);
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(Call<Data<Event>> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-    }
+//    @Override
+//    public void onNoteClick(int position) {
+//        Log.d(TAG, "onNoteClick: clicked.");
+//
+//
+//        call = service.getLocalEvents(10);
+//        call.enqueue(new Callback<Data<Event>>() {
+//
+//
+//            @Override
+//            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+//                Log.w(TAG, "onResponse: " + response);
+//
+//                //List<Event> event = response.body().getData();
+//                if (response.isSuccessful()) {
+//                    eventList = response.body().getData();
+//                    //recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView,EventActivity.this::onNoteClick));
+//
+//                    Intent intent = new Intent(EventOwnedListActivity.this, EventSingleActivity.class);
+//                    intent.putExtra("event_id", String.valueOf(position));
+//                    //intent.putExtra("event_id", String.valueOf(event.get(position)));
+//                    startActivity(intent);
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Data<Event>> call, Throwable t) {
+//                Log.w(TAG, "onFailure: " + t.getMessage());
+//            }
+//        });
+//    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {

@@ -24,6 +24,7 @@ import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -34,14 +35,13 @@ import retrofit2.Response;
 
 public class EventLocalListActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        AdapterEvent.OnNoteListener,
         SearchView.OnQueryTextListener
          {
 
     private static final String TAG = "EventActivity";
 
     RecyclerView recyclerView;
-    List<Event> eventList;
+    List <Event> eventList;
 
     //variables for sidebar
     private Toolbar toolbar;
@@ -65,7 +65,6 @@ public class EventLocalListActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_event);
 
         recyclerView = (RecyclerView) findViewById(R.id.eventsRecyclerView);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -130,29 +129,9 @@ public class EventLocalListActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    adapterEvent = new AdapterEvent(eventList, recyclerView, EventLocalListActivity.this::onNoteClick,context);
+                    adapterEvent = new AdapterEvent(eventList,context);
                     recyclerView.setAdapter(adapterEvent);
-
                 }
-                /*if (response.isSuccessful()) {
-                    List<Event> eventList = response.body().getData();
-                    String content = "";
-                    for (Event event : eventList) {
-
-                        content += "Id :" + event.getEventId().toString() + "\n" +
-                                "name: " + event.getName() + "\n";//.getData().get(i).getEventId() + "\n";
-                    }*/
-                //title.setText(content);
-                //title.setText(response.body().getData().get(0).getName());
-                //String titleEvent = response.body().getData().get(0).getName();
-                //title.setText(titleEvent);
-                //Log.w(TAG, "getEvents" + response);
-                //}
-                /*else {
-                    tokenManager.deleteToken();
-                    startActivity(new Intent(EventActivity.this, LoginActivity.class));
-                    finish();
-                }*/
             }
 
             @Override
@@ -162,33 +141,6 @@ public class EventLocalListActivity extends AppCompatActivity implements
         });
 
     }
-
-    /*@OnClick(R.id.yours)
-    void getUserEvents() {
-
-
-        call = service.getUserEvents();
-        call.enqueue(new Callback<Data<Event>>() {
-
-            @Override
-            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-                Log.w(TAG,"GETUSEREVENTS");
-                Log.w(TAG, "onResponse: " + response);
-
-                if (response.isSuccessful()) {
-                    eventList = response.body().getData();
-                    recyclerView.setAdapter(adapterEvent);
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Data<Event>> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-
-    }*/
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -372,40 +324,6 @@ public class EventLocalListActivity extends AppCompatActivity implements
             messageCall.cancel();
             messageCall = null;
         }
-    }
-
-    @Override
-    public void onNoteClick(int position) {
-        Log.d(TAG, "onNoteClick: clicked.");
-
-
-        call = service.getLocalEvents(10);
-        call.enqueue(new Callback<Data<Event>>() {
-
-
-            @Override
-            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-                Log.w(TAG, "onResponse: " + response);
-
-                //List<Event> event = response.body().getData();
-                if (response.isSuccessful()) {
-                    eventList = response.body().getData();
-                    //recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView,EventActivity.this::onNoteClick));
-
-                    Intent intent = new Intent(EventLocalListActivity.this, EventSingleActivity.class);
-                    intent.putExtra("event_id", String.valueOf(position));
-                    //intent.putExtra("event_id", String.valueOf(event.get(position)));
-                    startActivity(intent);
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(Call<Data<Event>> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-            }
-        });
     }
 
              @Override
