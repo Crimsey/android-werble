@@ -351,6 +351,8 @@ public class EditMarkerActivity extends AppCompatActivity
                                             //int variable = 2;
                                     Bundle b = getIntent().getExtras();
                                     String variable = b.getString("variable");
+                                    String range = b.getString("range");
+
 
                                     Intent intent = new Intent(EditMarkerActivity.this, EventEditActivity.class);
                                             intent.putExtra("event_id",String.valueOf(event_idInt));
@@ -366,6 +368,7 @@ public class EditMarkerActivity extends AppCompatActivity
                                             intent.putExtra("street_name",street_name);
                                             intent.putExtra("house_number",house_number);
                                             intent.putExtra("variable",variable);
+                                            intent.putExtra("range",range);
 
                                             startActivity(intent);
                                             finish();
@@ -447,7 +450,7 @@ public class EditMarkerActivity extends AppCompatActivity
 
     void gotoEvent(){
         //Toast.makeText(MapLocat.this,"TUTAJ",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EditMarkerActivity.this, EventListActivity.class));
+        startActivity(new Intent(EditMarkerActivity.this, EventLocalListActivity.class));
         finish();
     }
 

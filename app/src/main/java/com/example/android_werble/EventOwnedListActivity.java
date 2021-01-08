@@ -1,77 +1,88 @@
 package com.example.android_werble;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.android_werble.entities.Data;
+import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
-import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class EventOwnedListActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        AdapterEvent.OnNoteListener,
+        SearchView.OnQueryTextListener
+{
 
-    private static final String TAG = "UserActivity";
+    private static final String TAG = "EventActivity";
+
+    RecyclerView recyclerView;
+    List<Event> eventList;
 
     //variables for sidebar
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private Context context;
 
-   // @BindView(R.id.firstname)
-    TextView firstname,lastname,login,email,birthdate,description,createdat;
-
-    Call<User> call;
+    Call<Data<Event>> call;
     Call<Message> messageCall;
 
     ApiService service;
     TokenManager tokenManager;
 
+    AdapterEvent adapterEvent;
+    SearchView searchEvent;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_event);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setDisplayShowHomeEnabled(false);
-        }
+        recyclerView = (RecyclerView) findViewById(R.id.eventsRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        searchEvent = findViewById(R.id.searchEvent);
+        searchEvent.setOnQueryTextListener(this);
+        context=this;
+
+
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
 
         if (tokenManager.getToken() == null) {
-            startActivity(new Intent(UserActivity.this, LoginActivity.class));
+            startActivity(new Intent(EventOwnedListActivity.this, LoginActivity.class));
             finish();
         }
 
-
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
-        Log.w(TAG, "LAST LINE" + tokenManager.getToken().getAccessToken());
-
-        firstname = findViewById(R.id.firstname);
-        lastname = findViewById(R.id.lastname);
-        email = findViewById(R.id.email);
-        birthdate = findViewById(R.id.birthdate);
-        description = findViewById(R.id.description);
-        login = findViewById(R.id.login);
-        createdat = findViewById(R.id.createdat);
 
         //implementation of sidebar
         toolbar = findViewById(R.id.main_toolbar);
@@ -92,62 +103,92 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         actionBarDrawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        getUser();
+
+        getLocalEvents();
     }
 
-    //@OnClick(R.id.EventButton)
-    void getUser() {
+    @OnClick(R.id.join)
+    void getLocalEvents() {
+        if (getIntent().hasExtra("range")){
+            Bundle b = getIntent().getExtras();
+            String range = b.getString("range");
+            call = service.getLocalEvents(Integer.parseInt(range));
+        }
+        else
+        {
+            call = service.getLocalEvents(10);
+        }
 
-        call = service.user();
-        call.enqueue(new Callback<User>() {
+
+        call.enqueue(new Callback<Data<Event>>() {
 
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                Log.w(TAG, "onResponse: " + response.body().getFirstName());
+            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                Log.w(TAG,"GETLOCALEVENTS");
+
+                Log.w(TAG, "onResponse: " + response);
 
                 if (response.isSuccessful()) {
-                    User user = response.body();
+                    eventList = response.body().getData();
+                    adapterEvent = new AdapterEvent(eventList, recyclerView, EventOwnedListActivity.this::onNoteClick,context);
+                    recyclerView.setAdapter(adapterEvent);
 
-
-                    if (user.getFirstName()==null ){
-                        firstname.setText("YOUR_FIRST_NAME");
-                    }else  {firstname.setText(user.getFirstName().toString());}
-
-                    if (user.getLastName()==null){
-                        lastname.setText("YOUR_LAST_NAME");
-                    }else  {lastname.setText(user.getLastName().toString());}
-
-                    if (user.getBirthDate()==null){
-                        birthdate.setText("BIRTHDATE:  ");
-                    }else  {birthdate.setText("BIRTHDATE:  "+user.getBirthDate().toString());}
-
-                    if (user.getDescription()==null){
-                        description.setText("DESCRIPTION:  ");
-                    }else  {description.setText("DESCRIPTION:  "+user.getDescription().toString());}
-
-                    if (user.getLogin()==null){
-                        login.setText("LOGIN:  ");
-                    }else  {login.setText("LOGIN:  "+user.getLogin());}
-
-                    if (user.getEmail()==null){
-                        email.setText("EMAIL:  ");
-                    }else  {email.setText("EMAIL:  "+user.getEmail());}
-                    if (user.getCreatedAt()==null){
-                        createdat.setText("CREATED AT:  ");
-                    }else  {createdat.setText("CREATED AT:  "+user.getCreatedAt().substring(0,10));}
-
-
-                    }
                 }
+                /*if (response.isSuccessful()) {
+                    List<Event> eventList = response.body().getData();
+                    String content = "";
+                    for (Event event : eventList) {
 
+                        content += "Id :" + event.getEventId().toString() + "\n" +
+                                "name: " + event.getName() + "\n";//.getData().get(i).getEventId() + "\n";
+                    }*/
+                //title.setText(content);
+                //title.setText(response.body().getData().get(0).getName());
+                //String titleEvent = response.body().getData().get(0).getName();
+                //title.setText(titleEvent);
+                //Log.w(TAG, "getEvents" + response);
+                //}
+                /*else {
+                    tokenManager.deleteToken();
+                    startActivity(new Intent(EventActivity.this, LoginActivity.class));
+                    finish();
+                }*/
+            }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<Data<Event>> call, Throwable t) {
                 Log.w(TAG, "onFailure: " + t.getMessage());
             }
         });
 
     }
+
+    /*@OnClick(R.id.yours)
+    void getUserEvents() {
+
+
+        call = service.getUserEvents();
+        call.enqueue(new Callback<Data<Event>>() {
+
+            @Override
+            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                Log.w(TAG,"GETUSEREVENTS");
+                Log.w(TAG, "onResponse: " + response);
+
+                if (response.isSuccessful()) {
+                    eventList = response.body().getData();
+                    recyclerView.setAdapter(adapterEvent);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Data<Event>> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+
+    }*/
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -296,14 +337,14 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
                 if (response.isSuccessful()) {
                     String message = response.body().getMessage();
-                    Intent i = new Intent(UserActivity.this, LoginActivity.class);
+                    Intent i = new Intent(EventOwnedListActivity.this, LoginActivity.class);
                     i.putExtra("logoutMessage", message);
                     Log.w(TAG, "MESS: " + message);
 
                     tokenManager.deleteToken();
-                    startActivity(new Intent(UserActivity.this, LoginActivity.class));
+                    startActivity(new Intent(EventOwnedListActivity.this, LoginActivity.class));
                     finish();
-                    Toast.makeText(UserActivity.this,"Successful logout",Toast.LENGTH_LONG).show();
+                    Toast.makeText(EventOwnedListActivity.this,"Successful logout",Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -313,6 +354,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -330,5 +372,56 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             messageCall.cancel();
             messageCall = null;
         }
+    }
+
+    @Override
+    public void onNoteClick(int position) {
+        Log.d(TAG, "onNoteClick: clicked.");
+
+
+        call = service.getLocalEvents(10);
+        call.enqueue(new Callback<Data<Event>>() {
+
+
+            @Override
+            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
+                Log.w(TAG, "onResponse: " + response);
+
+                //List<Event> event = response.body().getData();
+                if (response.isSuccessful()) {
+                    eventList = response.body().getData();
+                    //recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView,EventActivity.this::onNoteClick));
+
+                    Intent intent = new Intent(EventOwnedListActivity.this, EventSingleActivity.class);
+                    intent.putExtra("event_id", String.valueOf(position));
+                    //intent.putExtra("event_id", String.valueOf(event.get(position)));
+                    startActivity(intent);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Data<Event>> call, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        //if(newText.length()==0){
+        //adapterEvent.getFilter().filter(newText);
+        //recyclerView.
+        //}else{
+        adapterEvent.getFilter().filter(newText);
+        //}
+        adapterEvent.notifyDataSetChanged();
+        return true;
     }
 }

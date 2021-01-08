@@ -44,8 +44,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventEditActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        ViewDialog.ViewDialogListener{
+public class EventEditActivity extends AppCompatActivity implements ViewDialog.ViewDialogListener{
 
     private static final String TAG = "EventEditActivity";
 
@@ -251,6 +250,7 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         intent.putExtra("zip_code",eventEditZipcode.getText().toString());
         intent.putExtra("street_name",eventEditStreet.getText().toString());
         intent.putExtra("house_number",eventEditHouseNum.getText().toString());
+        intent.putExtra("variable",variable);
 
         startActivity(intent);
         finish();
@@ -415,50 +415,47 @@ public class EventEditActivity extends AppCompatActivity implements NavigationVi
         validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
     }
 
-    void gotoEventList(){
+    void gotoEventList() {
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
         String variable = b.getString("variable");
         String range = b.getString("range");
 
+        if (variable.equals(1)) {
+            Intent intent = new Intent(EventEditActivity.this, EventLocalListActivity.class);
+            intent.putExtra("event_id", event_id);
+            intent.putExtra("name", eventEditName.getText().toString());
+            intent.putExtra("location", eventEditLocation.getText().toString());
+            intent.putExtra("description", eventEditDescription.getText().toString());
+            intent.putExtra("datetime", eventEditDatetime.getText().toString());
+            intent.putExtra("event_type_id", String.valueOf(eventType.getSelectedItemId()));
+            intent.putExtra("variable", variable);
+            intent.putExtra("zip_code", eventEditZipcode.getText().toString());
+            intent.putExtra("street_name", eventEditStreet.getText().toString());
+            intent.putExtra("house_number", eventEditHouseNum.getText().toString());
+            intent.putExtra("range", range);
 
-        Intent intent = new Intent(EventEditActivity.this, MyLocationActivity.class);
-        intent.putExtra("event_id",event_id);
-        intent.putExtra("name",eventEditName.getText().toString());
-        intent.putExtra("location",eventEditLocation.getText().toString());
-        intent.putExtra("description",eventEditDescription.getText().toString());
-        intent.putExtra("datetime",eventEditDatetime.getText().toString());
-        intent.putExtra("event_type_id",String.valueOf(eventType.getSelectedItemId()));
-        intent.putExtra("variable",variable);
-        intent.putExtra("zip_code",eventEditZipcode.getText().toString());
-        intent.putExtra("street_name",eventEditStreet.getText().toString());
-        intent.putExtra("house_number",eventEditHouseNum.getText().toString());
-        intent.putExtra("range",range);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(EventEditActivity.this, MyLocationActivity.class);
+            intent.putExtra("event_id", event_id);
+            intent.putExtra("name", eventEditName.getText().toString());
+            intent.putExtra("location", eventEditLocation.getText().toString());
+            intent.putExtra("description", eventEditDescription.getText().toString());
+            intent.putExtra("datetime", eventEditDatetime.getText().toString());
+            intent.putExtra("event_type_id", String.valueOf(eventType.getSelectedItemId()));
+            intent.putExtra("variable", variable);
+            intent.putExtra("zip_code", eventEditZipcode.getText().toString());
+            intent.putExtra("street_name", eventEditStreet.getText().toString());
+            intent.putExtra("house_number", eventEditHouseNum.getText().toString());
+            intent.putExtra("range", range);
 
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.w(TAG,"SIDEBAR");
-        //Toast.makeText(this,"TOST",Toast.LENGTH_LONG).show();
-        switch (item.getTitle().toString()) {
-            //case "Logout": logout(); break;
-            /*case "Your profile": gotoProfile(); break;
-            //case "Your events":
-            case "Map": gotoMap(); break;
-            case "Create event": gotoCreateEvent(); break;
-            case "Settings": gotoSettings(); break;
-*/
+            startActivity(intent);
+            finish();
         }
-        return false;    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
+        
     }
-
 
     @Override
     protected void onDestroy() {

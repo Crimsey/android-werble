@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         setupRules();
 
         if (tokenManager.getToken().getAccessToken() != null){
-            startActivity(new Intent(LoginActivity.this, EventListActivity.class));
+            startActivity(new Intent(LoginActivity.this, EventLocalListActivity.class));
             finish();
         }
 
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (response.isSuccessful()) {
                         tokenManager.saveToken(response.body());
-                        startActivity(new Intent(LoginActivity.this, EventListActivity.class));
+                        startActivity(new Intent(LoginActivity.this, EventLocalListActivity.class));
                         finish();
                         Toast.makeText(LoginActivity.this,"Successful login",Toast.LENGTH_LONG).show();
 

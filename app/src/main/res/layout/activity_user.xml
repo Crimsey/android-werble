@@ -79,6 +79,7 @@
                     android:id="@+id/login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
                     android:paddingTop="8dp"
                     android:text="login"
                     android:textColor="#0B0A0A"
@@ -88,6 +89,7 @@
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
                     android:paddingTop="8dp"
                     android:text="email"
                     android:textColor="#0B0A0A"
@@ -97,6 +99,7 @@
                     android:id="@+id/birthdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
                     android:paddingTop="8dp"
                     android:text="birthdate"
                     android:textColor="#0B0A0A"
@@ -106,15 +109,17 @@
                     android:id="@+id/createdat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="8dp"
                     android:text="createdat"
                     android:textColor="#0B0A0A"
-                    android:textSize="16sp"
-                    android:paddingTop="8dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
                     android:paddingTop="8dp"
                     android:text="description"
                     android:textColor="#0B0A0A"

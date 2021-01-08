@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReviewListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ReviewListActivity extends AppCompatActivity  {
 
     private static final String TAG = "EventSingleActivity";
     RecyclerView recyclerView;
@@ -171,10 +171,4 @@ public class ReviewListActivity extends AppCompatActivity implements NavigationV
         finish();
     }
 
-
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
-    }
 }

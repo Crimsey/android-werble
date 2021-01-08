@@ -32,11 +32,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventListActivity extends AppCompatActivity implements
+public class EventParticipatingListActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         AdapterEvent.OnNoteListener,
         SearchView.OnQueryTextListener
-         {
+{
 
     private static final String TAG = "EventActivity";
 
@@ -64,8 +64,6 @@ public class EventListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
-        //eventListView = findViewById(R.id.eventList);
-        //eventListView.setTextFilterEnabled(true);
         recyclerView = (RecyclerView) findViewById(R.id.eventsRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -80,7 +78,7 @@ public class EventListActivity extends AppCompatActivity implements
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
 
         if (tokenManager.getToken() == null) {
-            startActivity(new Intent(EventListActivity.this, LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
 
@@ -132,7 +130,7 @@ public class EventListActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     eventList = response.body().getData();
-                    adapterEvent = new AdapterEvent(eventList, recyclerView, EventListActivity.this::onNoteClick,context);
+                    adapterEvent = new AdapterEvent(eventList, recyclerView, EventParticipatingListActivity.this::onNoteClick,context);
                     recyclerView.setAdapter(adapterEvent);
 
                 }
@@ -165,7 +163,7 @@ public class EventListActivity extends AppCompatActivity implements
 
     }
 
-    @OnClick(R.id.yours)
+    /*@OnClick(R.id.yours)
     void getUserEvents() {
 
 
@@ -190,58 +188,145 @@ public class EventListActivity extends AppCompatActivity implements
             }
         });
 
-    }
+    }*/
 
-    //@OnClick(R.id.profileSidebar)
-    void gotoProfile() {
-        Toast.makeText(EventListActivity.this, "YOUR PROFILE", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventListActivity.this, UserActivity.class));
-        finish();
-        Log.w(TAG, "USERACTIVITY");
-    }
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getTitle().toString()) {
 
-    //@OnClick(R.id.mapSidebar)
+            case "Map":
+                gotoMap();
+                break;
+
+            case "Your profile":
+                gotoProfile();
+                break;
+
+            case "Local events":
+                gotoLocalEvents();
+                break;
+
+            case "Owned events":
+                gotoOwnedEvents();
+                break;
+
+            case "Participating":
+                gotoParticipating();
+                break;
+
+            case "Settings":
+                gotoSettings();
+                break;
+            case "Logout":
+                logout();
+                break;
+
+        }
+        return false;
+    }
     void gotoMap() {
-        Toast.makeText(EventListActivity.this, "MAP", Toast.LENGTH_LONG).show();
-        //startActivity(new Intent(EventActivity.this, MapActivity.class));
-        startActivity(new Intent(EventListActivity.this, MyLocationActivity.class));
-        //startActivity(new Intent(EventActivity.this,MyLocationLayerActivity.class));
-
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to map", Toast.LENGTH_LONG).show();
+        i = new Intent(this, MyLocationActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
         finish();
-        Log.w(TAG, "GOINGTOMAP");
+        Log.w(TAG, "Going to map");
     }
 
     void gotoSettings() {
-        Toast.makeText(EventListActivity.this, "SETTINGS", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventListActivity.this, SettingsActivity.class));
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to settings", Toast.LENGTH_LONG).show();
+        i = new Intent(this, SettingsActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
         finish();
-        Log.w(TAG, "SETTINGS");
+        Log.w(TAG, "Going to settings");
     }
 
-    /*@OnClick(R.id.join)
-    void joinSingleEvent(){
+
+    void gotoProfile() {
         Bundle b = getIntent().getExtras();
-        String event_id = b.getString("event_id");
-        callJoin = service.joinEvent(Integer.parseInt(event_id),"1");
-        callJoin.enqueue(new Callback<Message>() {
-            @Override
-            public void onResponse(Call<Message> call, Response<Message> response) {
-                Log.w(TAG, "You have joined!: " + response);
-                Toast.makeText(SingleEventActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to profile", Toast.LENGTH_LONG).show();
+        i = new Intent(this, UserActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
+        finish();
+        Log.w(TAG, "Going to profile");
+    }
 
-                finish();
-                startActivity(getIntent());
-            }
+    void gotoParticipating() {
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to participating events", Toast.LENGTH_LONG).show();
+        i = new Intent(this, EventParticipatingListActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
+        finish();
+        Log.w(TAG, "Going to participating events");
+    }
 
-            @Override
-            public void onFailure(Call<Message> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
+    void gotoOwnedEvents() {
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to owned events", Toast.LENGTH_LONG).show();
+        i = new Intent(this, EventOwnedListActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
+        finish();
+        Log.w(TAG, "Going to owned events");
+    }
 
-            }
-        });*/
+    void gotoLocalEvents() {
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to local events", Toast.LENGTH_LONG).show();
+        i = new Intent(this, EventLocalListActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
+        finish();
+        Log.w(TAG, "Going to local events");
+    }
 
-
-    //@OnClick(R.id.logoutButton)
     void logout() {
         messageCall = service.logout();
 
@@ -252,14 +337,14 @@ public class EventListActivity extends AppCompatActivity implements
 
                 if (response.isSuccessful()) {
                     String message = response.body().getMessage();
-                    Intent i = new Intent(EventListActivity.this, LoginActivity.class);
+                    Intent i = new Intent(EventParticipatingListActivity.this, LoginActivity.class);
                     i.putExtra("logoutMessage", message);
                     Log.w(TAG, "MESS: " + message);
 
                     tokenManager.deleteToken();
-                    startActivity(new Intent(EventListActivity.this, LoginActivity.class));
+                    startActivity(new Intent(EventParticipatingListActivity.this, LoginActivity.class));
                     finish();
-                    Toast.makeText(EventListActivity.this,"Successful logout",Toast.LENGTH_LONG).show();
+                    Toast.makeText(EventParticipatingListActivity.this,"Successful logout",Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -270,31 +355,6 @@ public class EventListActivity extends AppCompatActivity implements
         });
     }
 
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        Log.w(TAG, "SIDEBAR");
-        //Toast.makeText(EventActivity.this, "TOST", Toast.LENGTH_LONG).show();
-        switch (item.getTitle().toString()) {
-            case "Logout":
-                logout();
-                break;
-            case "Your profile":
-                gotoProfile();
-                break;
-            //case "Your events":
-            case "Map":
-                gotoMap();
-                break;
-            //case "Create event": gotoCreateEvent(); break;
-            case "Settings":
-                gotoSettings();
-                break;
-
-        }
-        return false;
-    }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -327,12 +387,12 @@ public class EventListActivity extends AppCompatActivity implements
             public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
                 Log.w(TAG, "onResponse: " + response);
 
-                List<Event> event = response.body().getData();
+                //List<Event> event = response.body().getData();
                 if (response.isSuccessful()) {
                     eventList = response.body().getData();
                     //recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView,EventActivity.this::onNoteClick));
 
-                    Intent intent = new Intent(EventListActivity.this, EventSingleActivity.class);
+                    Intent intent = new Intent(EventParticipatingListActivity.this, EventSingleActivity.class);
                     intent.putExtra("event_id", String.valueOf(position));
                     //intent.putExtra("event_id", String.valueOf(event.get(position)));
                     startActivity(intent);
@@ -348,20 +408,20 @@ public class EventListActivity extends AppCompatActivity implements
         });
     }
 
-             @Override
-             public boolean onQueryTextSubmit(String query) {
-                 return false;
-             }
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
 
-             @Override
-             public boolean onQueryTextChange(String newText) {
-                 //if(newText.length()==0){
-                     //adapterEvent.getFilter().filter(newText);
-                     //recyclerView.
-                 //}else{
-                     adapterEvent.getFilter().filter(newText);
-                 //}
-                 adapterEvent.notifyDataSetChanged();
-                 return true;
-             }
-         }
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        //if(newText.length()==0){
+        //adapterEvent.getFilter().filter(newText);
+        //recyclerView.
+        //}else{
+        adapterEvent.getFilter().filter(newText);
+        //}
+        adapterEvent.notifyDataSetChanged();
+        return true;
+    }
+}

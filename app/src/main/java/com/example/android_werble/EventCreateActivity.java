@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
-import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.network.ApiService;
@@ -225,7 +224,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
     void gotoEvent() {
         Toast.makeText(EventCreateActivity.this,"CREATING",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventCreateActivity.this, EventListActivity.class));
+        startActivity(new Intent(EventCreateActivity.this, EventLocalListActivity.class));
         finish();
         Log.w(TAG,"CREATE EVENT");
     }

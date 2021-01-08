@@ -30,8 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReviewEditActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        ViewDialog.ViewDialogListener {
+public class ReviewEditActivity extends AppCompatActivity implements ViewDialog.ViewDialogListener {
 
     private static final String TAG = "EventEditActivity";
 
@@ -158,16 +157,6 @@ public class ReviewEditActivity extends AppCompatActivity implements NavigationV
 
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 
     private void setupRules() {

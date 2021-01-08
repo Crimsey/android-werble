@@ -4,19 +4,16 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,11 +30,7 @@ import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
-import com.google.android.material.navigation.NavigationView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventSingleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class EventSingleActivity extends AppCompatActivity {
 
     private static final String TAG = "EventSingleActivity";
     RecyclerView recyclerView;
@@ -438,7 +431,9 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
         void joinSingleEvent(){
             Bundle b = getIntent().getExtras();
             String event_id = b.getString("event_id");
-        callJoin = service.joinEvent(Integer.parseInt(event_id));
+            //String variable = b.getString("variable");
+
+            callJoin = service.joinEvent(Integer.parseInt(event_id));
         callJoin.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
@@ -462,6 +457,8 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
     void leaveSingleEvent(){
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
+        //String variable = b.getString("variable");
+
         callJoin = service.leaveEvent(Integer.parseInt(event_id));
         callJoin.enqueue(new Callback<Message>() {
             @Override
@@ -552,7 +549,7 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
                 if (variableInt == 1) { //check if we came here from adapter
                     System.out.println("variableInt2: " + variableInt);
 
-                    startActivity(new Intent(EventSingleActivity.this, EventListActivity.class));
+                    startActivity(new Intent(EventSingleActivity.this, EventLocalListActivity.class));
                     finish();
                 } else {
                     System.out.println("variableInt3: " + variableInt);
@@ -573,15 +570,6 @@ public class EventSingleActivity extends AppCompatActivity implements Navigation
 
     }*/
 
-        @Override
-        public boolean onNavigationItemSelected (@NonNull MenuItem item){
-            return false;
-        }
-
-        @Override
-        public void onPointerCaptureChanged ( boolean hasCapture){
-
-        }
 
     @Override
     protected void onDestroy() {

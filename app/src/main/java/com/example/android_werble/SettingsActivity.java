@@ -11,7 +11,10 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
@@ -43,6 +46,10 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     private static final String TAG = "SettingsActivity";
 
+    //variables for sidebar
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @BindView(R.id.userFirstName2)
     TextInputEditText userFirstName;
@@ -137,6 +144,25 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                 showDateDialog(userBirthDate);
             }
         });
+
+        //implementation of sidebar
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.openNavDrawer,
+                R.string.closeNavDrawer
+        );
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
         setupRules();
     }
@@ -240,39 +266,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         alert.showDialog(this);
     }
 
-    //@OnClick(R.id.profileSidebar)
-    void gotoProfile() {
-        Toast.makeText(SettingsActivity.this,"TUTAJ",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(SettingsActivity.this, UserActivity.class));
-        finish();
-        Log.w(TAG,"USERACTIVITY");
-    }
-
-    //@OnClick(R.id.mapSidebar)
-    void gotoMap() {
-        Toast.makeText(this,"MAP",Toast.LENGTH_LONG).show();
-        //startActivity(new Intent(EventActivity.this, MapActivity.class));
-        startActivity(new Intent(this,MyLocationActivity.class));
-        //startActivity(new Intent(EventActivity.this,MyLocationLayerActivity.class));
-
-        finish();
-        Log.w(TAG,"GOINGTOMAP");
-    }
-
-    //@OnClick(R.id.createEventSidebar)
-    void gotoCreateEvent() {
-        Toast.makeText(this,"CREATING",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(this, EventCreateActivity.class));
-        finish();
-        Log.w(TAG,"CREATE EVENT");
-    }
-
-    void gotoSettings() {
-        Toast.makeText(this,"SETTINGS",Toast.LENGTH_LONG).show();
-    /*    startActivity(new Intent(this, SettingsActivity.class));
-        finish();*/
-        Log.w(TAG,"SETTINGS");
-    }
 
     @Override
     public void onDeleteClick() {
@@ -296,18 +289,168 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.w(TAG,"SIDEBAR");
-        //Toast.makeText(this,"TOST",Toast.LENGTH_LONG).show();
         switch (item.getTitle().toString()) {
-            //case "Logout": logout(); break;
-            case "Your profile": gotoProfile(); break;
-            //case "Your events":
-            case "Map": gotoMap(); break;
-            case "Create event": gotoCreateEvent(); break;
-            case "Settings": gotoSettings(); break;
+
+            case "Map":
+                gotoMap();
+                break;
+
+            case "Your profile":
+                gotoProfile();
+                break;
+
+            case "Local events":
+                gotoLocalEvents();
+                break;
+
+            case "Owned events":
+                gotoOwnedEvents();
+                break;
+
+            case "Participating":
+                gotoParticipating();
+                break;
+
+            case "Settings":
+                gotoSettings();
+                break;
+            case "Logout":
+                logout();
+                break;
 
         }
-        return false;    }
+        return false;
+    }
+    void gotoMap() {
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to map", Toast.LENGTH_LONG).show();
+        i = new Intent(this, MyLocationActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
+        finish();
+        Log.w(TAG, "Going to map");
+    }
+
+    void gotoSettings() {
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to settings", Toast.LENGTH_LONG).show();
+        i = new Intent(this, SettingsActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
+        finish();
+        Log.w(TAG, "Going to settings");
+    }
+
+
+    void gotoProfile() {
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to profile", Toast.LENGTH_LONG).show();
+        i = new Intent(this, UserActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
+        finish();
+        Log.w(TAG, "Going to profile");
+    }
+
+    void gotoParticipating() {
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to participating events", Toast.LENGTH_LONG).show();
+        i = new Intent(this, EventParticipatingListActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
+        finish();
+        Log.w(TAG, "Going to participating events");
+    }
+
+    void gotoOwnedEvents() {
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to owned events", Toast.LENGTH_LONG).show();
+        i = new Intent(this, EventOwnedListActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
+        finish();
+        Log.w(TAG, "Going to owned events");
+    }
+
+    void gotoLocalEvents() {
+        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        String range;
+        if (i.hasExtra("range")){
+            range = b.getString("range");
+        }else {
+            range="10";
+        }
+        Toast.makeText(this, "Going to local events", Toast.LENGTH_LONG).show();
+        i = new Intent(this, EventLocalListActivity.class);
+        i.putExtra("range",range);
+        startActivity(i);
+        finish();
+        Log.w(TAG, "Going to local events");
+    }
+
+    void logout() {
+        callMessage = service.logout();
+
+        callMessage.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> messageCall, Response<Message> response) {
+                Log.w(TAG, "MESSresponse: " + response);
+
+                if (response.isSuccessful()) {
+                    String message = response.body().getMessage();
+                    Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
+                    i.putExtra("logoutMessage", message);
+                    Log.w(TAG, "MESS: " + message);
+
+                    tokenManager.deleteToken();
+                    startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
+                    finish();
+                    Toast.makeText(SettingsActivity.this,"Successful logout",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message> messageCall, Throwable t) {
+                Log.w(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
