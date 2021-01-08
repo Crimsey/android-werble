@@ -80,7 +80,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder> 
     public AdapterEvent(List<Event> pEvents, Context context) {
         //super();
         mEvents = pEvents;
-        displayedList = pEvents;
+        displayedList = new ArrayList<>(pEvents);
         contextAdapter = context;
     }
 
