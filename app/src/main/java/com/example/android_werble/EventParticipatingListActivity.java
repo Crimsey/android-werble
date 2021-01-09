@@ -1,80 +1,36 @@
 package com.example.android_werble;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
-import com.example.android_werble.entities.Message;
-import com.example.android_werble.network.ApiService;
-import com.example.android_werble.network.RetrofitBuilder;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventParticipatingListActivity extends NavigationActivity implements
-        SearchView.OnQueryTextListener
+public class EventParticipatingListActivity extends MyListActivity
 {
-
-    private static final String TAG = "EventActivity";
-
-    RecyclerView recyclerView;
-    List<Event> eventList;
-
-    Call<Data<Event>> call;
-
-    AdapterEvent adapterEvent;
-    SearchView searchEvent;
-
-    @BindView(R.id.globalRange)
-    TextView globalRange;
+    private static final String TAG = "EventPartActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
-
-        recyclerView = (RecyclerView) findViewById(R.id.eventsRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        searchEvent = findViewById(R.id.searchEvent);
-        searchEvent.setOnQueryTextListener(this);
-        context=this;
-
-
-        ButterKnife.bind(this);
-
-        globalRange.setText("PARTICIPATING");
-
+        globalRange.setText("");
         getParticipatingEvents();
     }
 
     void getParticipatingEvents() {
         call = service.getParticipatingEvents();
+
         call.enqueue(new Callback<Data<Event>>() {
             @Override
             public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
@@ -91,28 +47,7 @@ public class EventParticipatingListActivity extends NavigationActivity implement
                 Log.w(TAG, "onFailure: " + t.getMessage());
             }
         });
-
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (call != null) {
-            call.cancel();
-            call = null;
-        }
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        adapterEvent.getFilter().filter(newText);
-        adapterEvent.notifyDataSetChanged();
-        return true;
-    }
 }

@@ -32,14 +32,12 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 import static androidx.core.content.ContextCompat.startActivity;
 
-public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder> implements Filterable {
+public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
+        implements Filterable {
 
     private List<Event> mEvents;
     private List<Event> displayedList;
     private Context contextAdapter;
-    ConstraintLayout eventID;
-    Call<Message> callJoin;
-    ApiService service;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView eName;
@@ -88,7 +86,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder> 
     @NonNull
     @Override
     public Filter getFilter() {
-        System.out.println("performuje");
+
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
