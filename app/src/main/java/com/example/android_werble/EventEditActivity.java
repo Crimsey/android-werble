@@ -99,26 +99,6 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
-        callEventType = service.getEventTypes();
-        callEventType.enqueue(new Callback<Data<EventType>>() {
-            @Override
-            public void onResponse(Call<Data<EventType>> call, Response<Data<EventType>> response) {
-                if (response.isSuccessful())
-                {
-                    eventTypeList = response.body().getData();
-                    ArrayAdapter eventTypeAdapter =  new ArrayAdapter(EventEditActivity.this, R.layout.arraytype, eventTypeList);
-                    eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
-                    eventType.setAdapter(eventTypeAdapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Data<EventType>> call, Throwable t) {
-
-            }
-        });
-
-
 
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
@@ -129,8 +109,37 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
             public void onResponse(Call<Event> call, Response<Event> response) {
                 if (response.isSuccessful()) {
                     Log.e(TAG, "onResponse: " + response.body());
-
                     Event event = response.body();
+
+                    callEventType = service.getEventTypes();
+                    callEventType.enqueue(new Callback<Data<EventType>>() {
+                    @Override
+                    public void onResponse(Call<Data<EventType>> call, Response<Data<EventType>> response) {
+                        if (response.isSuccessful())
+                {
+                    eventTypeList = response.body().getData();
+                    ArrayAdapter eventTypeAdapter =  new ArrayAdapter(EventEditActivity.this, R.layout.arraytype, eventTypeList);
+                    eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
+                    eventType.setAdapter(eventTypeAdapter);
+
+                    assert event != null;
+                    eventType.setSelection(event.getEventTypeId()-1);
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Data<EventType>> call, Throwable t) {
+
+            }
+        });
+
+
+
+
+
+                    //Event event = response.body();
                     //user_id = user.getUserId().toString();
                     event.getEventTypeId();
 
@@ -150,10 +159,10 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
                         datetime = event.getDatetime();
                         eventEditDatetime.setText(datetime);
                     }
-                    if (event.getEventTypeId()!=null){
+                    /*if (event.getEventTypeId()!=null){
                         type = event.getEventTypeId();//.toString();
                         eventType.setSelection(type-1);
-                    }
+                    }*/
                     if (event.getLocation()!=null){
                         location = event.getLocation();//.toString();
                         eventEditLocation.setText(location);
