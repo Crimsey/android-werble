@@ -38,8 +38,6 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputLayout Email;
     @BindView(R.id.Password)
     TextInputLayout Password;
-    //@BindView(R.id.PasswordConfirmation)
-    //TextInputLayout PasswordConfirmation;
 
     ApiService service;
     Call<AccessToken> call;

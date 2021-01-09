@@ -54,7 +54,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder> 
             eName = (TextView) pItem.findViewById(R.id.eventName);
             eLocation = (TextView) pItem.findViewById(R.id.eventLocation);
             eDatetime = (TextView) pItem.findViewById(R.id.eventDatetime);
-            join = (Button) pItem.findViewById(R.id.join);
+            //join = (Button) pItem.findViewById(R.id.join);
             eDistance = (TextView) pItem.findViewById(R.id.eventDistance);
 
 

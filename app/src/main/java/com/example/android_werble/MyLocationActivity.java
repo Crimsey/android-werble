@@ -62,13 +62,12 @@ import retrofit2.Response;
  * Permission for {@link android.Manifest.permission#ACCESS_FINE_LOCATION} is requested at run
  * time. If the permission has not been granted, the Activity is finished with an error message.
  */
-public class MyLocationActivity extends AppCompatActivity
+public class MyLocationActivity extends NavigationActivity
         implements
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback,
-        NavigationView.OnNavigationItemSelectedListener,
         GoogleMap.OnMarkerClickListener
 {
 
@@ -94,8 +93,8 @@ public class MyLocationActivity extends AppCompatActivity
     List<Event> eventList;
 
     Call<Data<Event>> call;
-    Call<Message> callAccessToken;
-    ApiService service;
+    //Call<Message> callAccessToken;
+    //ApiService service;
     String longitude;
     String latitude;
     TokenManager tokenManager;
@@ -105,14 +104,6 @@ public class MyLocationActivity extends AppCompatActivity
     TextView rangeText;
     Integer range;
 
-    //variables for sidebar
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private Context context;
-
-    //doubleclick
-    boolean doubleBackToExitPressedOnce = false;
     Circle mapCircle=null;
 
 
@@ -122,22 +113,18 @@ public class MyLocationActivity extends AppCompatActivity
         setContentView(R.layout.activity_map);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
-        if (tokenManager.getToken() == null) {
-            startActivity(new Intent(MyLocationActivity.this, LoginActivity.class));
-            finish();
-        }
-        service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
-
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         ButterKnife.bind(this);
-        //seekBar.setProgress(10);
+
         seekBar.refreshDrawableState();
         rangeText.setText(seekBar.getProgress()+"km");
+
+        range = seekBar.getProgress();
+        MyApplication.setGlobalRangeVariable(range);
 
 
         System.out.println("seekBar.getProgress()"+seekBar.getProgress());
@@ -162,6 +149,7 @@ public class MyLocationActivity extends AppCompatActivity
                 range = seekBar.getProgress();
                 rangeText.setText(seekBar.getProgress()+"km");
 
+                MyApplication.setGlobalRangeVariable(range);
 
 
                 call = service.getLocalEvents(range);
@@ -192,7 +180,7 @@ public class MyLocationActivity extends AppCompatActivity
                                     LatLng position = new LatLng(lat, lon); //event position
                                     MarkerOptions markerOptions = new MarkerOptions();//creating marker
                                     markerOptions.position(position);//add position to marker
-                                    markerOptions.title("Name: "+event.getName()+" Distance:"+event.getDistance().toString());//add title to marker
+                                    markerOptions.title("Name: "+event.getName()+" Distance:"+event.getDistance().toString()+"km");//add title to marker
                                     //markerOptions.
 
 
@@ -210,27 +198,6 @@ public class MyLocationActivity extends AppCompatActivity
                 });
             }
         });
-
-
-
-        //implementation of sidebar
-        toolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.drawer_layout_map);
-        navigationView = findViewById(R.id.nav_view);
-
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                toolbar,
-                R.string.openNavDrawer,
-                R.string.closeNavDrawer
-        );
-
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     private void getLastKnownLocation() {
@@ -265,8 +232,8 @@ public class MyLocationActivity extends AppCompatActivity
                     Integer range = seekBar.getProgress();
                     rangeText.setText(range.toString() + "km");
 
-                    callAccessToken = service.userPosition(longitude, latitude);
-                    callAccessToken.enqueue(new Callback<Message>() {
+                    messageCall = service.userPosition(longitude, latitude);
+                    messageCall.enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {
                             Log.w(TAG, "CHECK2");
@@ -315,7 +282,7 @@ public class MyLocationActivity extends AppCompatActivity
         Integer range = seekBar.getProgress();
         rangeText.setText(range.toString()+"km");
 
-        callAccessToken = service.userPosition(longitude,latitude);
+        messageCall = service.userPosition(longitude,latitude);
 
 
         call = service.getLocalEvents(range);
@@ -414,42 +381,6 @@ public class MyLocationActivity extends AppCompatActivity
                 Log.w(TAG, "SINGLE EVENT ACTIVITY");
             }
         });
-        /*if (clickCount !=null) {
-            clickCount++;*/
-
-
-            /*if (doubleBackToExitPressedOnce)
-            {
-                int variable = 2;
-                Intent intent = new Intent(MyLocationActivity.this, EventSingleActivity.class);
-                intent.putExtra("event_id", String.valueOf(marker.getTag()));
-                intent.putExtra("variable", String.valueOf(variable));
-
-                startActivity(intent);
-                finish();
-                Log.w(TAG, "SINGLE EVENT ACTIVITY");
-            }
-            else {
-
-                this.doubleBackToExitPressedOnce = true;
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        doubleBackToExitPressedOnce = false;
-                    }
-                }, 1000);
-
-
-            }*/
-
-            clickCount = 0;
-            /*else{
-                marker.getTitle();
-            }*/
-
-
-
-
 
         // Return false to indicate that we have not consumed the event and that we wish
         // for the default behavior to occur (which is for the camera to move such that the
@@ -482,43 +413,6 @@ public class MyLocationActivity extends AppCompatActivity
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         getLastKnownLocation();
-
-
-        /*call = service.getLocalEvents(range);
-        call.enqueue(new Callback<Data<Event>>() {
-
-            @Override
-            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-                Log.w(TAG, "onResponseLOCALEVENTS: " + response);
-                if (response.isSuccessful()){
-                    eventList = response.body().getData();
-                    Log.w(TAG,"ADDING MARKERS1.0");
-
-                    for (Event event : eventList) {
-                        if (event.getLatitude() != null && event.getLongitude() != null) {
-
-                            Double lat = event.getLatitude();
-                            Double lon = event.getLongitude();
-
-                            LatLng position = new LatLng(lat, lon); //event position
-                            MarkerOptions markerOptions = new MarkerOptions();//creating marker
-                            markerOptions.position(position);//add position to marker
-                            markerOptions.title(event.getDistance()+"\n");//add title to marker
-                            //markerOptions.
-                            map.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
-                            Log.w(TAG, "ADDING MARKERS2.0");
-                        }
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Data<Event>> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-            }
-        });*/
 
         return false;
     }
@@ -567,146 +461,5 @@ public class MyLocationActivity extends AppCompatActivity
         PermissionUtils.PermissionDeniedDialog
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getTitle().toString()) {
-
-            case "Map":
-                gotoMap();
-                break;
-
-            case "Your profile":
-                gotoProfile();
-                break;
-
-            case "Local events":
-                gotoLocalEvents();
-                break;
-
-            case "Owned events":
-                gotoOwnedEvents();
-                break;
-
-            case "Participating":
-                gotoParticipating();
-                break;
-
-            case "Settings":
-                gotoSettings();
-                break;
-            case "Logout":
-                logout();
-                break;
-
-        }
-        return false;
-    }
-    void gotoMap() {
-        range = seekBar.getProgress();
-        String rangeString = String.valueOf(seekBar.getProgress());
-
-        Toast.makeText(this, "Going to map", Toast.LENGTH_LONG).show();
-        Intent i = new Intent(this, MyLocationActivity.class);
-        i.putExtra("range",rangeString);
-        startActivity(i);
-        finish();
-        Log.w(TAG, "Going to map");
-    }
-
-    void gotoSettings() {
-        range = seekBar.getProgress();
-        String rangeString = String.valueOf(seekBar.getProgress());
-
-        Toast.makeText(this, "Going to settings", Toast.LENGTH_LONG).show();
-        Intent i = new Intent(this, SettingsActivity.class);
-        i.putExtra("range",rangeString);
-        startActivity(i);
-        finish();
-        Log.w(TAG, "Going to settings");
-    }
-
-
-    void gotoProfile() {
-        range = seekBar.getProgress();
-        String rangeString = String.valueOf(seekBar.getProgress());
-
-        Toast.makeText(this, "Going to profile", Toast.LENGTH_LONG).show();
-        Intent i = new Intent(this, UserActivity.class);
-        i.putExtra("range",rangeString);
-        startActivity(i);
-        finish();
-        Log.w(TAG, "Going to profile");
-    }
-
-    void gotoParticipating() {
-        range = seekBar.getProgress();
-        String rangeString = String.valueOf(seekBar.getProgress());
-
-        Toast.makeText(this, "Going to participating events", Toast.LENGTH_LONG).show();
-        Intent i = new Intent(this, EventParticipatingListActivity.class);
-        i.putExtra("range",rangeString);
-        startActivity(i);
-        finish();
-        Log.w(TAG, "Going to participating events");
-    }
-
-    void gotoOwnedEvents() {
-        range = seekBar.getProgress();
-        String rangeString = String.valueOf(seekBar.getProgress());
-
-        Toast.makeText(this, "Going to owned events", Toast.LENGTH_LONG).show();
-        Intent i = new Intent(this, EventOwnedListActivity.class);
-        i.putExtra("range",rangeString);
-        startActivity(i);
-        finish();
-        Log.w(TAG, "Going to owned events");
-    }
-
-    void gotoLocalEvents() {
-        range = seekBar.getProgress();
-        String rangeString = String.valueOf(seekBar.getProgress());
-
-        Toast.makeText(this, "Going to local events", Toast.LENGTH_LONG).show();
-        Intent i = new Intent(this, EventLocalListActivity.class);
-        i.putExtra("range",rangeString);
-        startActivity(i);
-        finish();
-        Log.w(TAG, "Going to local events");
-    }
-
-    void logout() {
-        callAccessToken = service.logout();
-
-        callAccessToken.enqueue(new Callback<Message>() {
-            @Override
-            public void onResponse(Call<Message> messageCall, Response<Message> response) {
-                Log.w(TAG, "MESSresponse: " + response);
-
-                if (response.isSuccessful()) {
-                    String message = response.body().getMessage();
-                    Intent i = new Intent(MyLocationActivity.this, LoginActivity.class);
-                    i.putExtra("logoutMessage", message);
-                    Log.w(TAG, "MESS: " + message);
-
-                    tokenManager.deleteToken();
-                    startActivity(new Intent(MyLocationActivity.this, LoginActivity.class));
-                    finish();
-                    Toast.makeText(MyLocationActivity.this,"Successful logout",Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Message> messageCall, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
-
 
 }
