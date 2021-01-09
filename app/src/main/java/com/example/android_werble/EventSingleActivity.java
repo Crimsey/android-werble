@@ -69,7 +69,7 @@ public class EventSingleActivity extends AppCompatActivity {
 
     int yet=0,ended=0,participant=0;
     String latitude,longitude;
-    Integer participantId = 0;
+    String participantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -301,7 +301,7 @@ public class EventSingleActivity extends AppCompatActivity {
                                         System.out.println(TAG+" user_id "+user_id);
                                         System.out.println(TAG+" eventParticipant.getUserId() "+eventParticipant.getUserId());
 
-                                        participantId =  eventParticipant.getEventParticipantId();
+                                        participantId =  eventParticipant.getEventParticipantId().toString();
                                         help++;
                                         System.out.println("help"+help);
                                         System.out.println(TAG+" participantId1 "+participantId);
@@ -358,7 +358,7 @@ public class EventSingleActivity extends AppCompatActivity {
                                                     System.out.println("eventReview.getEventParticipantId(): "+eventReview.getEventParticipantId().toString());
 
                                                     //if (eventReview.getEventParticipantId() == participantId){
-                                                    if (eventReview.getEventParticipantId().toString().equals(participantId.toString())){
+                                                    if (eventReview.getEventParticipantId().toString().equals(participantId)){
                                                         System.out.println("OOOOOparticipantId: "+participantId);
                                                         addReview.setClickable(false);
                                                         addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
@@ -399,11 +399,6 @@ public class EventSingleActivity extends AppCompatActivity {
                 Log.w(TAG, "onFailure: " + t.getMessage());
             }
         });
-
-        System.out.println(TAG+"XXXXXXXXXXXXX participantId2 "+participantId);
-
-
-
 
         //setupRules();
 
@@ -448,11 +443,12 @@ public class EventSingleActivity extends AppCompatActivity {
             public void onResponse(Call<Message> call, Response<Message> response) {
                 Log.w(TAG, "You have joined!: " + response);
                 Toast.makeText(EventSingleActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
-
-                Intent intent = new Intent(EventSingleActivity.this, EventSingleActivity.class);
-                intent.putExtra("event_participant_id",String.valueOf(participantId));
-                startActivity(intent);
                 finish();
+                startActivity(getIntent());
+                //Intent intent = new Intent(EventSingleActivity.this, EventSingleActivity.class);
+                //intent.putExtra("event_participant_id",participantId);
+                //startActivity(intent);
+                //finish();
             }
 
             @Override
@@ -475,13 +471,16 @@ public class EventSingleActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 Log.w(TAG, "You have left event!: " + response);
+                System.out.println(participantId);
                 Toast.makeText(EventSingleActivity.this,"LEAVING EVENT",Toast.LENGTH_LONG).show();
+                finish();
+                startActivity(getIntent());
                 //finish();
                 //gotoMap();
-                Intent intent = new Intent(EventSingleActivity.this, EventSingleActivity.class);
-                intent.putExtra("event_participant_id",String.valueOf(participantId));
-                startActivity(intent);
-                finish();
+                //Intent intent = new Intent(EventSingleActivity.this, EventSingleActivity.class);
+                //intent.putExtra("event_participant_id",participantId);
+                //startActivity(intent);
+                //finish();
             }
 
             @Override
@@ -506,7 +505,7 @@ public class EventSingleActivity extends AppCompatActivity {
         Intent intent = new Intent(EventSingleActivity.this, ReviewCreateActivity.class);
         intent.putExtra("event_id",event_id);
         intent.putExtra("variable",variable);
-        intent.putExtra("event_participant_id",String.valueOf(participantId));
+        intent.putExtra("event_participant_id",participantId);
 
 
         startActivity(intent);
@@ -525,7 +524,7 @@ public class EventSingleActivity extends AppCompatActivity {
         intent.putExtra("lat",latitude);
         intent.putExtra("lon",longitude);
         intent.putExtra("variable",variable);
-        intent.putExtra("event_participant_id",String.valueOf(participantId));
+        intent.putExtra("event_participant_id",participantId);
 
         startActivity(intent);
         finish();
@@ -543,7 +542,7 @@ public class EventSingleActivity extends AppCompatActivity {
 
         Intent intent = new Intent(EventSingleActivity.this, ReviewListActivity.class);
         intent.putExtra("event_id",event_id);
-        intent.putExtra("event_participant_id",String.valueOf(participantId));
+        intent.putExtra("event_participant_id",participantId);
         intent.putExtra("variable",variable);
 
         startActivity(intent);
