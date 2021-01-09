@@ -60,6 +60,12 @@ public interface ApiService {
     @GET("user/events/local")
     Call<Data<Event>> getLocalEvents(@Query("distance") Integer distance);
 
+    @GET("user/events/owned")
+    Call<Data<Event>> getOwnedEvents(@Query("distance") Integer distance);
+
+    @GET("user/events/participating")
+    Call<Data<Event>> getParticipatingEvents(@Query("distance") Integer distance);
+
     @GET("user")
     Call<User> user();
 

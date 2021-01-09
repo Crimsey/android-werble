@@ -162,9 +162,9 @@ public class EventSingleActivity extends AppCompatActivity {
                         distance.setText("Distance: ");
                     }else {distance.setText("Distance: "+event.getDistance().toString()+"km");}
 
-                    if (event.getEventTypeId()==null){
+                    /*if (event.getEventTypeId()==null){
                         type.setText("Type: ");
-                    }else {type.setText("Type: "+getResources().getStringArray(R.array.types)[event.getEventTypeId()-1]);}
+                    }else {type.setText("Type: "+getResources().getStringArray(R.array.types)[event.getEventTypeId()-1]);}*/
                     //
                     if (event.getIsActive()==null){
                         status.setText("Status: ");
@@ -240,7 +240,7 @@ public class EventSingleActivity extends AppCompatActivity {
                                     editSingleEvent.setVisibility(View.VISIBLE);
                                     System.out.println("I AM CREATOR");
                                 }else{
-                                    editSingleEvent.setClickable(true);
+                                    editSingleEvent.setClickable(false);
                                     editSingleEvent.setVisibility(View.INVISIBLE);
                                     System.out.println("I AM NOT CREATOR");
 
@@ -331,7 +331,7 @@ public class EventSingleActivity extends AppCompatActivity {
 
                                 }
                                 if (ended==1){//ended
-                                    System.out.println("ended==1");
+                                    Log.w(TAG,"ended==1");
                                     seeReviews.setClickable(true);
                                     seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
                                     joinSingleEvent.setClickable(false);
@@ -341,7 +341,7 @@ public class EventSingleActivity extends AppCompatActivity {
 
                                 if (help>0 && ended==1)//participant+ended
                                 {
-                                    System.out.println("help>0 && ended==1");
+                                    Log.w(TAG,"help>0 && ended==1");
                                     addReview.setClickable(true);
                                     addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
 
@@ -354,9 +354,18 @@ public class EventSingleActivity extends AppCompatActivity {
                                             if (response.isSuccessful()){
                                                 eventReviewList = response.body().getData();
                                                 for (EventReview eventReview : eventReviewList){
-                                                    if (eventReview.getEventParticipantId() == participantId){
+                                                    System.out.println("OOOOOparticipantId: "+participantId);
+                                                    System.out.println("eventReview.getEventParticipantId(): "+eventReview.getEventParticipantId().toString());
+
+                                                    //if (eventReview.getEventParticipantId() == participantId){
+                                                    if (eventReview.getEventParticipantId().toString().equals(participantId.toString())){
+                                                        System.out.println("OOOOOparticipantId: "+participantId);
                                                         addReview.setClickable(false);
                                                         addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+
+                                                    }
+                                                    else{
+                                                        System.out.println("IF IS NOT WORKING");
                                                     }
                                                 }
                                             }
@@ -440,8 +449,10 @@ public class EventSingleActivity extends AppCompatActivity {
                 Log.w(TAG, "You have joined!: " + response);
                 Toast.makeText(EventSingleActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
 
+                Intent intent = new Intent(EventSingleActivity.this, EventSingleActivity.class);
+                intent.putExtra("event_participant_id",String.valueOf(participantId));
+                startActivity(intent);
                 finish();
-                startActivity(getIntent());
             }
 
             @Override
@@ -467,8 +478,10 @@ public class EventSingleActivity extends AppCompatActivity {
                 Toast.makeText(EventSingleActivity.this,"LEAVING EVENT",Toast.LENGTH_LONG).show();
                 //finish();
                 //gotoMap();
+                Intent intent = new Intent(EventSingleActivity.this, EventSingleActivity.class);
+                intent.putExtra("event_participant_id",String.valueOf(participantId));
+                startActivity(intent);
                 finish();
-                startActivity(getIntent());
             }
 
             @Override
@@ -493,6 +506,8 @@ public class EventSingleActivity extends AppCompatActivity {
         Intent intent = new Intent(EventSingleActivity.this, ReviewCreateActivity.class);
         intent.putExtra("event_id",event_id);
         intent.putExtra("variable",variable);
+        intent.putExtra("event_participant_id",String.valueOf(participantId));
+
 
         startActivity(intent);
         finish();
@@ -510,6 +525,7 @@ public class EventSingleActivity extends AppCompatActivity {
         intent.putExtra("lat",latitude);
         intent.putExtra("lon",longitude);
         intent.putExtra("variable",variable);
+        intent.putExtra("event_participant_id",String.valueOf(participantId));
 
         startActivity(intent);
         finish();
@@ -522,7 +538,7 @@ public class EventSingleActivity extends AppCompatActivity {
         String event_id = b.getString("event_id");
         String variable = b.getString("variable");
 
-        System.out.println(TAG+" participantId3 "+participantId);
+        System.out.println(TAG+"RRRRRRR participantId3 "+participantId);
 
 
         Intent intent = new Intent(EventSingleActivity.this, ReviewListActivity.class);

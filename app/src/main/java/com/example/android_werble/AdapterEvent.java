@@ -109,7 +109,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder> 
                 } else {
                     filtered.values = new ArrayList<>(displayedList);
                     filtered.count = displayedList.size();
-                    System.out.println("count : " + filtered.count);
                 }
                 return filtered;
             }
@@ -117,7 +116,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder> 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (constraint.length() > 0 && results.count > 0) {
-                    System.out.println("constraint: " + constraint + " len: " + constraint.length());
                     mEvents.clear();
                     mEvents.addAll((ArrayList<Event>) results.values);
                     notifyDataSetChanged();
@@ -147,7 +145,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder> 
         holder.eName.setText(holder.eEvent.getName());
         holder.eLocation.setText("Location: " + holder.eEvent.getLocation());
         holder.eDatetime.setText("Datetime: " + holder.eEvent.getDatetime());
-        holder.eDistance.setText("Distance: " + holder.eEvent.getDistance().toString());
+        holder.eDistance.setText("Distance: " + holder.eEvent.getDistance().toString()+"km");
 
 
     }

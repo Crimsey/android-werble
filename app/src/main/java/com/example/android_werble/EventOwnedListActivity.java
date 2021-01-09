@@ -111,11 +111,11 @@ public class EventOwnedListActivity extends AppCompatActivity implements
         if (getIntent().hasExtra("range")){
             Bundle b = getIntent().getExtras();
             String range = b.getString("range");
-            call = service.getLocalEvents(Integer.parseInt(range));
+            call = service.getOwnedEvents(Integer.parseInt(range));
         }
         else
         {
-            call = service.getLocalEvents(10);
+            call = service.getOwnedEvents(10);
         }
 
 
@@ -123,7 +123,7 @@ public class EventOwnedListActivity extends AppCompatActivity implements
 
             @Override
             public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-                Log.w(TAG,"GETLOCALEVENTS");
+                Log.w(TAG,"GETOWNEDEVENTS");
 
                 Log.w(TAG, "onResponse: " + response);
 
@@ -133,25 +133,7 @@ public class EventOwnedListActivity extends AppCompatActivity implements
                     recyclerView.setAdapter(adapterEvent);
 
                 }
-                /*if (response.isSuccessful()) {
-                    List<Event> eventList = response.body().getData();
-                    String content = "";
-                    for (Event event : eventList) {
 
-                        content += "Id :" + event.getEventId().toString() + "\n" +
-                                "name: " + event.getName() + "\n";//.getData().get(i).getEventId() + "\n";
-                    }*/
-                //title.setText(content);
-                //title.setText(response.body().getData().get(0).getName());
-                //String titleEvent = response.body().getData().get(0).getName();
-                //title.setText(titleEvent);
-                //Log.w(TAG, "getEvents" + response);
-                //}
-                /*else {
-                    tokenManager.deleteToken();
-                    startActivity(new Intent(EventActivity.this, LoginActivity.class));
-                    finish();
-                }*/
             }
 
             @Override
@@ -161,33 +143,6 @@ public class EventOwnedListActivity extends AppCompatActivity implements
         });
 
     }
-
-    /*@OnClick(R.id.yours)
-    void getUserEvents() {
-
-
-        call = service.getUserEvents();
-        call.enqueue(new Callback<Data<Event>>() {
-
-            @Override
-            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-                Log.w(TAG,"GETUSEREVENTS");
-                Log.w(TAG, "onResponse: " + response);
-
-                if (response.isSuccessful()) {
-                    eventList = response.body().getData();
-                    recyclerView.setAdapter(adapterEvent);
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Data<Event>> call, Throwable t) {
-                Log.w(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-
-    }*/
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -373,39 +328,6 @@ public class EventOwnedListActivity extends AppCompatActivity implements
         }
     }
 
-//    @Override
-//    public void onNoteClick(int position) {
-//        Log.d(TAG, "onNoteClick: clicked.");
-//
-//
-//        call = service.getLocalEvents(10);
-//        call.enqueue(new Callback<Data<Event>>() {
-//
-//
-//            @Override
-//            public void onResponse(Call<Data<Event>> call, Response<Data<Event>> response) {
-//                Log.w(TAG, "onResponse: " + response);
-//
-//                //List<Event> event = response.body().getData();
-//                if (response.isSuccessful()) {
-//                    eventList = response.body().getData();
-//                    //recyclerView.setAdapter(new AdapterEvent(eventList, recyclerView,EventActivity.this::onNoteClick));
-//
-//                    Intent intent = new Intent(EventOwnedListActivity.this, EventSingleActivity.class);
-//                    intent.putExtra("event_id", String.valueOf(position));
-//                    //intent.putExtra("event_id", String.valueOf(event.get(position)));
-//                    startActivity(intent);
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Data<Event>> call, Throwable t) {
-//                Log.w(TAG, "onFailure: " + t.getMessage());
-//            }
-//        });
-//    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -414,12 +336,7 @@ public class EventOwnedListActivity extends AppCompatActivity implements
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        //if(newText.length()==0){
-        //adapterEvent.getFilter().filter(newText);
-        //recyclerView.
-        //}else{
         adapterEvent.getFilter().filter(newText);
-        //}
         adapterEvent.notifyDataSetChanged();
         return true;
     }

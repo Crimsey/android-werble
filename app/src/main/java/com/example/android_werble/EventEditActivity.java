@@ -99,10 +99,6 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
-        //eventType = findViewById(R.id.eventEditType);
-        //ArrayAdapter eventTypeAdapter =  ArrayAdapter.createFromResource(EventEditActivity.this,R.array.types,R.layout.arraytype);
-        //eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
-        //eventType.setAdapter(eventTypeAdapter);
         callEventType = service.getEventTypes();
         callEventType.enqueue(new Callback<Data<EventType>>() {
             @Override
@@ -353,33 +349,6 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
     void deleteEvent() {
         ViewDialog alert = new ViewDialog();
         alert.showDialog(this);
-        /*Bundle b = getIntent().getExtras();
-        String event_id = b.getString("event_id");
-        String variable = b.getString("variable");
-        System.out.println("variable: " + variable);
-
-        callMessage = service.deleteEvent(Integer.parseInt((event_id)));
-        Intent intent;
-        if (Integer.parseInt(variable)==1) {
-            intent = new Intent(EventEditActivity.this, EventSingleActivity.class);
-            intent.putExtra("event_id",event_id);
-            intent.putExtra("lat",latitude);
-            intent.putExtra("lon",longitude);
-            intent.putExtra("variable",variable);
-            startActivity(intent);
-        }
-        else {
-            intent = new Intent(EventEditActivity.this, EventSingleActivity.class);
-            intent.putExtra("event_id",event_id);
-            intent.putExtra("lat",latitude);
-            intent.putExtra("lon",longitude);
-            intent.putExtra("variable",variable);
-            startActivity(intent);
-        }
-
-        startActivity(intent);
-        finish();*/
-
     }
 
     @Override
@@ -394,10 +363,8 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
             public void onResponse(Call<Message> call, Response<Message> response) {
                 if (response.isSuccessful()) {
                     Log.e(TAG, "onResponse: " + response);
-
                 }
             }
-
 
             @Override
             public void onFailure(Call<Message> call, Throwable t) {

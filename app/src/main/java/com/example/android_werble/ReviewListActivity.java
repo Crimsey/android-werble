@@ -100,12 +100,14 @@ public class ReviewListActivity extends AppCompatActivity  {
                     if (event_participant_id!=null){
 
                     Integer event_participant_idInteger = Integer.parseInt(event_participant_id);
-                        System.out.println("event_participant_id2 "+event_participant_id);
+                        System.out.println("event_participant_id2 "+event_participant_idInteger);
 
                     for (EventReview eventReview : eventReviewsList){
+                        System.out.println("event_participant_id3 "+event_participant_idInteger);
+
                         if (eventReview.getEventParticipantId() == event_participant_idInteger){
                             isThereUsersReview++;
-                            System.out.println("event_participant_id3 "+event_participant_id);
+                            System.out.println("BINGO + event_participant_id3 "+event_participant_idInteger);
 
                         }
                     }
