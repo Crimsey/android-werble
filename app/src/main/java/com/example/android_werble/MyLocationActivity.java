@@ -24,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -193,7 +194,10 @@ public class MyLocationActivity extends AppCompatActivity
                                     markerOptions.position(position);//add position to marker
                                     markerOptions.title("Name: "+event.getName()+" Distance:"+event.getDistance().toString());//add title to marker
                                     //markerOptions.
+
+
                                     map.addMarker(markerOptions).setTag(event.getEventId());//display marker on map
+
                                     Log.w(TAG, "ADDING MARKERS2");
                                 }
                             }
@@ -206,6 +210,8 @@ public class MyLocationActivity extends AppCompatActivity
                 });
             }
         });
+
+
 
         //implementation of sidebar
         toolbar = findViewById(R.id.main_toolbar);
@@ -382,20 +388,37 @@ public class MyLocationActivity extends AppCompatActivity
 
     }
 
+
     /** Called when the user clicks a marker. */
+    @SuppressLint("PotentialBehaviorOverride")
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
         // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
 
+        marker.showInfoWindow();
 
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
+            @Override
+            public void onInfoWindowClick(Marker arg0) {
+                System.out.println("setOnInfoWindowClickListener onInfoWindowClick");
+                int variable = 2;
+                Intent intent = new Intent(MyLocationActivity.this, EventSingleActivity.class);
+                intent.putExtra("event_id", String.valueOf(marker.getTag()));
+                intent.putExtra("variable", String.valueOf(variable));
+
+                startActivity(intent);
+                finish();
+                Log.w(TAG, "SINGLE EVENT ACTIVITY");
+            }
+        });
         /*if (clickCount !=null) {
             clickCount++;*/
 
 
-            if (doubleBackToExitPressedOnce)
+            /*if (doubleBackToExitPressedOnce)
             {
                 int variable = 2;
                 Intent intent = new Intent(MyLocationActivity.this, EventSingleActivity.class);
@@ -417,7 +440,7 @@ public class MyLocationActivity extends AppCompatActivity
                 }, 1000);
 
 
-            }
+            }*/
 
             clickCount = 0;
             /*else{

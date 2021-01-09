@@ -103,19 +103,19 @@ public class EventParticipatingListActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        getLocalEvents();
+        getParticipatingEvents();
     }
 
     @OnClick(R.id.join)
-    void getLocalEvents() {
+    void getParticipatingEvents() {
         if (getIntent().hasExtra("range")){
             Bundle b = getIntent().getExtras();
             String range = b.getString("range");
-            call = service.getLocalEvents(Integer.parseInt(range));
+            call = service.getParticipatingEvents(Integer.parseInt(range));
         }
         else
         {
-            call = service.getLocalEvents(10);
+            call = service.getParticipatingEvents(10);
         }
 
 
