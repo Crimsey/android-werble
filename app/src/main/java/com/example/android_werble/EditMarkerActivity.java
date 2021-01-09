@@ -1,7 +1,5 @@
 package com.example.android_werble;
 
-import com.example.android_werble.entities.Data;
-import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
@@ -23,7 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -38,8 +35,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -83,16 +78,14 @@ public class EditMarkerActivity extends AppCompatActivity
     private GoogleMap map;
 
     private FusedLocationProviderClient mFusedLocationClient;
-
-    List<Event> eventList;
-
-    Call<Data<Event>> call;
-    Call<Message> callAccessToken;
+    
+    Call<Message> call;
     ApiService service;
     String longitude;
     String latitude;
     TokenManager tokenManager;
-
+    LatLng newMarkerPosition;
+    FloatingActionButton fab;
 
     //private Geocoder geocoder;
 
@@ -149,9 +142,9 @@ public class EditMarkerActivity extends AppCompatActivity
                     latitude = String.valueOf(location.getLatitude());
                     Log.e(TAG, "location.getLatitude(): " + location.getLatitude());
 
-                    callAccessToken = service.userPosition(longitude,latitude);
+                    call = service.userPosition(longitude,latitude);
 
-                    callAccessToken.enqueue(new Callback<Message>() {
+                    call.enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {
                             Log.w(TAG,"CHECK2");
@@ -181,10 +174,103 @@ public class EditMarkerActivity extends AppCompatActivity
         map.setOnMyLocationClickListener(this);
         enableMyLocation();
         map.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
+       
+        Bundle b = getIntent().getExtras();
+        String event_id = b.getString("event_id");
+        String name = b.getString("name");
+        String location = b.getString("location");
+        String description = b.getString("description");
+        String datetime = b.getString("datetime");
+        String event_type_id = b.getString("event_type_id");
+        String zip_code = b.getString("zip_code");
+        String street_name = b.getString("street_name");
+        String house_number = b.getString("house_number");
+        String sLat = b.getString("lat");
+        String sLon = b.getString("lon");
+
+        Double lat = Double.parseDouble(sLat);
+        Double lon = Double.parseDouble(sLon);
+
+        newMarkerPosition = new LatLng(lat, lon); //event position
+
+        MarkerOptions markerOptions = new MarkerOptions();//creating marker
+        markerOptions.position(newMarkerPosition);//add position to marker
+        markerOptions.title(name);//add title to marker
+        markerOptions.draggable(true);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+
+        map.addMarker(markerOptions).setTag(event_id);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(newMarkerPosition,12));
+
+        fab = findViewById(R.id.fab2);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("INSIDE");
+
+                //map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                //   @Override
+                //   public void onMapClick(LatLng latLng) {
+                //int variable = 2;
+                Bundle b = getIntent().getExtras();
+                String variable = b.getString("variable");
+                String range = b.getString("range");
+
+                Intent intent = new Intent(EditMarkerActivity.this, EventEditActivity.class);
+                intent.putExtra("event_id",String.valueOf(event_id));
+                intent.putExtra("lat",String.valueOf(newMarkerPosition.latitude));
+                intent.putExtra("lon",String.valueOf(newMarkerPosition.longitude));
+                intent.putExtra("name", name);
+                intent.putExtra("location",location);
+                intent.putExtra("description",description);
+                intent.putExtra("datetime",datetime);
+                intent.putExtra("event_type_id",event_type_id);
+                intent.putExtra("zip_code",zip_code);
+                intent.putExtra("street_name",street_name);
+                intent.putExtra("house_number",house_number);
+                intent.putExtra("variable",variable);
+                intent.putExtra("range",range);
+
+                startActivity(intent);
+                finish();
+            }
+        });
 
         System.out.println("OUTSIDE FLOATING BUTTON");
 
+        map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker arg0) {
+                Log.d("System out", "onMarkerDragStart..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
+            }
 
+            @SuppressWarnings("unchecked")
+            @Override
+            public void onMarkerDragEnd(Marker arg0) {
+                // TODO Auto-generated method stub
+                Log.d("System out", "onMarkerDragEnd..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
+
+                map.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
+
+                System.out.println("event_idInt"+event_id);
+                System.out.println("arg0.getPosition().longitude"+arg0.getPosition().longitude);
+                System.out.println("arg0.getPosition().latitude"+arg0.getPosition().latitude);
+                System.out.println("event_idInt"+event_id);
+                System.out.println("name"+name);
+                System.out.println("location"+location);
+                System.out.println("description"+description);
+                System.out.println("event_idInt"+event_id);
+                System.out.println("event_idInt"+event_id);
+                System.out.println("BEFORE");
+            }
+
+            @Override
+            public void onMarkerDrag(Marker arg0) {
+                // TODO Auto-generated method stub
+                Log.i("System out", "onMarkerDrag...");
+                newMarkerPosition = arg0.getPosition();
+            }
+        });
     }
 
     /** Called when the user clicks a marker. */

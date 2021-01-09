@@ -264,7 +264,8 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
         String variable = b.getString("variable");
-
+        String lon = b.getString("lon");
+        String lat = b.getString("lat");
 
         Intent intent = new Intent(EventEditActivity.this, EditMarkerActivity.class);
         intent.putExtra("event_id",event_id);
@@ -273,6 +274,8 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
         intent.putExtra("description",eventEditDescription.getText().toString());
         intent.putExtra("datetime",eventEditDatetime.getText().toString());
         intent.putExtra("event_type_id",String.valueOf(eventType.getSelectedItemId()));
+        intent.putExtra("lon",lon);
+        intent.putExtra("lat",lat);
         intent.putExtra("variable",variable);
         intent.putExtra("zip_code",eventEditZipcode.getText().toString());
         intent.putExtra("street_name",eventEditStreet.getText().toString());
