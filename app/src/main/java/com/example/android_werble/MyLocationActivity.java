@@ -104,12 +104,6 @@ public class MyLocationActivity extends NavigationActivity
     TextView rangeText;
     Integer range;
 
-    //variables for sidebar
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private Context context;
-
     Circle mapCircle=null;
 
 
@@ -119,13 +113,6 @@ public class MyLocationActivity extends NavigationActivity
         setContentView(R.layout.activity_map);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        /*tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
-        if (tokenManager.getToken() == null) {
-            startActivity(new Intent(MyLocationActivity.this, LoginActivity.class));
-            finish();
-        }
-        service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
-           */
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -211,27 +198,6 @@ public class MyLocationActivity extends NavigationActivity
                 });
             }
         });
-
-
-
-        //implementation of sidebar
-        toolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.drawer_layout_map);
-        navigationView = findViewById(R.id.nav_view);
-
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                toolbar,
-                R.string.openNavDrawer,
-                R.string.closeNavDrawer
-        );
-
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     private void getLastKnownLocation() {

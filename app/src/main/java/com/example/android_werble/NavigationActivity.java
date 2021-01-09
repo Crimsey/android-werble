@@ -34,11 +34,36 @@ public class NavigationActivity extends AppCompatActivity implements
     protected Toolbar toolbar;
     protected DrawerLayout drawerLayout;
     protected NavigationView navigationView;
+    protected ActionBarDrawerToggle actionBarDrawerToggle;
 
     Call<Message> messageCall;
     ApiService service;
     TokenManager tokenManager;
     Context context;
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        setupDrawer();
+    }
+
+    void setupDrawer(){
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.main_toolbar);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.openNavDrawer,
+                R.string.closeNavDrawer
+        );
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +80,6 @@ public class NavigationActivity extends AppCompatActivity implements
         //implementation of sidebar
 
         setSupportActionBar(toolbar);
-
-
     }
 
     @Override

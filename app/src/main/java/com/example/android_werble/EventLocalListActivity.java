@@ -70,24 +70,12 @@ public class EventLocalListActivity extends NavigationActivity implements
 
         ButterKnife.bind(this);
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        toolbar = findViewById(R.id.main_toolbar);
 
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                toolbar,
-                R.string.openNavDrawer,
-                R.string.closeNavDrawer
-        );
-
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
 
         getLocalEvents();
     }
+
+
 
     void getLocalEvents() {
         call = service.getLocalEvents(MyApplication.getGlobalRangeVariable());
