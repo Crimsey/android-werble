@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.network.ApiService;
@@ -38,7 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputLayout Email;
     @BindView(R.id.Password)
     TextInputLayout Password;
-
+    @BindView(R.id.PasswordConfirmation)
+    TextInputLayout PasswordConfirmation;
     ApiService service;
     Call<AccessToken> call;
     AwesomeValidation validator;
@@ -68,40 +68,45 @@ public class RegisterActivity extends AppCompatActivity {
         String name = Login.getEditText().getText().toString();
         String email = Email.getEditText().getText().toString();
         String password = Password.getEditText().getText().toString();
-        //String password_confirmation = PasswordConfirmation().getText().toString();
+        String password_confirmation = PasswordConfirmation.getEditText().getText().toString();
+
 
         Login.setError(null);
         Email.setError(null);
         Password.setError(null);
-
+        PasswordConfirmation.setError(null);
         validator.clear();
 
         if(validator.validate()) {
-            String password_confirmation = password;
-            call = service.register(name, email, password,password_confirmation);
-            call.enqueue(new Callback<AccessToken>() {
-                @Override
-                public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
+            if (password_confirmation.equals(password)) {
+                call = service.register(name, email, password, password_confirmation);
+                call.enqueue(new Callback<AccessToken>() {
+                    @Override
+                    public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
 
-                    Log.e(TAG, "onResponse: " + response);
+                        Log.e(TAG, "onResponse: " + response);
 
-                    if (response.isSuccessful()) {
-                        Log.e(TAG, "onResponse: " + response.body());
-                        tokenManager.saveToken(response.body());
-                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                        finish();
-                        Toast.makeText(RegisterActivity.this,"Successful registration",Toast.LENGTH_LONG).show();
+                        if (response.isSuccessful()) {
+                            Log.e(TAG, "onResponse: " + response.body());
+                            tokenManager.saveToken(response.body());
+                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                            finish();
+                            Toast.makeText(RegisterActivity.this, "Successful registration", Toast.LENGTH_LONG).show();
 
-                    } else {
-                        handleErrors(response.errorBody());
+                        } else {
+                            handleErrors(response.errorBody());
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<AccessToken> call, Throwable t) {
-                    Log.e(TAG, "onFailure: " + t.getMessage());
-                }
-            });
+                    @Override
+                    public void onFailure(Call<AccessToken> call, Throwable t) {
+                        Log.e(TAG, "onFailure: " + t.getMessage());
+                    }
+                });
+            }
+            else {
+                Toast.makeText(RegisterActivity.this,"Passwords doesn't match!",Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -109,7 +114,6 @@ public class RegisterActivity extends AppCompatActivity {
     void goToLogin(){
         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
         Toast.makeText(RegisterActivity.this,"Login",Toast.LENGTH_LONG).show();
-
     }
 
     private void handleErrors(ResponseBody response){
@@ -129,15 +133,15 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
          else {
-            Log.e("no errors","karol");
+            Log.e("no errors","No errors occured");
          }
         }
 
 
     public void setupRules(){
-        validator.addValidation(this,R.id.Login, "[a-zA-Z0-9]{4,50}",R.string.err_login);
+        validator.addValidation(this,R.id.Login, "[a-zA-Z0-9]{4,30}",R.string.err_login);
         validator.addValidation(this,R.id.Email, Patterns.EMAIL_ADDRESS,R.string.err_email);
-        validator.addValidation(this,R.id.Password,"[a-zA-Z0-9]{8,50}",R.string.err_password);
+        validator.addValidation(this,R.id.Password,"[a-zA-Z0-9]{8,64}",R.string.err_password);
     }
 
     @Override

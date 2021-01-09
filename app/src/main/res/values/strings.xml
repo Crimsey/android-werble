@@ -14,9 +14,11 @@
     <string name="openNavDrawer">Navigation Drawer Open</string>
     <string name="closeNavDrawer">Navigation Drawer Close</string>
     <string name="title_activity_map">Map</string>
-    <string name="err_event_name">Wrong event name!</string>
-    <string name="err_event_location">Wrong location!</string>
-    <string name="err_event_datetime">Wrong datetime!</string>
+    <string name="err_event_name">Name should have 3-50 characters!(letters,numbers)</string>
+    <string name="err_event_location">3-100 characters(letters,numbers)!</string>
+    <string name="err_event_zipcode">Format XX-XXX (digits)!</string>
+
+    <string name="err_event_datetime">Empty datetime!</string>
     <string name="location_permission_denied">Location permission denied</string>
     <string name="permission_required_toast">Permission required</string>
     <string name="permission_rationale_location">Permission Rationale Location</string>

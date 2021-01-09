@@ -17,7 +17,9 @@
     <color name="teal_200">#FF03DA</color>
     <color name="teal_700">#009688</color>
     <color name="blank">#8AC1B9</color>
-    <color name="black">#FF0000</color>
+    <color name="light">#CBEAE5</color>
+
+    <color name="black">#101010</color>
     <color name="white">#FFFFFF</color>
     <color name="colorPrimary">#FCFCFC</color>
     <color name="colorPrimaryDark">#AAAABB</color>

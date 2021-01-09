@@ -209,6 +209,8 @@ public class EventCreateActivity extends AppCompatActivity {
         eventDescription.setError(null);
         eventDatetime.setError(null);
 
+        eventDatetime.setError(null);
+
         validator.clear();
 
         if (validator.validate()) {
@@ -251,6 +253,11 @@ public class EventCreateActivity extends AppCompatActivity {
         Log.w(TAG,"CREATE EVENT");
     }
 
+    @OnClick(R.id.backToMap)
+    void back(){
+        startActivity(new Intent(EventCreateActivity.this, EventLocalListActivity.class));
+        finish();
+    }
 
     private void handleErrors(ResponseBody response) {
 
@@ -275,9 +282,12 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     public void setupRules() {
-        validator.addValidation(this, R.id.eventName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
-        validator.addValidation(this, R.id.eventLocation, RegexTemplate.NOT_EMPTY, R.string.err_event_location);
+        validator.addValidation(this, R.id.eventName, "[a-zA-Z0-9]{3,50}", R.string.err_event_name);
+        validator.addValidation(this, R.id.eventLocation, "[a-zA-Z0-9]{3,100}", R.string.err_event_location);
         validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
+        validator.addValidation(this, R.id.eventZipcode, "^[0-9]{2}-[0-9]{3}$|^\\s*$", R.string.err_event_zipcode);
+
+
     }
 
     @Override

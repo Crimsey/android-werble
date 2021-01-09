@@ -68,7 +68,8 @@ public class SettingsActivity extends NavigationActivity implements
 
         Log.w(TAG,"My tu w ogóle wchodzimy?");
         ButterKnife.bind(this);
-        tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+        //tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
+        validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
         call = service.user();
 
@@ -217,7 +218,7 @@ public class SettingsActivity extends NavigationActivity implements
     }
 
     public void setupRules() {
-        //validator.addValidation(this, R.id.eventEditName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
+        validator.addValidation(this, R.id.eventEditName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         //validator.addValidation(this, R.id.eventEditDescription, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         //validator.addValidation(this, R.id.userBirthDate, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
 
