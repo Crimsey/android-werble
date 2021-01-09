@@ -26,6 +26,7 @@ import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.EventParticipant;
 import com.example.android_werble.entities.EventReview;
+import com.example.android_werble.entities.EventType;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.entities.User;
 import com.example.android_werble.network.ApiService;
@@ -47,6 +48,8 @@ public class EventSingleActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     List<EventParticipant> eventParticipantList;
     List<EventReview> eventReviewList;
+    List<EventType> eventTypeList;
+
 
     Call<Message> callJoin;
     ApiService service;
@@ -54,6 +57,7 @@ public class EventSingleActivity extends AppCompatActivity {
     Call<User> callUser;
     Call<Data<EventParticipant>> callParticipant;
     Call<Data<EventReview>> callReview;
+    Call<Data<EventType>> callType;
 
     Call<AccessToken> callAccessToken;
     AwesomeValidation validator;
@@ -164,24 +168,46 @@ public class EventSingleActivity extends AppCompatActivity {
 
                     /*if (event.getEventTypeId()==null){
                         type.setText("Type: ");
-                    }else {type.setText("Type: "+getResources().getStringArray(R.array.types)[event.getEventTypeId()-1]);}*/
+                    }else {type.setText("Type: "+event.getEventTypeId());}*/
+
+                    /*if (event.getEventTypeId()==null){
+                        type.setText("Type: ");
+                    }else {type.setText("Type: "+ eventTypeList.get(event.getEventTypeId()));}*/
+                    //type.setText("Type: "+ eventTypeList.get(event.getEventTypeId()));
+
+                    callType = service.getEventTypes();
+                    callType.enqueue(new Callback<Data<EventType>>() {
+                        @Override
+                        public void onResponse(Call<Data<EventType>> call, Response<Data<EventType>> response) {
+                            if (response.isSuccessful()) {
+                                eventTypeList = response.body().getData();
+                                if (event.getEventTypeId() == null) {
+                                    type.setText("Type: ");
+                                } else {
+                                    String typeString = String.valueOf(eventTypeList.get(event.getEventTypeId() - 1));
+                                    type.setText("Type: " +typeString);
+                                }
+                            } else {
+                                type.setText("Type: ");
+
+                            }
+                            StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+                            SpannableString spannableType = new SpannableString(type.getText());
+                            spannableType.setSpan(boldSpan,0,4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            type.setText(spannableType);
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Data<EventType>> call, Throwable t) {
+
+                        }
+                    });
+
                     //
                     if (event.getIsActive()==null){
                         status.setText("Status: ");
                     }else {
-                        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
-                        Date currentTime = new Date();
-                    try {
-                        Date eventDate = simpleDateFormat.parse(event.getDatetime());
-                        if (currentTime.after(eventDate)){
-                            event.setIsActive(1);
-                        }else{
-                            event.setIsActive(0);
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }*/
-
                         switch (event.getIsActive()) {
                             case 0:
                                 status.setText("Status: Ended");
@@ -204,10 +230,8 @@ public class EventSingleActivity extends AppCompatActivity {
                     SpannableString spannableDescription = new SpannableString(description.getText());
                     SpannableString spannableDatetime = new SpannableString(datetime.getText());
                     SpannableString spannableDistance = new SpannableString(distance.getText());
-                    SpannableString spannableType = new SpannableString(type.getText());
                     SpannableString spannableStatus = new SpannableString(status.getText());
 
-                    //spannableName.setSpan(boldSpan,0,4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     spannableLocation.setSpan(boldSpan,0,8, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
                     spannableZipCode.setSpan(boldSpan,0,7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     spannableStreet.setSpan(boldSpan,0,6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -215,7 +239,6 @@ public class EventSingleActivity extends AppCompatActivity {
                     spannableDescription.setSpan(boldSpan,0,11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     spannableDatetime.setSpan(boldSpan,0,8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     spannableDistance.setSpan(boldSpan,0,8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    spannableType.setSpan(boldSpan,0,4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     spannableStatus.setSpan(boldSpan,0,6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     location.setText(spannableLocation);
@@ -225,7 +248,7 @@ public class EventSingleActivity extends AppCompatActivity {
                     description.setText(spannableDescription);
                     datetime.setText(spannableDatetime);
                     distance.setText(spannableDistance);
-                    type.setText(spannableType);
+                    //type.setText(spannableType);
                     status.setText(spannableStatus);
 
                     callUser = service.user();
