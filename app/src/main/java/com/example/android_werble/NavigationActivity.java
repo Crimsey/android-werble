@@ -31,16 +31,14 @@ public class NavigationActivity extends AppCompatActivity implements
 
     private static final String TAG = "NavigationActivity";
 
-    //variables for sidebar
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+    protected Toolbar toolbar;
+    protected DrawerLayout drawerLayout;
+    protected NavigationView navigationView;
 
     Call<Message> messageCall;
     ApiService service;
     TokenManager tokenManager;
     Context context;
-    //Call<Data<Event>> call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,32 +46,17 @@ public class NavigationActivity extends AppCompatActivity implements
         context = this;
 
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
-
         if (tokenManager.getToken() == null) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
-
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
 
         //implementation of sidebar
-        toolbar = findViewById(R.id.main_toolbar);
+
         setSupportActionBar(toolbar);
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
 
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                toolbar,
-                R.string.openNavDrawer,
-                R.string.closeNavDrawer
-        );
-
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override

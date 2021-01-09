@@ -35,9 +35,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.android_werble.R.id.drawer_layout;
+import static com.example.android_werble.R.id.main_toolbar;
+import static com.example.android_werble.R.id.nav_view;
+
 public class EventLocalListActivity extends NavigationActivity implements
         SearchView.OnQueryTextListener
-         {
+
+{
 
     private static final String TAG = "EventActivity";
 
@@ -53,6 +58,7 @@ public class EventLocalListActivity extends NavigationActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_event);
 
         recyclerView = (RecyclerView) findViewById(R.id.eventsRecyclerView);
@@ -61,9 +67,24 @@ public class EventLocalListActivity extends NavigationActivity implements
 
         searchEvent = findViewById(R.id.searchEvent);
         searchEvent.setOnQueryTextListener(this);
-        context=this;
 
         ButterKnife.bind(this);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.main_toolbar);
+
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.openNavDrawer,
+                R.string.closeNavDrawer
+        );
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
         getLocalEvents();
     }
