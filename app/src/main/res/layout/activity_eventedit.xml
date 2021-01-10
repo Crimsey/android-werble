@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -16,27 +16,14 @@
             android:orientation="vertical">
 
 
-            <TextView
-                android:id="@+id/eventEditTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Editing event"
-                android:textColor="#0C0C0C"
-                android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/eventEditName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditTitle">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/eventEditName2"
@@ -168,7 +155,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditType" />
+                app:layout_constraintTop_toBottomOf="@+id/eventEditType"
+                app:layout_constraintVertical_bias="0.666" />
 
             <Button
                 android:id="@+id/backToEventSingle"
@@ -193,7 +181,7 @@
                 android:text="edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.95"
+                app:layout_constraintHorizontal_bias="0.962"
                 app:layout_constraintStart_toStartOf="parent"></Button>
 
             <Button
@@ -205,9 +193,11 @@
                 android:text="delete event"
 
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editButton"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/backToEventSingle"
                 app:layout_constraintTop_toBottomOf="@+id/editMarker"
-                app:layout_constraintVertical_bias="0.741" />
+                app:layout_constraintVertical_bias="0.428" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -220,7 +210,18 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="#00BFA5">
+
+            <TextView
+                android:id="@+id/eventEditTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Editing event"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+        </com.google.android.material.appbar.AppBarLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView

@@ -50,12 +50,12 @@ public class NavigationActivity extends AppCompatActivity implements
     void setupDrawer(){
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        toolbar = findViewById(R.id.main_toolbar);
+        //toolbar = findViewById(R.id.main_toolbar);
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
-                toolbar,
+                null,
                 R.string.openNavDrawer,
                 R.string.closeNavDrawer
         );

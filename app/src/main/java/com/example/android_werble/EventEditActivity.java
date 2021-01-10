@@ -416,9 +416,9 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
         validator.addValidation(this, R.id.eventEditDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
 
         validator.addValidation(this, R.id.eventEditZipcode, "^[0-9]{2}-[0-9]{3}$|^\\s*$", R.string.err_event_zipcode);
-        validator.addValidation(this, R.id.eventEditDescription, "[a-zA-Z0-9]{,200}|^\\s*$", R.string.err_event_description);
-        validator.addValidation(this, R.id.eventEditHouseNum, "[a-zA-Z0-9]{,10}|^\\s*$", R.string.err_event_housenumber);
-        validator.addValidation(this, R.id.eventEditStreet, "[a-zA-Z0-9]{,50}|^\\s*$", R.string.err_event_street);
+        validator.addValidation(this, R.id.eventEditDescription, "[a-zA-Z0-9]{1,200}|^\\s*$", R.string.err_event_description);
+        validator.addValidation(this, R.id.eventEditHouseNum, "[a-zA-Z0-9]{1,10}|^\\s*$", R.string.err_event_housenumber);
+        validator.addValidation(this, R.id.eventEditStreet, "[a-zA-Z0-9]{1,50}|^\\s*$", R.string.err_event_street);
     }
 
     void gotoEventList() {
