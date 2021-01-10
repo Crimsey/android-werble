@@ -116,7 +116,7 @@ public class ReviewCreateActivity extends AppCompatActivity {
     }
 
     public void setupRules() {
-        validator.addValidation(this, R.id.reviewContent, RegexTemplate.NOT_EMPTY, R.string.err_reviewcontent);
+        validator.addValidation(this, R.id.reviewContent, "{1,280}", R.string.err_reviewcontent);
     }
 
     void gotoReviewList() {

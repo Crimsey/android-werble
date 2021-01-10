@@ -135,10 +135,6 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
             }
         });
 
-
-
-
-
                     //Event event = response.body();
                     //user_id = user.getUserId().toString();
                     event.getEventTypeId();
@@ -325,6 +321,7 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
                 public void onResponse(Call<Message> call, Response<Message> response) {
                     if (response.isSuccessful()){
                         Log.e(TAG, "onResponse: " + response);
+                        gotoEvent();
 
                     } else {
                     handleErrors(response.errorBody());
@@ -338,7 +335,6 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
                 }
             });
         }
-        gotoEvent();
     }
 
     @OnClick(R.id.backToEventSingle)
@@ -411,14 +407,14 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
     }
 
     private void setupRules() {
-        validator.addValidation(this, R.id.eventEditName, "[a-zA-Z0-9]{3,50}", R.string.err_event_name);
-        validator.addValidation(this, R.id.eventEditLocation, "[a-zA-Z0-9]{3,100}", R.string.err_event_location);
+        validator.addValidation(this, R.id.eventEditName, "[a-zA-Z0-9 ]{3,50}", R.string.err_event_name);
+        validator.addValidation(this, R.id.eventEditLocation, "[a-zA-Z0-9 ]{3,100}", R.string.err_event_location);
         validator.addValidation(this, R.id.eventEditDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
 
         validator.addValidation(this, R.id.eventEditZipcode, "^[0-9]{2}-[0-9]{3}$|^\\s*$", R.string.err_event_zipcode);
-        validator.addValidation(this, R.id.eventEditDescription, "[a-zA-Z0-9]{1,200}|^\\s*$", R.string.err_event_description);
-        validator.addValidation(this, R.id.eventEditHouseNum, "[a-zA-Z0-9]{1,10}|^\\s*$", R.string.err_event_housenumber);
-        validator.addValidation(this, R.id.eventEditStreet, "[a-zA-Z0-9]{1,50}|^\\s*$", R.string.err_event_street);
+        validator.addValidation(this, R.id.eventEditDescription, ".{1,200}|^\\s*$", R.string.err_event_description);
+        validator.addValidation(this, R.id.eventEditHouseNum, "[a-zA-Z0-9 ]{1,10}|^\\s*$", R.string.err_event_housenumber);
+        validator.addValidation(this, R.id.eventEditStreet, "[a-zA-Z0-9 ]{1,50}|^\\s*$", R.string.err_event_street);
     }
 
     void gotoEventList() {

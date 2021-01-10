@@ -27,6 +27,7 @@ public class EventOwnedListActivity extends MyListActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        eventsTitle.setText("EVENTS OWNED");
         globalRange.setText("");
         getOwnedEvents();
     }

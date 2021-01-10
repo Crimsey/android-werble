@@ -7,7 +7,7 @@
     <string name="err_login2">Login cannot be empty</string>
     <string name="err_password2">Password cannot be empty</string>
 
-    <string name="err_reviewcontent">Review cannot be empty</string>
+    <string name="err_reviewcontent">Review cannot be empty (max 280characters)</string>
     <string name="err_reviewrating">Rating cannot be empty</string>
 
 

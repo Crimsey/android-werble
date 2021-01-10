@@ -28,6 +28,8 @@ implements SearchView.OnQueryTextListener
 
     @BindView(R.id.globalRange)
     TextView globalRange;
+    @BindView(R.id.eventsTitle)
+    TextView eventsTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
