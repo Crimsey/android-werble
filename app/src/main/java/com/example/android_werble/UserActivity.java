@@ -71,11 +71,11 @@ public class UserActivity extends NavigationActivity {
 
 
                     if (user.getFirstName()==null ){
-                        firstname.setText("YOUR_FIRST_NAME");
+                        firstname.setText("FIRST NAME");
                     }else  {firstname.setText(user.getFirstName().toString());}
 
                     if (user.getLastName()==null){
-                        lastname.setText("YOUR_LAST_NAME");
+                        lastname.setText("LAST NAME");
                     }else  {lastname.setText(user.getLastName().toString());}
 
                     if (user.getBirthDate()==null){

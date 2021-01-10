@@ -75,7 +75,14 @@ public interface ApiService {
                         @Field("first_name") String first_name,
                         @Field("last_name") String last_name,
                         @Field("birth_date") String birth_date,
-                        @Field("description") String description);
+                        @Field("description") String description,
+                        @Field("email") String email);
+
+    @PUT("user/profile/editpassword")
+    @FormUrlEncoded
+    Call<Message> userEditPassword(
+            @Field("password") String password);
+
     @PUT("user/position")
     @FormUrlEncoded
     Call<Message> userPosition(

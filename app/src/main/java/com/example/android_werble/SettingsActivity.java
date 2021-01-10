@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,12 +56,16 @@ public class SettingsActivity extends NavigationActivity implements
     TextInputEditText userBirthDate;
     @BindView(R.id.userDescription2)
     TextInputEditText userDescription;
+    @BindView(R.id.userEmail2)
+    TextInputEditText userEmail;
+    @BindView(R.id.userPassword2)
+    TextInputEditText userPassword;
 
     Button calbutton,deactivateProfile;
 
     Call<User> call;
     AwesomeValidation validator;
-    String user_id,firstName,lastName,birthDate,description;
+    String user_id,firstName,lastName,birthDate,description,email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +106,10 @@ public class SettingsActivity extends NavigationActivity implements
                         description = user.getDescription().toString();
                         userDescription.setText(description);
                     }
+                    if (user.getEmail()!=null){
+                        email = user.getEmail();
+                        userEmail.setText(email);
+                    }
 
                 } else {
                     handleErrors(response.errorBody());
@@ -121,13 +131,6 @@ public class SettingsActivity extends NavigationActivity implements
             }
         });
 
-        calbutton = findViewById(R.id.calbutton);
-        calbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDateDialog(userBirthDate);
-            }
-        });
         setupRules();
     }
 
@@ -154,25 +157,27 @@ public class SettingsActivity extends NavigationActivity implements
         String lastName = userLastName.getText().toString();
         String birthDate = userBirthDate.getText().toString();
         String description = userDescription.getText().toString();
+        String email = userEmail.getText().toString();
+        String password = userPassword.getText().toString();
 
         userFirstName.setError(null);
         userLastName.setError(null);
         userBirthDate.setError(null);
         userDescription.setError(null);
-
+        userEmail.setError(null);
+        //userPassword.setError(null);
         validator.clear();
 
         if (validator.validate()) {
 
-            messageCall = service.userEdit(firstName, lastName, birthDate, description);//,password);
+            messageCall = service.userEdit(firstName, lastName, birthDate, description, email);//,password);
 
             messageCall.enqueue(new Callback<Message>() {
                 @Override
                 public void onResponse(Call<Message> call, Response<Message> response) {
-                    Log.w(TAG,"CHECK2");
+                    Log.w(TAG, "CHECK2");
                     if (response.isSuccessful()) {
                         Log.e(TAG, "onResponse: " + response);
-
 
 
                     } else {
@@ -187,9 +192,31 @@ public class SettingsActivity extends NavigationActivity implements
                 }
             });
         }
+        userPassword.setError(null);
+        validator.clear();
+            if (!password.isEmpty()) {
+                if (validator.validate()) {
+                    messageCall = service.userEditPassword(password);
+                    messageCall.enqueue(new Callback<Message>() {
+                        @Override
+                        public void onResponse(Call<Message> call, Response<Message> response) {
+                            if (response.isSuccessful()) {
+                                Log.e(TAG, "onResponse: " + response);
+                                gotoProfile();
 
-        gotoProfile();
+                            }
+                        }
 
+                        @Override
+                        public void onFailure(Call<Message> call, Throwable t) {
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+                        }
+                    });
+                }
+            }
+            else {
+                gotoProfile();
+            }
     }
 
     private void handleErrors(ResponseBody response) {
@@ -211,14 +238,20 @@ public class SettingsActivity extends NavigationActivity implements
                 if (error.getKey().equals("description")) {
                     userDescription.setError(error.getValue().get(0));
                 }
+                if (error.getKey().equals("email")) {
+                    userEmail.setError(error.getValue().get(0));
+                }
             }
         } else {
-            Log.e("no errors", "weird");
+            Log.e("no errors", "No errors occured");
         }
     }
 
     public void setupRules() {
-        validator.addValidation(this, R.id.eventEditName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
+        //validator.addValidation(this, R.id.userFirstName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
+        validator.addValidation(this,R.id.userEmail, Patterns.EMAIL_ADDRESS,R.string.err_email);
+        validator.addValidation(this,R.id.userPassword,"[a-zA-Z0-9]{8,64}|null",R.string.err_password);
+
         //validator.addValidation(this, R.id.eventEditDescription, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         //validator.addValidation(this, R.id.userBirthDate, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
 
