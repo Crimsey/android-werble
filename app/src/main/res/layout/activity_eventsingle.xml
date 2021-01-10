@@ -36,8 +36,9 @@
 
     <LinearLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="414dp"
-        android:layout_height="563dp"
+        android:layout_width="0dp"
+        android:layout_height="574dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/returntomaporlist"
         app:layout_constraintEnd_toEndOf="parent"
@@ -150,7 +151,7 @@
                 app:layout_constraintVertical_bias="0.005" />
 
             <RelativeLayout
-                android:layout_width="411dp"
+                android:layout_width="0dp"
                 android:layout_height="325dp"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
