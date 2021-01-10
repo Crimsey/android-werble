@@ -259,7 +259,6 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
 
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-        String variable = b.getString("variable");
         String lon = b.getString("lon");
         String lat = b.getString("lat");
 
@@ -272,11 +271,9 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
         intent.putExtra("event_type_id",String.valueOf(eventType.getSelectedItemId()));
         intent.putExtra("lon",lon);
         intent.putExtra("lat",lat);
-        intent.putExtra("variable",variable);
         intent.putExtra("zip_code",eventEditZipcode.getText().toString());
         intent.putExtra("street_name",eventEditStreet.getText().toString());
         intent.putExtra("house_number",eventEditHouseNum.getText().toString());
-        intent.putExtra("variable",variable);
 
         startActivity(intent);
         finish();
@@ -341,14 +338,11 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
     void gotoEvent() {
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-        String variable = b.getString("variable");
-        System.out.println("variable: " + variable);
 
         Intent intent = new Intent(EventEditActivity.this,EventSingleActivity.class);
         intent.putExtra("event_id",event_id);
         intent.putExtra("lat",latitude);
         intent.putExtra("lon",longitude);
-        intent.putExtra("variable",variable);
         startActivity(intent);
         finish();
     }
@@ -418,45 +412,21 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
     }
 
     void gotoEventList() {
-        Bundle b = getIntent().getExtras();
-        String event_id = b.getString("event_id");
-        String variable = b.getString("variable");
-        String range = b.getString("range");
-
-        if (variable.equals(1)) {
-            Intent intent = new Intent(EventEditActivity.this, EventLocalListActivity.class);
-            intent.putExtra("event_id", event_id);
-            intent.putExtra("name", eventEditName.getText().toString());
-            intent.putExtra("location", eventEditLocation.getText().toString());
-            intent.putExtra("description", eventEditDescription.getText().toString());
-            intent.putExtra("datetime", eventEditDatetime.getText().toString());
-            intent.putExtra("event_type_id", String.valueOf(eventType.getSelectedItemId()));
-            intent.putExtra("variable", variable);
-            intent.putExtra("zip_code", eventEditZipcode.getText().toString());
-            intent.putExtra("street_name", eventEditStreet.getText().toString());
-            intent.putExtra("house_number", eventEditHouseNum.getText().toString());
-            intent.putExtra("range", range);
-
-            startActivity(intent);
-            finish();
-        } else {
-            Intent intent = new Intent(EventEditActivity.this, MyLocationActivity.class);
-            intent.putExtra("event_id", event_id);
-            intent.putExtra("name", eventEditName.getText().toString());
-            intent.putExtra("location", eventEditLocation.getText().toString());
-            intent.putExtra("description", eventEditDescription.getText().toString());
-            intent.putExtra("datetime", eventEditDatetime.getText().toString());
-            intent.putExtra("event_type_id", String.valueOf(eventType.getSelectedItemId()));
-            intent.putExtra("variable", variable);
-            intent.putExtra("zip_code", eventEditZipcode.getText().toString());
-            intent.putExtra("street_name", eventEditStreet.getText().toString());
-            intent.putExtra("house_number", eventEditHouseNum.getText().toString());
-            intent.putExtra("range", range);
-
-            startActivity(intent);
-            finish();
+        switch (MyApplication.getManaging()) {
+            case 2:
+                startActivity(new Intent(this, MyLocationActivity.class));
+                break;
+            case 3:
+                startActivity(new Intent(this, EventOwnedListActivity.class));
+                break;
+            case 4:
+                startActivity(new Intent(this, EventParticipatingListActivity.class));
+                break;
+            default:
+                startActivity(new Intent(this, EventLocalListActivity.class));
+                break;
         }
-        
+        finish();
     }
 
     @Override

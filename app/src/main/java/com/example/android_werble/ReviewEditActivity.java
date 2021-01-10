@@ -130,29 +130,11 @@ public class ReviewEditActivity extends AppCompatActivity implements ViewDialog.
     void gotoReviewList() {
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-        String variable = b.getString("variable");
         String event_participant_id = b.getString("event_participant_id");
 
 
         Intent intent = new Intent(ReviewEditActivity.this, ReviewListActivity.class);
         intent.putExtra("event_id",event_id);
-        intent.putExtra("variable",variable);
-        intent.putExtra("event_participant_id",event_participant_id);
-
-        startActivity(intent);
-        finish();
-    }
-
-    void gotoReviewEdit() {
-        Bundle b = getIntent().getExtras();
-        String event_id = b.getString("event_id");
-        String variable = b.getString("variable");
-        String event_participant_id = b.getString("event_participant_id");
-
-
-        Intent intent = new Intent(ReviewEditActivity.this, ReviewListActivity.class);
-        intent.putExtra("event_id",event_id);
-        intent.putExtra("variable",variable);
         intent.putExtra("event_participant_id",event_participant_id);
 
         startActivity(intent);
@@ -167,7 +149,6 @@ public class ReviewEditActivity extends AppCompatActivity implements ViewDialog.
     public void onDeleteClick() {
         Bundle b = getIntent().getExtras();
         String event_participant_id = b.getString("event_participant_id");
-        System.out.println("deleteReview() event_participant_id "+event_participant_id);
         Integer event_participant_idInteger = Integer.parseInt(event_participant_id);
         callMessage = service.deleteReview(event_participant_idInteger);
         callMessage.enqueue(new Callback<Message>() {

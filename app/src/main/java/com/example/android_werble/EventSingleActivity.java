@@ -59,8 +59,8 @@ public class EventSingleActivity extends AppCompatActivity {
     Call<Data<EventReview>> callReview;
     Call<Data<EventType>> callType;
 
-    Call<AccessToken> callAccessToken;
-    AwesomeValidation validator;
+    //Call<AccessToken> callAccessToken;
+    //AwesomeValidation validator;
     TokenManager tokenManager;
 
 
@@ -71,7 +71,7 @@ public class EventSingleActivity extends AppCompatActivity {
     Button editSingleEvent;
     Button leaveSingleEvent;
 
-    int yet=0,ended=0,participant=0;
+    int ended=0;
     String latitude,longitude;
     String participantId;
 
@@ -166,15 +166,6 @@ public class EventSingleActivity extends AppCompatActivity {
                         distance.setText("Distance: ");
                     }else {distance.setText("Distance: "+event.getDistance().toString()+"km");}
 
-                    /*if (event.getEventTypeId()==null){
-                        type.setText("Type: ");
-                    }else {type.setText("Type: "+event.getEventTypeId());}*/
-
-                    /*if (event.getEventTypeId()==null){
-                        type.setText("Type: ");
-                    }else {type.setText("Type: "+ eventTypeList.get(event.getEventTypeId()));}*/
-                    //type.setText("Type: "+ eventTypeList.get(event.getEventTypeId()));
-
                     callType = service.getEventTypes();
                     callType.enqueue(new Callback<Data<EventType>>() {
                         @Override
@@ -204,7 +195,6 @@ public class EventSingleActivity extends AppCompatActivity {
                         }
                     });
 
-                    //
                     if (event.getIsActive()==null){
                         status.setText("Status: ");
                     }else {
@@ -216,13 +206,11 @@ public class EventSingleActivity extends AppCompatActivity {
 
                             case 1:
                                 status.setText("Status: Not started yet");
-                                yet++;
                                 break;
                         }
                     }
                     StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
 
-                    //SpannableString spannableName = new SpannableString(name.getText());
                     SpannableString spannableLocation = new SpannableString(location.getText());
                     SpannableString spannableZipCode = new SpannableString(zip_code.getText());
                     SpannableString spannableStreet = new SpannableString(street_name.getText());
@@ -248,7 +236,6 @@ public class EventSingleActivity extends AppCompatActivity {
                     description.setText(spannableDescription);
                     datetime.setText(spannableDatetime);
                     distance.setText(spannableDistance);
-                    //type.setText(spannableType);
                     status.setText(spannableStatus);
 
                     callUser = service.user();
@@ -261,39 +248,26 @@ public class EventSingleActivity extends AppCompatActivity {
                                 if (event.getEventCreatorId() == user.getUserId()){
                                     editSingleEvent.setClickable(true);
                                     editSingleEvent.setVisibility(View.VISIBLE);
-                                    System.out.println("I AM CREATOR");
                                 }else{
                                     editSingleEvent.setClickable(false);
                                     editSingleEvent.setVisibility(View.INVISIBLE);
-                                    System.out.println("I AM NOT CREATOR");
-
                                 }
-
-
                             }
                         }
-
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
                             Log.w(TAG, "onFailure: " + t.getMessage());
-
                         }
                     });
-
-
                 } else {
                     handleErrors(response.errorBody());
                 }
             }
-
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage());
-
             }
         });
-
-        Log.w(TAG, "PRE-PARTICIPANT");
 
         callUser = service.user();
         callUser.enqueue(new Callback<User>() {
@@ -303,7 +277,6 @@ public class EventSingleActivity extends AppCompatActivity {
 
                     User user = response.body();
                     Integer user_id = user.getUserId();
-                    String login = user.getLogin();
                     callParticipant = service.getEventParticipant(Integer.parseInt(event_id));
                     callParticipant.enqueue(new Callback<Data<EventParticipant>>() {
 
@@ -314,26 +287,15 @@ public class EventSingleActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 eventParticipantList = response.body().getData();
                                 recyclerView.setAdapter(new AdapterParticipant(eventParticipantList, recyclerView));
-                                Log.w(TAG, "PARTICIPANT2");
 
-                                //hide buttons if USER ISNT PARTICIPANT
-                                //AND IN FUTURE IF EVENT ISNT'T DONE!!!!!!!!!!1
-                                int help=0,help2=0;
+                                int help=0;
                                 for (EventParticipant eventParticipant : eventParticipantList) {
                                     if (eventParticipant.getUserId() == user_id){
-                                        System.out.println(TAG+" user_id "+user_id);
-                                        System.out.println(TAG+" eventParticipant.getUserId() "+eventParticipant.getUserId());
-
                                         participantId =  eventParticipant.getEventParticipantId().toString();
                                         help++;
-                                        System.out.println("help"+help);
-                                        System.out.println(TAG+" participantId1 "+participantId);
-                                        System.out.println(TAG+" eventParticipant.getEventParticipantId() "+eventParticipant.getEventParticipantId());
-
                                     }
 
                                 }
-
                                 addReview.setClickable(false);
                                 seeReviews.setClickable(false);
                                 addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
@@ -341,30 +303,17 @@ public class EventSingleActivity extends AppCompatActivity {
                                 leaveSingleEvent.setVisibility(View.GONE);
 
                                 if (help>0){ //participant
-                                    System.out.println("help>0");
-                                    //addReview.setClickable(true);
-                                    //addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
-
-                                    //joinSingleEvent.setClickable(false);
-                                    //joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));
                                     joinSingleEvent.setVisibility(View.GONE);
                                     leaveSingleEvent.setVisibility(View.VISIBLE);
-                                    Log.w(TAG,"help>0 = "+help);
-
-
                                 }
                                 if (ended==1){//ended
-                                    Log.w(TAG,"ended==1");
                                     seeReviews.setClickable(true);
                                     seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
                                     joinSingleEvent.setClickable(false);
                                     joinSingleEvent.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blank)));
-
                                 }
-
                                 if (help>0 && ended==1)//participant+ended
                                 {
-                                    Log.w(TAG,"help>0 && ended==1");
                                     addReview.setClickable(true);
                                     addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
 
@@ -377,18 +326,9 @@ public class EventSingleActivity extends AppCompatActivity {
                                             if (response.isSuccessful()){
                                                 eventReviewList = response.body().getData();
                                                 for (EventReview eventReview : eventReviewList){
-                                                    System.out.println("OOOOOparticipantId: "+participantId);
-                                                    System.out.println("eventReview.getEventParticipantId(): "+eventReview.getEventParticipantId().toString());
-
-                                                    //if (eventReview.getEventParticipantId() == participantId){
                                                     if (eventReview.getEventParticipantId().toString().equals(participantId)){
-                                                        System.out.println("OOOOOparticipantId: "+participantId);
                                                         addReview.setClickable(false);
                                                         addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
-
-                                                    }
-                                                    else{
-                                                        System.out.println("IF IS NOT WORKING");
                                                     }
                                                 }
                                             }
@@ -458,20 +398,16 @@ public class EventSingleActivity extends AppCompatActivity {
         void joinSingleEvent(){
             Bundle b = getIntent().getExtras();
             String event_id = b.getString("event_id");
-            //String variable = b.getString("variable");
 
             callJoin = service.joinEvent(Integer.parseInt(event_id));
-        callJoin.enqueue(new Callback<Message>() {
+            callJoin.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 Log.w(TAG, "You have joined!: " + response);
                 Toast.makeText(EventSingleActivity.this,"JOINING EVENT",Toast.LENGTH_LONG).show();
                 finish();
                 startActivity(getIntent());
-                //Intent intent = new Intent(EventSingleActivity.this, EventSingleActivity.class);
-                //intent.putExtra("event_participant_id",participantId);
-                //startActivity(intent);
-                //finish();
+
             }
 
             @Override
@@ -487,25 +423,16 @@ public class EventSingleActivity extends AppCompatActivity {
     void leaveSingleEvent(){
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-        //String variable = b.getString("variable");
 
         callJoin = service.leaveEvent(Integer.parseInt(event_id));
         callJoin.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 Log.w(TAG, "You have left event!: " + response);
-                System.out.println(participantId);
                 Toast.makeText(EventSingleActivity.this,"LEAVING EVENT",Toast.LENGTH_LONG).show();
                 finish();
                 startActivity(getIntent());
-                //finish();
-                //gotoMap();
-                //Intent intent = new Intent(EventSingleActivity.this, EventSingleActivity.class);
-                //intent.putExtra("event_participant_id",participantId);
-                //startActivity(intent);
-                //finish();
             }
-
             @Override
             public void onFailure(Call<Message> call, Throwable t) {
                 Log.w(TAG, "onFailure: " + t.getMessage());
@@ -517,17 +444,11 @@ public class EventSingleActivity extends AppCompatActivity {
 
     @OnClick(R.id.addReview)
     void gotoReview(){
-        //startActivity(new Intent(EventSingleActivity.this,ReviewCreateActivity.class));
-        //finish();
-        //Log.w(TAG,"Going to Review");
-
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-        String variable = b.getString("variable");
 
         Intent intent = new Intent(EventSingleActivity.this, ReviewCreateActivity.class);
         intent.putExtra("event_id",event_id);
-        intent.putExtra("variable",variable);
         intent.putExtra("event_participant_id",participantId);
 
 
@@ -540,13 +461,11 @@ public class EventSingleActivity extends AppCompatActivity {
     void gotoEditSingleEvent(){
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-        String variable = b.getString("variable");
 
         Intent intent = new Intent(EventSingleActivity.this, EventEditActivity.class);
         intent.putExtra("event_id",event_id);
         intent.putExtra("lat",latitude);
         intent.putExtra("lon",longitude);
-        intent.putExtra("variable",variable);
         intent.putExtra("event_participant_id",participantId);
 
         startActivity(intent);
@@ -558,15 +477,10 @@ public class EventSingleActivity extends AppCompatActivity {
     void listReviews(){
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-        String variable = b.getString("variable");
-
-        System.out.println(TAG+"RRRRRRR participantId3 "+participantId);
-
 
         Intent intent = new Intent(EventSingleActivity.this, ReviewListActivity.class);
         intent.putExtra("event_id",event_id);
         intent.putExtra("event_participant_id",participantId);
-        intent.putExtra("variable",variable);
 
         startActivity(intent);
         finish();
@@ -574,29 +488,14 @@ public class EventSingleActivity extends AppCompatActivity {
 
         @OnClick(R.id.returntomaporlist)
         void gotoMap() {
-            //Toast.makeText(EventActivity.this,"MAP",Toast.LENGTH_LONG).show();
-
-            Bundle b = getIntent().getExtras();
-            String variable = b.getString("variable");
-            System.out.println("variable: " + variable);
-
-            if (variable != null) {
-                Integer variableInt = Integer.parseInt(variable);
-
-                System.out.println("variableInt1: " + variableInt);
-                if (variableInt == 1) { //check if we came here from adapter
-                    System.out.println("variableInt2: " + variableInt);
-
-                    startActivity(new Intent(EventSingleActivity.this, EventLocalListActivity.class));
-                    finish();
-                } else {
-                    System.out.println("variableInt3: " + variableInt);
-
-                    startActivity(new Intent(EventSingleActivity.this, MyLocationActivity.class));
-                    finish();
-                    Log.w(TAG, "Returning to map");
-                }
+            switch (MyApplication.getManaging()){
+                case 2: startActivity(new Intent(this, MyLocationActivity.class)); break;
+                case 3: startActivity(new Intent(this, EventOwnedListActivity.class)); break;
+                case 4: startActivity(new Intent(this, EventParticipatingListActivity.class)); break;
+                default: startActivity(new Intent(this, EventLocalListActivity.class)); break;
             }
+            finish();
+
         }
 
 

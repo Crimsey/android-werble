@@ -18,6 +18,7 @@ public class EventLocalListActivity extends MyListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         globalRange.setText("RANGE OF EXPLORING: " + MyApplication.getGlobalRangeVariable()+"km");
+        MyApplication.setManaging(1);
         getLocalEvents();
     }
 

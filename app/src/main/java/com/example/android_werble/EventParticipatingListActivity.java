@@ -24,6 +24,8 @@ public class EventParticipatingListActivity extends MyListActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApplication.setManaging(4);
+
         eventsTitle.setText("PARTICIPATING");
         globalRange.setText("");
         getParticipatingEvents();

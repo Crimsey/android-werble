@@ -21,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -56,7 +57,6 @@ public class EditMarkerActivity extends AppCompatActivity
         OnMyLocationClickListener,
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback,
-        NavigationView.OnNavigationItemSelectedListener,
         GoogleMap.OnMarkerClickListener
 {
 
@@ -86,8 +86,6 @@ public class EditMarkerActivity extends AppCompatActivity
     TokenManager tokenManager;
     LatLng newMarkerPosition;
     FloatingActionButton fab;
-
-    //private Geocoder geocoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +165,7 @@ public class EditMarkerActivity extends AppCompatActivity
         });
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
@@ -206,16 +205,6 @@ public class EditMarkerActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("INSIDE");
-
-                //map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                //   @Override
-                //   public void onMapClick(LatLng latLng) {
-                //int variable = 2;
-                Bundle b = getIntent().getExtras();
-                String variable = b.getString("variable");
-                String range = b.getString("range");
-
                 Intent intent = new Intent(EditMarkerActivity.this, EventEditActivity.class);
                 intent.putExtra("event_id",String.valueOf(event_id));
                 intent.putExtra("lat",String.valueOf(newMarkerPosition.latitude));
@@ -228,15 +217,10 @@ public class EditMarkerActivity extends AppCompatActivity
                 intent.putExtra("zip_code",zip_code);
                 intent.putExtra("street_name",street_name);
                 intent.putExtra("house_number",house_number);
-                intent.putExtra("variable",variable);
-                intent.putExtra("range",range);
-
                 startActivity(intent);
                 finish();
             }
         });
-
-        System.out.println("OUTSIDE FLOATING BUTTON");
 
         map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
@@ -244,23 +228,12 @@ public class EditMarkerActivity extends AppCompatActivity
                 Log.d("System out", "onMarkerDragStart..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
             }
 
-            @SuppressWarnings("unchecked")
             @Override
             public void onMarkerDragEnd(Marker arg0) {
                 // TODO Auto-generated method stub
                 Log.d("System out", "onMarkerDragEnd..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
                 map.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
 
-                System.out.println("event_idInt"+event_id);
-                System.out.println("arg0.getPosition().longitude"+arg0.getPosition().longitude);
-                System.out.println("arg0.getPosition().latitude"+arg0.getPosition().latitude);
-                System.out.println("event_idInt"+event_id);
-                System.out.println("name"+name);
-                System.out.println("location"+location);
-                System.out.println("description"+description);
-                System.out.println("event_idInt"+event_id);
-                System.out.println("event_idInt"+event_id);
-                System.out.println("BEFORE");
             }
 
             @Override
@@ -275,21 +248,6 @@ public class EditMarkerActivity extends AppCompatActivity
     /** Called when the user clicks a marker. */
     @Override
     public boolean onMarkerClick(final Marker marker) {
-
-        /*Integer clickCount = (Integer) marker.getTag();
-
-
-        if (clickCount !=null) {
-            clickCount++;
-
-            Intent intent = new Intent(EditMarkerActivity.this, EventSingleActivity.class);
-            intent.putExtra("event_id", String.valueOf(marker.getTag()));
-
-            startActivity(intent);
-            finish();
-            Log.w(TAG,"SINGLE EVENT ACTIVITY");
-
-        }*/
         return false;
     }
 
@@ -365,46 +323,7 @@ public class EditMarkerActivity extends AppCompatActivity
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
 
-    void gotoEvent(){
-        //Toast.makeText(MapLocat.this,"TUTAJ",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EditMarkerActivity.this, EventLocalListActivity.class));
-        finish();
-    }
 
-    void gotoProfile() {
-        Toast.makeText(EditMarkerActivity.this,"TUTAJ",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EditMarkerActivity.this, UserActivity.class));
-        finish();
-        Log.w(TAG,"USERACTIVITY");
-    }
-
-    void gotoSettings() {
-        Toast.makeText(EditMarkerActivity.this,"SETTINGS",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EditMarkerActivity.this, SettingsActivity.class));
-        finish();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        Log.w(TAG,"SIDEBAR");
-        Toast.makeText(EditMarkerActivity.this,"TOST",Toast.LENGTH_LONG).show();
-        switch (item.getTitle().toString()) {
-            //case "Logout": logout(); break;
-            case "Your profile": gotoProfile(); break;
-            case "Your events": gotoEvent(); break;
-            //case "Map": gotoMap(); break;
-            //case "Create event": gotoCreateEvent(); break;
-            case "Settings": gotoSettings(); break;
-
-        }
-        return false;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 
 
 }

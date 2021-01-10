@@ -222,7 +222,6 @@ public class EventCreateActivity extends AppCompatActivity {
            Log.w(TAG,b.getString("lon"));
 
             call = service.createEventwithMarker(name, location, description, datetime,longitude,latitude,typeId,zipCode,streetName,houseNumber);
-            //call = service.createEvent(name, location, description, datetime);
             call.enqueue(new Callback<Message>() {
                 @Override
                 public void onResponse(Call<Message> call, Response<Message> response) {
@@ -248,9 +247,13 @@ public class EventCreateActivity extends AppCompatActivity {
 
     void gotoEvent() {
         Toast.makeText(EventCreateActivity.this,"CREATING",Toast.LENGTH_LONG).show();
-        startActivity(new Intent(EventCreateActivity.this, EventLocalListActivity.class));
+        switch (MyApplication.getManaging()){
+            case 2: startActivity(new Intent(this, MyLocationActivity.class)); break;
+            case 3: startActivity(new Intent(this, EventOwnedListActivity.class)); break;
+            case 4: startActivity(new Intent(this, EventParticipatingListActivity.class)); break;
+            default: startActivity(new Intent(this, EventLocalListActivity.class)); break;
+        }
         finish();
-        Log.w(TAG,"CREATE EVENT");
     }
 
     @OnClick(R.id.backToMap)

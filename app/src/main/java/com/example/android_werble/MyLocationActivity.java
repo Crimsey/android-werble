@@ -125,13 +125,10 @@ public class MyLocationActivity extends NavigationActivity
 
         range = seekBar.getProgress();
         MyApplication.setGlobalRangeVariable(range);
+        MyApplication.setManaging(2);
 
-
-        System.out.println("seekBar.getProgress()"+seekBar.getProgress());
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            //Circle mapCircle=null;
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 range = seekBar.getProgress();
@@ -150,7 +147,6 @@ public class MyLocationActivity extends NavigationActivity
                 rangeText.setText(seekBar.getProgress()+"km");
 
                 MyApplication.setGlobalRangeVariable(range);
-
 
                 call = service.getLocalEvents(range);
                 call.enqueue(new Callback<Data<Event>>() {
@@ -334,14 +330,12 @@ public class MyLocationActivity extends NavigationActivity
                         //markerOptions.title(latLng.latitude + " : " + latLng.longitude);
                         googleMap.addMarker(markerOptions);
 
-                        //ask if certain??
                         Log.w(TAG,"goting to create event");
 
                         Intent intent = new Intent(MyLocationActivity.this, EventCreateActivity.class);
                         intent.putExtra("lat",Double.toString(latLng.latitude));
                         intent.putExtra("lon",Double.toString(latLng.longitude));
                         intent.putExtra("range",String.valueOf(seekBar.getProgress()));
-                        intent.putExtra("variable","2");
 
                         startActivity(intent);
                         finish();
@@ -371,10 +365,8 @@ public class MyLocationActivity extends NavigationActivity
             @Override
             public void onInfoWindowClick(Marker arg0) {
                 System.out.println("setOnInfoWindowClickListener onInfoWindowClick");
-                int variable = 2;
                 Intent intent = new Intent(MyLocationActivity.this, EventSingleActivity.class);
                 intent.putExtra("event_id", String.valueOf(marker.getTag()));
-                intent.putExtra("variable", String.valueOf(variable));
 
                 startActivity(intent);
                 finish();

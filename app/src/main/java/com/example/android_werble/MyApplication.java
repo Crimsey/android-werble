@@ -13,4 +13,14 @@ public class MyApplication extends Application {
     public static void setGlobalRangeVariable(Integer rangeInteger) {
         range = rangeInteger;
     }
+
+    private static Integer managing=1;
+
+    public static Integer getManaging() {
+        return managing;
+    }
+
+    public static void setManaging(Integer managingInteger) {
+        managing = managingInteger;
+    }
 }
