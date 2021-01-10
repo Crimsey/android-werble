@@ -58,11 +58,6 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            //String logoutMessage = intent.getStringExtra("logoutMessage");
-            //Snackbar.make(findViewById(R.id.loginLayout), logoutMessage, Snackbar.LENGTH_LONG).show();
-        }
     }
 
     @OnClick(R.id.LoginButton)

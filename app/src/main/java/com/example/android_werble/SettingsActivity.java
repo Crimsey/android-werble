@@ -248,12 +248,11 @@ public class SettingsActivity extends NavigationActivity implements
     }
 
     public void setupRules() {
-        //validator.addValidation(this, R.id.userFirstName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
         validator.addValidation(this,R.id.userEmail, Patterns.EMAIL_ADDRESS,R.string.err_email);
         validator.addValidation(this,R.id.userPassword,"[a-zA-Z0-9]{8,64}|null",R.string.err_password);
 
-        //validator.addValidation(this, R.id.eventEditDescription, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
-        //validator.addValidation(this, R.id.userBirthDate, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
+        validator.addValidation(this, R.id.userDescription, "[a-zA-Z0-9]{,200}|^\\s*$", R.string.err_event_description);
+
 
     }
 

@@ -285,9 +285,11 @@ public class EventCreateActivity extends AppCompatActivity {
         validator.addValidation(this, R.id.eventName, "[a-zA-Z0-9]{3,50}", R.string.err_event_name);
         validator.addValidation(this, R.id.eventLocation, "[a-zA-Z0-9]{3,100}", R.string.err_event_location);
         validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
+
         validator.addValidation(this, R.id.eventZipcode, "^[0-9]{2}-[0-9]{3}$|^\\s*$", R.string.err_event_zipcode);
-
-
+        validator.addValidation(this, R.id.eventDescription, "[a-zA-Z0-9]{,200}|^\\s*$", R.string.err_event_description);
+        validator.addValidation(this, R.id.eventHouseNum, "[a-zA-Z0-9]{,10}|^\\s*$", R.string.err_event_housenumber);
+        validator.addValidation(this, R.id.eventStreet, "[a-zA-Z0-9]{,50}|^\\s*$", R.string.err_event_street);
     }
 
     @Override

@@ -401,7 +401,7 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
                 if (error.getKey().equals("location")) {
                     eventEditLocation.setError(error.getValue().get(0));
                 }
-                if (error.getKey().equals("description")) {
+                if (error.getKey().equals("datetime")) {
                     eventEditDescription.setError(error.getValue().get(0));
                 }
             }
@@ -411,9 +411,14 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
     }
 
     private void setupRules() {
-        validator.addValidation(this, R.id.eventName, RegexTemplate.NOT_EMPTY, R.string.err_event_name);
-        validator.addValidation(this, R.id.eventLocation, RegexTemplate.NOT_EMPTY, R.string.err_event_location);
-        validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
+        validator.addValidation(this, R.id.eventEditName, "[a-zA-Z0-9]{3,50}", R.string.err_event_name);
+        validator.addValidation(this, R.id.eventEditLocation, "[a-zA-Z0-9]{3,100}", R.string.err_event_location);
+        validator.addValidation(this, R.id.eventEditDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
+
+        validator.addValidation(this, R.id.eventEditZipcode, "^[0-9]{2}-[0-9]{3}$|^\\s*$", R.string.err_event_zipcode);
+        validator.addValidation(this, R.id.eventEditDescription, "[a-zA-Z0-9]{,200}|^\\s*$", R.string.err_event_description);
+        validator.addValidation(this, R.id.eventEditHouseNum, "[a-zA-Z0-9]{,10}|^\\s*$", R.string.err_event_housenumber);
+        validator.addValidation(this, R.id.eventEditStreet, "[a-zA-Z0-9]{,50}|^\\s*$", R.string.err_event_street);
     }
 
     void gotoEventList() {

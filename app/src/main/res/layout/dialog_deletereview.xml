@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="14dp"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="@color/purple_700"
         android:text="delete"></Button>
 
     <Button
