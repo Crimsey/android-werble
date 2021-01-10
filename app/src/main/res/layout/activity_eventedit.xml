@@ -45,7 +45,8 @@
                     android:id="@+id/eventEditDescription2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Description" />
+                    android:hint="Description"
+                    android:maxLines="1"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -62,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:hint="Datetime"
+                    android:maxLines="1"
 
                     />
 
@@ -79,7 +81,8 @@
                     android:id="@+id/eventEditLocation2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Location" />
+                    android:hint="Location"
+                    android:maxLines="1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +97,8 @@
                     android:id="@+id/eventEditZipcode2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Zipcode" />
+                    android:hint="Zipcode"
+                    android:maxLines="1"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -109,7 +113,8 @@
                     android:id="@+id/eventEditHouseNum2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="House Number" />
+                    android:hint="House Number"
+                    android:maxLines="1"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -122,7 +127,8 @@
                     android:id="@+id/eventEditStreet2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Street Name" />
+                    android:hint="Street Name"
+                    android:maxLines="1"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView

@@ -53,7 +53,8 @@
                     android:focusable="false"
                     android:hint="Datetime"
                     android:imeOptions="actionNext"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLines="1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +73,8 @@
 
                     android:drawablePadding="10dp"
                     android:imeOptions="actionNext"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLines="1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,7 +93,8 @@
                     android:layout_height="wrap_content"
 
                     android:drawablePadding="10dp"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLines="1"/>
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -110,7 +113,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Zipcode(optional)" />
+                    android:hint="Zipcode(optional)"
+                    android:maxLines="1"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -125,7 +129,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="House Number(optional)" />
+                    android:hint="House Number(optional)"
+                    android:maxLines="1"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -139,7 +144,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Street Name(optional)" />
+                    android:hint="Street Name(optional)"
+                    android:maxLines="1"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Spinner

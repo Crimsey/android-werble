@@ -45,6 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLength="280"
+                    android:maxLines="1"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,7 +96,8 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="Add the review"
                 android:textColor="@color/white"
-                android:textSize="24sp"/>
+                android:textSize="24sp"
+                />
         </com.google.android.material.appbar.AppBarLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

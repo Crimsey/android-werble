@@ -52,7 +52,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:inputType="textEmailAddress"
-
+                android:maxLines="1"
                 android:drawablePadding="10dp"
                 android:imeOptions="actionNext"
                 android:layout_height="wrap_content" />
@@ -86,7 +86,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Confirm Password" />
+                android:hint="Confirm Password"
+                android:maxLines="1"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView

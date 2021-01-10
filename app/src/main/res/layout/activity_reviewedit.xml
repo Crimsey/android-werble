@@ -42,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Edit your review"
                     android:maxLength="280"
+                    android:maxLines="1"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
