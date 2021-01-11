@@ -195,7 +195,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
 
     @OnClick(R.id.CreateEventButton)
-    void createEventwithMarker() throws ParseException {
+    void createEventwithMarker()  {
         String name = eventName.getEditText().getText().toString();
         String location = eventLocation.getEditText().getText().toString();
         String description = eventDescription.getEditText().getText().toString();
