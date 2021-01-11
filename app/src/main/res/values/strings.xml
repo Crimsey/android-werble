@@ -20,6 +20,8 @@
     <string name="err_event_description">200 characters(letters,numbers)</string>
     <string name="err_event_housenumber">10 characters(letters,numbers)</string>
     <string name="err_event_street">50 characters(letters,numbers)</string>
+    <string name="err_firstname">30 characters(only letters)</string>
+    <string name="err_lastname">40 characters(only letters)</string>
 
     <string name="err_event_datetime">Empty datetime</string>
     <string name="location_permission_denied">Location permission denied</string>

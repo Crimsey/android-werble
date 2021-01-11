@@ -29,8 +29,8 @@ public class Event {
     private String startDatetime;
     @Json(name = "end_datetime")
     private String endDatetime;
-    @Json(name = "is_active")
-    private Integer isActive;
+    @Json(name = "status")
+    private Integer status;
     @Json(name = "event_visibility_level_id")
     private Integer eventVisibilityLevelId;
     @Json(name = "event_creator_id")
@@ -145,12 +145,12 @@ public class Event {
         this.endDatetime = endDatetime;
     }
 
-    public Integer getIsActive() {
-        return isActive;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setIsActive(Integer isActive) {
-        this.isActive = isActive;
+    public void setStatus(Integer isActive) {
+        this.status = status;
     }
 
     public Integer getEventVisibilityLevelId() {

@@ -76,8 +76,12 @@ public interface ApiService {
                         @Field("first_name") String first_name,
                         @Field("last_name") String last_name,
                         @Field("birth_date") String birth_date,
-                        @Field("description") String description,
-                        @Field("email") String email);
+                        @Field("description") String description);
+
+    @PUT("user/profile/editemail")
+    @FormUrlEncoded
+    Call<Message> userEditEmail(
+            @Field("email") String email);
 
     @PUT("user/profile/editpassword")
     @FormUrlEncoded
@@ -116,8 +120,8 @@ public interface ApiService {
     @FormUrlEncoded
     Call<Message> createReview(
                         @Field("content") String content,
-                        @Field("rating") String rating,
-                        @Field("event_id") String event_id);
+                        @Field("rating") Integer rating,
+                        @Field("event_id") Integer event_id);
 
     @PUT("user/events/{id}/edit")
     @FormUrlEncoded

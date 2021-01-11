@@ -64,7 +64,7 @@ public class SettingsActivity extends NavigationActivity implements
     Button calbutton,deactivateProfile;
 
     Call<User> call;
-    AwesomeValidation validator;
+    AwesomeValidation validator,validatorEmail;
     String user_id,firstName,lastName,birthDate,description,email;
 
     @Override
@@ -76,6 +76,7 @@ public class SettingsActivity extends NavigationActivity implements
         ButterKnife.bind(this);
         //tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
+        validatorEmail = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
         call = service.user();
 
@@ -106,10 +107,10 @@ public class SettingsActivity extends NavigationActivity implements
                         description = user.getDescription().toString();
                         userDescription.setText(description);
                     }
-                    if (user.getEmail()!=null){
+                    /*if (user.getEmail()!=null){
                         email = user.getEmail();
                         userEmail.setText(email);
-                    }
+                    }*/
 
                 } else {
                     handleErrors(response.errorBody());
@@ -164,13 +165,25 @@ public class SettingsActivity extends NavigationActivity implements
         userLastName.setError(null);
         userBirthDate.setError(null);
         userDescription.setError(null);
-        userEmail.setError(null);
+        //userEmail.setError(null);
         //userPassword.setError(null);
         validator.clear();
+        System.out.println("firstName "+firstName);
+        System.out.println("lastName "+lastName);
+        System.out.println("birthDate "+birthDate);
+        System.out.println("description "+description);
+        System.out.println("email "+email);
 
         if (validator.validate()) {
 
-            messageCall = service.userEdit(firstName, lastName, birthDate, description, email);//,password);
+            System.out.println("firstName "+firstName);
+            System.out.println("lastName "+lastName);
+            System.out.println("birthDate "+birthDate);
+            System.out.println("description "+description);
+            System.out.println("email "+email);
+
+
+            messageCall = service.userEdit(firstName, lastName, birthDate, description);//, email);//,password);
 
             messageCall.enqueue(new Callback<Message>() {
                 @Override
@@ -191,6 +204,9 @@ public class SettingsActivity extends NavigationActivity implements
 
                 }
             });
+        }else {
+            Log.e(TAG, "VALIDATOR: " + validator.validate());
+
         }
         userPassword.setError(null);
         validator.clear();
@@ -205,6 +221,9 @@ public class SettingsActivity extends NavigationActivity implements
                                 gotoProfile();
 
                             }
+                            else {
+                                Log.e(TAG,"Error!");
+                            }
                         }
 
                         @Override
@@ -214,9 +233,34 @@ public class SettingsActivity extends NavigationActivity implements
                     });
                 }
             }
-            else {
-                gotoProfile();
+            userEmail.setError(null);
+            validatorEmail.clear();
+            if (!email.isEmpty()){
+                if (validatorEmail.validate()){
+                    messageCall = service.userEditEmail(email);
+                    messageCall.enqueue(new Callback<Message>() {
+                        @Override
+                        public void onResponse(Call<Message> call, Response<Message> response) {
+                            if (response.isSuccessful()) {
+                                Log.e(TAG, "onResponse: " + response);
+                                gotoProfile();
+
+                            }
+                            else {
+                                Log.e(TAG,"Error!");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Message> call, Throwable t) {
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+                        }
+                    });
+                }
             }
+            /*else {
+                gotoProfile();
+            }*/
     }
 
     private void handleErrors(ResponseBody response) {
@@ -248,12 +292,13 @@ public class SettingsActivity extends NavigationActivity implements
     }
 
     public void setupRules() {
-        validator.addValidation(this,R.id.userEmail, Patterns.EMAIL_ADDRESS,R.string.err_email);
-        validator.addValidation(this,R.id.userPassword,"[a-zA-Z0-9]{8,64}|null",R.string.err_password);
-
+        //if (!userEmail.getText().toString().isEmpty()){
+            //System.out.println("MAIL");
+        validatorEmail.addValidation(this,R.id.userEmail, Patterns.EMAIL_ADDRESS,R.string.err_email);//}
+        validator.addValidation(this,R.id.userPassword,"[a-zA-Z0-9]{8,64}|^\\s*$",R.string.err_password);
+        validator.addValidation(this,R.id.userFirstName,"[a-zA-Z]{1,30}|^\\s*$",R.string.err_firstname);
+        validator.addValidation(this,R.id.userLastName,"[a-zA-Z]{1,40}|^\\s*$",R.string.err_lastname);
         validator.addValidation(this, R.id.userDescription, "[a-zA-Z0-9]{1,200}|^\\s*$", R.string.err_event_description);
-
-
     }
 
     @OnClick(R.id.deactivateProfile)

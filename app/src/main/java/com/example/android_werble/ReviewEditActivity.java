@@ -142,7 +142,7 @@ public class ReviewEditActivity extends AppCompatActivity implements ViewDialog.
     }
 
     private void setupRules() {
-        validator.addValidation(this, R.id.ReviewEditContent, "{1,280}", R.string.err_reviewcontent);
+        validator.addValidation(this, R.id.ReviewEditContent, ".{1,280}", R.string.err_reviewcontent);
     }
 
     @Override

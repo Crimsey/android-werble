@@ -34,8 +34,8 @@ public class ReviewCreateActivity extends AppCompatActivity {
     TokenManager tokenManager;
     AwesomeValidation validator;
 
+    @BindView(R.id.rating)
     RatingBar rating;
-    //TextView content;
     @BindView(R.id.reviewContent)
     TextInputLayout content;
 
@@ -43,9 +43,6 @@ public class ReviewCreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reviewcreate);
-
-        rating = findViewById(R.id.rating);
-        content = findViewById(R.id.reviewContent);
 
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
@@ -68,8 +65,8 @@ public class ReviewCreateActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
 
-        String ratingString = String.valueOf(rating.getRating());
-        String contentString = content.getEditText().getText().toString();
+        Integer ratingInt = (int) rating.getRating();
+        String contentString = String.valueOf(content.getEditText().getText());
 
         if (rating.getRating()==0){
             Toast.makeText(ReviewCreateActivity.this, "Rating cannot be zero", Toast.LENGTH_LONG).show();
@@ -77,12 +74,16 @@ public class ReviewCreateActivity extends AppCompatActivity {
             content.setError(null);
             validator.clear();
             if (validator.validate()) {
-                callReview = service.createReview(contentString, ratingString, event_id);
+                callReview = service.createReview(contentString, ratingInt, Integer.parseInt(event_id));
                 callReview.enqueue(new Callback<Message>() {
                     @Override
                     public void onResponse(Call<Message> call, Response<Message> response) {
-                        Log.w(TAG, "You have created review!: " + response);
-                        Toast.makeText(ReviewCreateActivity.this, "CREATING REVIEW", Toast.LENGTH_LONG).show();
+                        if (response.isSuccessful()) {
+                            Log.w(TAG, "You have created review!: " + response);
+                            Toast.makeText(ReviewCreateActivity.this, "CREATING REVIEW", Toast.LENGTH_LONG).show();
+                        }else {
+                            Log.w(TAG,"rES: "+response.body());
+                        }
                         gotoReviewList();
                         //finish();
                         //startActivity(getIntent());
@@ -114,14 +115,13 @@ public class ReviewCreateActivity extends AppCompatActivity {
     }
 
     public void setupRules() {
-        validator.addValidation(this, R.id.reviewContent, "{1,280}", R.string.err_reviewcontent);
+        validator.addValidation(this, R.id.reviewContent, ".{1,280}", R.string.err_reviewcontent);
     }
 
     void gotoReviewList() {
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
         String event_participant_id = b.getString("event_participant_id");
-
 
         Intent intent = new Intent(ReviewCreateActivity.this, ReviewListActivity.class);
         intent.putExtra("event_id",event_id);

@@ -199,10 +199,10 @@ public class EventSingleActivity extends AppCompatActivity {
                         }
                     });
 
-                    if (event.getIsActive()==null){
+                    if (event.getStatus()==null){
                         status.setText("Status: ");
                     }else {
-                        switch (event.getIsActive()) {
+                        switch (event.getStatus()) {
                             case 0:
                                 status.setText("Status: Ended");
                                 ended++;
