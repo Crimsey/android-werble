@@ -10,218 +10,203 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/eventEditName"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/eventEditName2"
+
+              <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/eventEditName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:hint="Name" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginTop="40dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/eventEditDescription"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/eventEditName2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/eventEditDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/eventEditDescription2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Description"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/eventEditStartDatetime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/eventEditStartDatetime2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="Begin Datetime"
+                        android:maxLines="1"
+
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/eventEditEndDatetime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/eventEditEndDatetime2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="End Datetime" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/eventEditLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/eventEditLocation2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Location"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/eventEditZipcode"
+                    android:layout_width="153dp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/eventEditZipcode2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Zipcode"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/eventEditHouseNum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/eventEditHouseNum2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="House Number"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/eventEditStreet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/eventEditStreet2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Street Name"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditName">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/eventEditDescription2"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/eventEditTypeTitle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Description"
-                    android:maxLines="1"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginTop="16dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="Type"
+                    android:textColor="#0C0C0C"
+                    android:textSize="20sp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/eventEditStartDatetime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditDescription">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/eventEditStartDatetime2"
-                    android:layout_width="match_parent"
+                <Spinner
+                    android:id="@+id/eventEditType"
+                    android:layout_width="340dp"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:hint="Begin Datetime"
-                    android:maxLines="1"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
 
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/eventEditEndDatetime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditStartDatetime">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/eventEditEndDatetime2"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/editMarker"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="End Datetime"
-                    android:focusable="false"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginStart="140dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/gold"
+                    android:text="edit marker" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/eventEditLocation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditEndDatetime">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/eventEditLocation2"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Location"
-                    android:maxLines="1" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <Button
+                        android:id="@+id/backToEventSingle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:backgroundTint="@color/purple_500"
+                        android:text="BACK"></Button>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/eventEditZipcode"
-                android:layout_width="153dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditLocation">
+                    <Button
+                        android:id="@+id/deleteEvent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginRight="50dp"
+                        android:backgroundTint="@color/purple_700"
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/eventEditZipcode2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Zipcode"
-                    android:maxLines="1"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                        android:text="delete event" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/eventEditHouseNum"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/eventEditZipcode"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditLocation">
+                    <Button
+                        android:id="@+id/editButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="16dp"
+                        android:backgroundTint="@color/teal_700"
+                        android:text="edit"></Button>
+                </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/eventEditHouseNum2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="House Number"
-                    android:maxLines="1"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/eventEditStreet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditZipcode">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/eventEditStreet2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Street Name"
-                    android:maxLines="1"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/eventEditTypeTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Type"
-                android:textColor="#0C0C0C"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/eventEditType"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditStreet" />
-
-            <Spinner
-                android:id="@+id/eventEditType"
-                android:layout_width="340dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditStreet" />
-
-            <Button
-                android:id="@+id/editMarker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="@color/gold"
-                android:text="edit marker"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventEditType"
-                app:layout_constraintVertical_bias="0.666" />
-
-            <Button
-                android:id="@+id/backToEventSingle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/purple_500"
-                android:text="BACK"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"></Button>
-
-            <Button
-                android:id="@+id/editButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/teal_700"
-                android:text="edit"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.962"
-                app:layout_constraintStart_toStartOf="parent"></Button>
-
-            <Button
-                android:id="@+id/deleteEvent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:backgroundTint="@color/purple_700"
-                android:text="delete event"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/editButton"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/backToEventSingle"
-                app:layout_constraintTop_toBottomOf="@+id/editMarker"
-                app:layout_constraintVertical_bias="0.428" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </ScrollView>
 
     </FrameLayout>
 
