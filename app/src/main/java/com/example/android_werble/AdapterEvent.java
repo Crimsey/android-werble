@@ -2,7 +2,6 @@ package com.example.android_werble;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,27 +9,14 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_werble.entities.Event;
-import com.example.android_werble.entities.Message;
-import com.example.android_werble.network.ApiService;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
-import static androidx.core.content.ContextCompat.startActivity;
 
 public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
         implements Filterable {
@@ -51,7 +37,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
             super(pItem);
             eName = (TextView) pItem.findViewById(R.id.eventName);
             eLocation = (TextView) pItem.findViewById(R.id.eventLocation);
-            eDatetime = (TextView) pItem.findViewById(R.id.eventDatetime);
+            eDatetime = (TextView) pItem.findViewById(R.id.eventStartDatetime);
             //join = (Button) pItem.findViewById(R.id.join);
             eDistance = (TextView) pItem.findViewById(R.id.eventDistance);
 
@@ -142,7 +128,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
         holder.eEvent = mEvents.get(position);
         holder.eName.setText(holder.eEvent.getName());
         holder.eLocation.setText("Location: " + holder.eEvent.getLocation());
-        holder.eDatetime.setText("Datetime: " + holder.eEvent.getDatetime());
+        holder.eDatetime.setText("Datetime: " + holder.eEvent.getStartDatetime());
         holder.eDistance.setText("Distance: " + holder.eEvent.getDistance().toString()+"km");
 
 

@@ -56,7 +56,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/eventDatetime"
+                    android:id="@+id/eventStartDatetime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -80,7 +80,7 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.869"
-                    app:layout_constraintStart_toEndOf="@+id/eventDatetime"
+                    app:layout_constraintStart_toEndOf="@+id/eventStartDatetime"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
