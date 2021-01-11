@@ -11,16 +11,14 @@ import butterknife.BindView;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    @BindView(R.id.registerButton)
-    Button register;
-    @BindView(R.id.loginButton)
-    Button login;
+    Button register,login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        register = findViewById(R.id.registerButton);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -29,10 +27,11 @@ public class WelcomeActivity extends AppCompatActivity {
                 finish();
             }
         });
+        login = findViewById(R.id.loginButton);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
