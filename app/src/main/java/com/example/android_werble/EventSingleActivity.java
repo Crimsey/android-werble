@@ -207,8 +207,10 @@ public class EventSingleActivity extends AppCompatActivity {
                                 status.setText("Status: Ended");
                                 ended++;
                                 break;
-
                             case 1:
+                                status.setText("Status: Started");
+                                break;
+                            case 2:
                                 status.setText("Status: Not started yet");
                                 break;
                         }

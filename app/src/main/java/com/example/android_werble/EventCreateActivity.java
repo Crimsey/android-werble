@@ -195,7 +195,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
 
     @OnClick(R.id.CreateEventButton)
-    void createEventwithMarker()  {
+    void createEventwithMarker() {
         String name = eventName.getEditText().getText().toString();
         String location = eventLocation.getEditText().getText().toString();
         String description = eventDescription.getEditText().getText().toString();
@@ -215,55 +215,51 @@ public class EventCreateActivity extends AppCompatActivity {
         eventStreet.setError(null);
         eventHouseNum.setError(null);
         validator.clear();
-
-        /*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd h:m:00");
-        try {
-        } catch (Exception e) {
-            System.out.println("Error occurred " + e.getMessage());
-        }*/
-
-        //if(sdf.parse(startDatetime).
-
-    //before(sdf.parse(endDatetime)))
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd h:m:00");
-
-
-
         if (validator.validate()) {
-            Bundle b = getIntent().getExtras();
-            String latitude = b.getString("lat");
-            String longitude = b.getString("lon");
+            Date startDate, endDate;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd h:m:00");
+            try {
+                startDate = sdf.parse(startDatetime);
+                endDate = sdf.parse(endDatetime);
+                if (startDate.before(endDate)) {
 
-            Log.w(TAG, b.getString("lat"));
-            Log.w(TAG, b.getString("lon"));
+                    Bundle b = getIntent().getExtras();
+                    String latitude = b.getString("lat");
+                    String longitude = b.getString("lon");
 
-            call = service.createEventwithMarker(name, location, description, startDatetime, endDatetime, longitude, latitude, typeId, zipCode, streetName, houseNumber);
-            call.enqueue(new Callback<Message>() {
-                @Override
-                public void onResponse(Call<Message> call, Response<Message> response) {
-                    if (response.isSuccessful()) {
-                        Log.e(TAG, "onResponse: " + response.body());
-                        Toast.makeText(EventCreateActivity.this, "Created event!", Toast.LENGTH_LONG).show();
-                        gotoEvent();
+                    Log.w(TAG, b.getString("lat"));
+                    Log.w(TAG, b.getString("lon"));
 
-                    } else {
-                        handleErrors(response.errorBody());
-                    }
+                    call = service.createEventwithMarker(name, location, description, startDatetime, endDatetime, longitude, latitude, typeId, zipCode, streetName, houseNumber);
+                    call.enqueue(new Callback<Message>() {
+                        @Override
+                        public void onResponse(Call<Message> call, Response<Message> response) {
+                            if (response.isSuccessful()) {
+                                Log.e(TAG, "onResponse: " + response.body());
+                                Toast.makeText(EventCreateActivity.this, "Created event!", Toast.LENGTH_LONG).show();
+                                gotoEvent();
+
+                            } else {
+                                handleErrors(response.errorBody());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Message> call, Throwable t) {
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(this, "Begin datetime have to be before end datetime", Toast.LENGTH_LONG).show();
                 }
 
-                @Override
-                public void onFailure(Call<Message> call, Throwable t) {
-                    Log.e(TAG, "onFailure: " + t.getMessage());
-
-                }
-            });
+            } catch (Exception e) {
+                System.out.println("Error occurred " + e.getMessage());
+            }
         }
-    else
-    {
-        Toast.makeText(this, "Begin datetime have to be before end datetime", Toast.LENGTH_LONG).show();
-
     }
-}
 
 
 
@@ -281,7 +277,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
     @OnClick(R.id.backToMap)
     void back(){
-        startActivity(new Intent(EventCreateActivity.this, EventLocalListActivity.class));
+        startActivity(new Intent(EventCreateActivity.this, MyLocationActivity.class));
         finish();
     }
 

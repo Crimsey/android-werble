@@ -19,7 +19,7 @@
                 android:id="@+id/eventName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="35dp"
                 android:hint="Name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,9 @@
                     android:id="@+id/eventEndDatetime2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="End datetime" />
+                    android:focusable="false"
+                    android:hint="End datetime"
+                    android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -165,16 +167,17 @@
                 android:id="@+id/eventType"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.824"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventStreet" />
 
             <TextView
                 android:id="@+id/eventTypeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:text="Type"
                 android:textColor="#070707"
                 android:textSize="20sp"
@@ -189,19 +192,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="4dp"
                 android:backgroundTint="@color/teal_700"
                 android:text="Create"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventType"
+                app:layout_constraintVertical_bias="1.0" />
 
             <Button
                 android:id="@+id/backToMap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="back to map"
+                android:layout_marginBottom="4dp"
                 android:backgroundTint="@color/purple_500"
+                android:text="back to map"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/CreateEventButton"
                 app:layout_constraintHorizontal_bias="0.071"
