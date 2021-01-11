@@ -214,6 +214,7 @@ public class EventCreateActivity extends AppCompatActivity {
         eventZipcode.setError(null);
         eventStreet.setError(null);
         eventHouseNum.setError(null);
+
         validator.clear();
         if (validator.validate()) {
             Date startDate, endDate;
@@ -230,6 +231,19 @@ public class EventCreateActivity extends AppCompatActivity {
                     Log.w(TAG, b.getString("lat"));
                     Log.w(TAG, b.getString("lon"));
 
+                    System.out.println("name"+name);
+                    System.out.println("location"+location);
+                    System.out.println("description"+description);
+                    System.out.println("startDatetime"+startDatetime);
+                    System.out.println("endDatetime"+endDatetime);
+                    System.out.println("longitude"+longitude);
+                    System.out.println("latitude"+latitude);
+                    System.out.println("typeId"+typeId);
+                    System.out.println("zipCode"+zipCode);
+                    System.out.println("streetName"+streetName);
+                    System.out.println("houseNumber"+houseNumber);
+
+
                     call = service.createEventwithMarker(name, location, description, startDatetime, endDatetime, longitude, latitude, typeId, zipCode, streetName, houseNumber);
                     call.enqueue(new Callback<Message>() {
                         @Override
@@ -240,6 +254,7 @@ public class EventCreateActivity extends AppCompatActivity {
                                 gotoEvent();
 
                             } else {
+                                Log.e(TAG, "onResponse: " + response.body());
                                 handleErrors(response.errorBody());
                             }
                         }
