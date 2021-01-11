@@ -43,10 +43,11 @@ public interface ApiService {
 
     @POST("user/events/create")
     @FormUrlEncoded
-    Call<Message> createEventwithMarker(@Field("name") String name,
+    Call<Message> createEventwithMarker(    @Field("name") String name,
                                             @Field("location") String location,
                                             @Field("description") String description,
-                                            @Field("datetime") String datetime,
+                                            @Field("start_datetime") String startDatetime,
+                                            @Field("end_datetime") String endDatetime,
                                             @Field("longitude") String longitude,
                                             @Field("latitude") String latitude,
                                             @Field("event_type_id") Integer typeId,
@@ -125,7 +126,8 @@ public interface ApiService {
                         @Field("name") String name,
                         @Field("location") String location,
                         @Field("description") String description,
-                        @Field("datetime") String datetime,
+                        @Field("start_datetime") String startDatetime,
+                        @Field("end_datetime") String endDatetime,
                         @Field("longitude") String longitude,
                         @Field("latitude") String latitude,
                         @Field("event_type_id") Integer typeId,

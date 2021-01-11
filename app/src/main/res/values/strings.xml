@@ -4,8 +4,8 @@
     <string name="err_email">The email field must be a valid email adress.</string>
     <string name="err_password">The password must be at least 8 characters.</string>
 
-    <string name="err_login2">Login cannot be empty</string>
-    <string name="err_password2">Password cannot be empty</string>
+    <string name="err_login2">Login cannot be empty(letters,numbers)</string>
+    <string name="err_password2">Password cannot be empty(letters,numbers)</string>
 
     <string name="err_reviewcontent">Review cannot be empty (max 280characters)</string>
     <string name="err_reviewrating">Rating cannot be empty</string>

@@ -25,8 +25,10 @@ public class Event {
     private Double latitude;
     @Json(name = "description")
     private String description;
-    @Json(name = "datetime")
-    private String datetime;
+    @Json(name = "start_datetime")
+    private String startDatetime;
+    @Json(name = "end_datetime")
+    private String endDatetime;
     @Json(name = "is_active")
     private Integer isActive;
     @Json(name = "event_visibility_level_id")
@@ -127,12 +129,20 @@ public class Event {
         this.description = description;
     }
 
-    public String getDatetime() {
-        return datetime;
+    public String getStartDatetime() {
+        return startDatetime;
     }
 
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
+    public void setStartDatetime(String datetime) {
+        this.startDatetime = startDatetime;
+    }
+
+    public String getEndDatetime() {
+        return endDatetime;
+    }
+
+    public void setEndDatetime(String datetime) {
+        this.endDatetime = endDatetime;
     }
 
     public Integer getIsActive() {

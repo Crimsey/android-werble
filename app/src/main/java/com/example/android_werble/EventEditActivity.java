@@ -5,18 +5,15 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
@@ -29,7 +26,6 @@ import com.example.android_werble.entities.EventType;
 import com.example.android_werble.entities.Message;
 import com.example.android_werble.network.ApiService;
 import com.example.android_werble.network.RetrofitBuilder;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
@@ -54,8 +50,10 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
     TextInputEditText eventEditName;
     @BindView(R.id.eventEditDescription2)
     TextInputEditText eventEditDescription;
-    @BindView(R.id.eventEditDatetime2)
-    TextInputEditText eventEditDatetime;
+    @BindView(R.id.eventEditStartDatetime2)
+    TextInputEditText eventStartEditDatetime;
+    @BindView(R.id.eventEditEndDatetime2)
+    TextInputEditText eventEndDatetime;
     @BindView(R.id.eventEditLocation2)
     TextInputEditText eventEditLocation;
     @BindView(R.id.eventEditType)
@@ -76,7 +74,7 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
     AwesomeValidation validator;
     TokenManager tokenManager;
 
-    String name,description,datetime,location,zip_code,house_number,street_name;//,type;
+    String name,description,startdatetime,enddatetime,location,zip_code,house_number,street_name;//,type;
     Integer type;
     Integer typeId;
 
@@ -151,14 +149,14 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
                         description = event.getDescription();
                         eventEditDescription.setText(description);
                     }
-                    if (event.getDatetime()!=null){
-                        datetime = event.getDatetime();
-                        eventEditDatetime.setText(datetime);
+                    if (event.getStartDatetime()!=null){
+                        startdatetime = event.getStartDatetime();
+                        eventStartEditDatetime.setText(startdatetime);
                     }
-                    /*if (event.getEventTypeId()!=null){
-                        type = event.getEventTypeId();//.toString();
-                        eventType.setSelection(type-1);
-                    }*/
+                    if (event.getEndDatetime()!=null){
+                        enddatetime = event.getEndDatetime();
+                        eventEndDatetime.setText(enddatetime);
+                    }
                     if (event.getLocation()!=null){
                         location = event.getLocation();//.toString();
                         eventEditLocation.setText(location);
@@ -203,10 +201,16 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
         });
 
         //eventEditDatetime = findViewById(R.id.eventEditDatetime2);
-        eventEditDatetime.setOnClickListener(new View.OnClickListener() {
+        eventStartEditDatetime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDateTimeDialog(eventEditDatetime);
+                showDateTimeDialog(eventStartEditDatetime);
+            }
+        });
+        eventEndDatetime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateTimeDialog(eventEndDatetime);
             }
         });
 
@@ -267,7 +271,8 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
         intent.putExtra("name",eventEditName.getText().toString());
         intent.putExtra("location",eventEditLocation.getText().toString());
         intent.putExtra("description",eventEditDescription.getText().toString());
-        intent.putExtra("datetime",eventEditDatetime.getText().toString());
+        intent.putExtra("start_datetime",eventStartEditDatetime.getText().toString());
+        intent.putExtra("end_datetime",eventEndDatetime.getText().toString());
         intent.putExtra("event_type_id",String.valueOf(eventType.getSelectedItemId()));
         intent.putExtra("lon",lon);
         intent.putExtra("lat",lat);
@@ -290,7 +295,9 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
     void editEvent(){
         String name = eventEditName.getText().toString();
         String description = eventEditDescription.getText().toString();
-        String datetime = eventEditDatetime.getText().toString();
+        String startdatetime = eventStartEditDatetime.getText().toString();
+        String enddatetime = eventEndDatetime.getText().toString();
+
         String location = eventEditLocation.getText().toString();
         String zipCode = eventEditZipcode.getText().toString();
         String streetName = eventEditStreet.getText().toString();
@@ -299,7 +306,9 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
 
         eventEditName.setError(null);
         eventEditDescription.setError(null);
-        eventEditDatetime.setError(null);
+        eventStartEditDatetime.setError(null);
+        eventEndDatetime.setError(null);
+
         eventEditLocation.setError(null);
 
         validator.clear();
@@ -311,7 +320,7 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
             String latitude = b.getString("lat");
             String longitude = b.getString("lon");
 
-            callMessage = service.editEvent(Integer.parseInt(event_id),name,location,description,datetime,longitude,latitude,typeId,zipCode,streetName,houseNumber);
+            callMessage = service.editEvent(Integer.parseInt(event_id),name,location,description,startdatetime,enddatetime,longitude,latitude,typeId,zipCode,streetName,houseNumber);
             callMessage.enqueue(new Callback<Message>() {
 
                 @Override
@@ -403,7 +412,7 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
     private void setupRules() {
         validator.addValidation(this, R.id.eventEditName, "[a-zA-Z0-9 ]{3,50}", R.string.err_event_name);
         validator.addValidation(this, R.id.eventEditLocation, "[a-zA-Z0-9 ]{3,100}", R.string.err_event_location);
-        validator.addValidation(this, R.id.eventEditDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
+        validator.addValidation(this, R.id.eventEditStartDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
 
         validator.addValidation(this, R.id.eventEditZipcode, "^[0-9]{2}-[0-9]{3}$|^\\s*$", R.string.err_event_zipcode);
         validator.addValidation(this, R.id.eventEditDescription, ".{1,200}|^\\s*$", R.string.err_event_description);

@@ -28,6 +28,7 @@ import com.example.android_werble.network.RetrofitBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,8 +54,10 @@ public class EventCreateActivity extends AppCompatActivity {
     TextInputLayout eventLocation;
     @BindView(R.id.eventDescription)
     TextInputLayout eventDescription;
-    @BindView(R.id.eventDatetime2)
-    TextInputEditText eventDatetime;
+    @BindView(R.id.eventStartDatetime2)
+    TextInputEditText eventStartDatetime;
+    @BindView(R.id.eventEndDatetime2)
+    TextInputEditText eventEndDatetime;
     @BindView(R.id.eventZipcode)
     TextInputLayout eventZipcode;
     @BindView(R.id.eventHouseNum)
@@ -85,7 +88,7 @@ public class EventCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_eventcreate);
 
 
-        Log.w(TAG,"My tu w ogóle wchodzimy?");
+        Log.w(TAG, "My tu w ogóle wchodzimy?");
         ButterKnife.bind(this);
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
 
@@ -94,12 +97,12 @@ public class EventCreateActivity extends AppCompatActivity {
             finish();
         }
 
-        service = RetrofitBuilder.createServiceWithAuth(ApiService.class,tokenManager);
+        service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
         validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
         setupRules();
 
         //eventType = findViewById(R.id.eventType);
-        ArrayAdapter eventTypeAdapter =  ArrayAdapter.createFromResource(EventCreateActivity.this,R.array.types,R.layout.arraytype);
+        ArrayAdapter eventTypeAdapter = ArrayAdapter.createFromResource(EventCreateActivity.this, R.array.types, R.layout.arraytype);
         eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
         eventType.setAdapter(eventTypeAdapter);
 
@@ -108,8 +111,8 @@ public class EventCreateActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 typeId = ++position;
                 //type = parent.getItemAtPosition(position).toString();
-                Log.w(TAG,"type: "+type);
-                System.out.println("TYPE: "+type);
+                Log.w(TAG, "type: " + type);
+                System.out.println("TYPE: " + type);
             }
 
             @Override
@@ -118,29 +121,28 @@ public class EventCreateActivity extends AppCompatActivity {
             }
         });
 
-        eventDatetime.setOnClickListener(new View.OnClickListener() {
+        eventStartDatetime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDateTimeDialog(eventDatetime);
+                showDateTimeDialog(eventStartDatetime);
             }
         });
 
-        /*calclockbutton = findViewById(R.id.calclockbutton);
-        calclockbutton.setOnClickListener(new View.OnClickListener() {
+        eventEndDatetime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDateTimeDialog(eventDatetime);
+                showDateTimeDialog(eventEndDatetime);
             }
-        });*/
+        });
+
 
         callEventType = service.getEventTypes();
         callEventType.enqueue(new Callback<Data<EventType>>() {
             @Override
             public void onResponse(Call<Data<EventType>> call, Response<Data<EventType>> response) {
-                if (response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
                     eventTypeList = response.body().getData();
-                    ArrayAdapter eventTypeAdapter =  new ArrayAdapter(EventCreateActivity.this, R.layout.arraytype, eventTypeList);
+                    ArrayAdapter eventTypeAdapter = new ArrayAdapter(EventCreateActivity.this, R.layout.arraytype, eventTypeList);
                     eventTypeAdapter.setDropDownViewResource(R.layout.arraytype);
                     eventType.setAdapter(eventTypeAdapter);
                 }
@@ -159,37 +161,36 @@ public class EventCreateActivity extends AppCompatActivity {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(Calendar.YEAR,year);
-                calendar.set(Calendar.MONTH,month);
-                calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
                 TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
-                        calendar.set(Calendar.MINUTE,minute);
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
 
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
 
                         Date currentTime = new Date();
-                        System.out.println("currentTime: "+currentTime);
-                        System.out.println("choosenTime: "+calendar.getTime());
-                        if (currentTime.before(calendar.getTime())){
+                        System.out.println("currentTime: " + currentTime);
+                        System.out.println("choosenTime: " + calendar.getTime());
+                        if (currentTime.before(calendar.getTime())) {
                             eventDatetime.setText(simpleDateFormat.format(calendar.getTime()));
 
-                        }
-                        else{
+                        } else {
                             System.out.println("DATE NOT GREATER");
-                            Toast.makeText(EventCreateActivity.this,"Your date must be greater than todays date",Toast.LENGTH_LONG).show();
+                            Toast.makeText(EventCreateActivity.this, "Your date must be greater than todays date", Toast.LENGTH_LONG).show();
                         }
                     }
                 };
 
-                new TimePickerDialog(EventCreateActivity.this,R.style.datepicker,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
+                new TimePickerDialog(EventCreateActivity.this, R.style.datepicker, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
             }
         };
 
-        new DatePickerDialog(EventCreateActivity.this,R.style.datepicker, dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+        new DatePickerDialog(EventCreateActivity.this, R.style.datepicker, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
 
@@ -198,52 +199,85 @@ public class EventCreateActivity extends AppCompatActivity {
         String name = eventName.getEditText().getText().toString();
         String location = eventLocation.getEditText().getText().toString();
         String description = eventDescription.getEditText().getText().toString();
-        String datetime = eventDatetime.getText().toString();
+        String startDatetime = eventStartDatetime.getText().toString();
+        String endDatetime = eventEndDatetime.getText().toString();
         String zipCode = eventZipcode.getEditText().getText().toString();
         String streetName = eventStreet.getEditText().getText().toString();
         String houseNumber = eventHouseNum.getEditText().getText().toString();
 
-
         eventName.setError(null);
         eventLocation.setError(null);
         eventDescription.setError(null);
-        eventDatetime.setError(null);
-
-        eventDatetime.setError(null);
+        eventStartDatetime.setError(null);
+        eventEndDatetime.setError(null);
+        eventDescription.setError(null);
+        eventZipcode.setError(null);
+        eventStreet.setError(null);
+        eventHouseNum.setError(null);
 
         validator.clear();
-
         if (validator.validate()) {
-           Bundle b = getIntent().getExtras();
-           String latitude = b.getString("lat");
-           String longitude = b.getString("lon");
+            Date startDate, endDate;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd h:m:00");
+            try {
+                startDate = sdf.parse(startDatetime);
+                endDate = sdf.parse(endDatetime);
+                if (startDate.before(endDate)) {
 
-           Log.w(TAG,b.getString("lat"));
-           Log.w(TAG,b.getString("lon"));
+                    Bundle b = getIntent().getExtras();
+                    String latitude = b.getString("lat");
+                    String longitude = b.getString("lon");
 
-            call = service.createEventwithMarker(name, location, description, datetime,longitude,latitude,typeId,zipCode,streetName,houseNumber);
-            call.enqueue(new Callback<Message>() {
-                @Override
-                public void onResponse(Call<Message> call, Response<Message> response) {
-                    if (response.isSuccessful()) {
-                        Log.e(TAG, "onResponse: " + response.body());
-                        Toast.makeText(EventCreateActivity.this,"Created event!",Toast.LENGTH_LONG).show();
-                        gotoEvent();
+                    Log.w(TAG, b.getString("lat"));
+                    Log.w(TAG, b.getString("lon"));
 
-                    } else {
-                        handleErrors(response.errorBody());
-                    }
+                    System.out.println("name"+name);
+                    System.out.println("location"+location);
+                    System.out.println("description"+description);
+                    System.out.println("startDatetime"+startDatetime);
+                    System.out.println("endDatetime"+endDatetime);
+                    System.out.println("longitude"+longitude);
+                    System.out.println("latitude"+latitude);
+                    System.out.println("typeId"+typeId);
+                    System.out.println("zipCode"+zipCode);
+                    System.out.println("streetName"+streetName);
+                    System.out.println("houseNumber"+houseNumber);
+
+
+                    call = service.createEventwithMarker(name, location, description, startDatetime, endDatetime, longitude, latitude, typeId, zipCode, streetName, houseNumber);
+                    call.enqueue(new Callback<Message>() {
+                        @Override
+                        public void onResponse(Call<Message> call, Response<Message> response) {
+                            if (response.isSuccessful()) {
+                                Log.e(TAG, "onResponse: " + response.body());
+                                Toast.makeText(EventCreateActivity.this, "Created event!", Toast.LENGTH_LONG).show();
+                                gotoEvent();
+
+                            } else {
+                                Log.e(TAG, "onResponse: " + response.body());
+                                handleErrors(response.errorBody());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Message> call, Throwable t) {
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(this, "Begin datetime have to be before end datetime", Toast.LENGTH_LONG).show();
                 }
 
-                @Override
-                public void onFailure(Call<Message> call, Throwable t) {
-                    Log.e(TAG, "onFailure: " + t.getMessage());
-
-                }
-            });
+            } catch (Exception e) {
+                System.out.println("Error occurred " + e.getMessage());
+            }
         }
-
     }
+
+
+
 
     void gotoEvent() {
         Toast.makeText(EventCreateActivity.this,"CREATING",Toast.LENGTH_LONG).show();
@@ -258,7 +292,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
     @OnClick(R.id.backToMap)
     void back(){
-        startActivity(new Intent(EventCreateActivity.this, EventLocalListActivity.class));
+        startActivity(new Intent(EventCreateActivity.this, MyLocationActivity.class));
         finish();
     }
 
@@ -287,7 +321,8 @@ public class EventCreateActivity extends AppCompatActivity {
     public void setupRules() {
         validator.addValidation(this, R.id.eventName, "[a-zA-Z0-9 ]{3,50}", R.string.err_event_name);
         validator.addValidation(this, R.id.eventLocation, "[a-zA-Z0-9 ]{3,100}", R.string.err_event_location);
-        validator.addValidation(this, R.id.eventDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
+        validator.addValidation(this, R.id.eventStartDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
+        validator.addValidation(this, R.id.eventEndDatetime, RegexTemplate.NOT_EMPTY, R.string.err_event_datetime);
 
         validator.addValidation(this, R.id.eventZipcode, "^[0-9]{2}-[0-9]{3}$|^\\s*$", R.string.err_event_zipcode);
         validator.addValidation(this, R.id.eventDescription, ".{1,200}|^\\s*$", R.string.err_event_description);

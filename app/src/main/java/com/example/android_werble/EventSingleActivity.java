@@ -19,8 +19,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.example.android_werble.entities.AccessToken;
 import com.example.android_werble.entities.ApiError;
 import com.example.android_werble.entities.Data;
 import com.example.android_werble.entities.Event;
@@ -64,7 +62,7 @@ public class EventSingleActivity extends AppCompatActivity {
     TokenManager tokenManager;
 
 
-    TextView name,location,zip_code,street_name,house_number,description,datetime,status,type,distance;
+    TextView name,location,zip_code,street_name,house_number,description,startdatetime,enddatetime,status,type,distance;
 
     Button addReview,seeReviews;
     Button joinSingleEvent;
@@ -91,7 +89,9 @@ public class EventSingleActivity extends AppCompatActivity {
         street_name = findViewById(R.id.singleEventStreetName);
         house_number = findViewById(R.id.singleEventHouseNumber);
         description = findViewById(R.id.singleEventDescription);
-        datetime = findViewById(R.id.singleEventDatetime);
+        startdatetime = findViewById(R.id.singleEventStartDatetime);
+        enddatetime = findViewById(R.id.singleEventEndDatetime);
+
         status = findViewById(R.id.singleEventStatus);
         type = findViewById(R.id.singleEventType);
         distance = findViewById(R.id.singleEventDistance);
@@ -158,9 +158,13 @@ public class EventSingleActivity extends AppCompatActivity {
                         description.setText("Description: ");
                     }else {description.setText("Description: "+event.getDescription());}
 
-                    if (event.getDatetime()==null){
-                        datetime.setText("Datetime: ");
-                    }else {datetime.setText("Datetime: "+event.getDatetime());}
+                    if (event.getStartDatetime()==null){
+                        startdatetime.setText("Begin: ");
+                    }else {startdatetime.setText("Begin: "+event.getStartDatetime());}
+
+                    if (event.getEndDatetime()==null){
+                        enddatetime.setText("End: ");
+                    }else {enddatetime.setText("End: "+event.getEndDatetime());}
 
                     if (event.getDistance()==null){
                         distance.setText("Distance: ");
@@ -203,8 +207,10 @@ public class EventSingleActivity extends AppCompatActivity {
                                 status.setText("Status: Ended");
                                 ended++;
                                 break;
-
                             case 1:
+                                status.setText("Status: Started");
+                                break;
+                            case 2:
                                 status.setText("Status: Not started yet");
                                 break;
                         }
@@ -216,7 +222,8 @@ public class EventSingleActivity extends AppCompatActivity {
                     SpannableString spannableStreet = new SpannableString(street_name.getText());
                     SpannableString spannableHouseNum = new SpannableString(house_number.getText());
                     SpannableString spannableDescription = new SpannableString(description.getText());
-                    SpannableString spannableDatetime = new SpannableString(datetime.getText());
+                    SpannableString spannableStartDatetime = new SpannableString(startdatetime.getText());
+                    SpannableString spannableEndDatetime = new SpannableString(enddatetime.getText());
                     SpannableString spannableDistance = new SpannableString(distance.getText());
                     SpannableString spannableStatus = new SpannableString(status.getText());
 
@@ -225,7 +232,8 @@ public class EventSingleActivity extends AppCompatActivity {
                     spannableStreet.setSpan(boldSpan,0,6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     spannableHouseNum.setSpan(boldSpan,0,12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     spannableDescription.setSpan(boldSpan,0,11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    spannableDatetime.setSpan(boldSpan,0,8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableStartDatetime.setSpan(boldSpan,0,6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableEndDatetime.setSpan(boldSpan,0,4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     spannableDistance.setSpan(boldSpan,0,8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     spannableStatus.setSpan(boldSpan,0,6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -234,7 +242,8 @@ public class EventSingleActivity extends AppCompatActivity {
                     street_name.setText(spannableStreet);
                     house_number.setText(spannableHouseNum);
                     description.setText(spannableDescription);
-                    datetime.setText(spannableDatetime);
+                    startdatetime.setText(spannableStartDatetime);
+                    enddatetime.setText(spannableEndDatetime);
                     distance.setText(spannableDistance);
                     status.setText(spannableStatus);
 

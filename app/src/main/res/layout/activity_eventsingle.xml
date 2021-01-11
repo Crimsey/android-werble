@@ -26,7 +26,6 @@
         android:id="@+id/editSingleEvent"
         android:layout_width="72dp"
         android:layout_height="44dp"
-        android:layout_marginTop="4dp"
         android:backgroundTint="@color/purple_700"
         android:text="edit"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,140 +33,168 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/constraintLayout"
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="0dp"
-        android:layout_height="574dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:orientation="vertical"
+        android:layout_marginBottom="370dp"
         app:layout_constraintBottom_toTopOf="@+id/returntomaporlist"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/singleEventName"
-        app:layout_constraintVertical_bias="0.152">
+        app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/singleEventDatetime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="singleEventDatetime"
-            android:textColor="#0E0E0E"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/singleEventLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="singleEventLocation"
-            android:textColor="#0E0E0E"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/singleEventStreetName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="singleEventStreetName"
-            android:textColor="#0E0E0E"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/singleEventHouseNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="singleEventHouseNumber"
-            android:textColor="#0E0E0E"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/singleEventZipcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="singleEventZipcode"
-            android:textColor="#0E0E0E"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/singleEventStatus"
+        <LinearLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="singleEventStatus"
-            android:textColor="#0E0E0E"
-            android:textSize="16sp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/singleEventType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="singleEventType"
-            android:textColor="#0E0E0E"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/singleEventDistance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="singleEventDistance"
-            android:textColor="#0E0E0E"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/singleEventDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="singleEventDescription"
-            android:textColor="#0E0E0E"
-            android:textSize="16sp" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="387dp">
-
-            <Button
-                android:id="@+id/seeReviews"
-                android:layout_width="135dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/blue"
-                android:text="See Reviews"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.005" />
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/addReview"
+                <TextView
+                    android:id="@+id/singleEventStartDatetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="singleEventDatetime"
+                    android:textColor="#0E0E0E"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/singleEventEndDatetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="singleEventEndDatetime"
+                    android:textColor="#0E0E0E"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/singleEventLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/blue"
-                android:text="add Review"
-                app:iconTint="#122063"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/seeReviews"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.005" />
+                android:text="singleEventLocation"
+                android:textColor="#0E0E0E"
+                android:textSize="16sp" />
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="325dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addReview">
+            <TextView
+                android:id="@+id/singleEventStreetName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="singleEventStreetName"
+                android:textColor="#0E0E0E"
+                android:textSize="16sp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/participantRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/singleEventHouseNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="singleEventHouseNumber"
+                android:textColor="#0E0E0E"
+                android:textSize="16sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/singleEventZipcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="singleEventZipcode"
+                android:textColor="#0E0E0E"
+                android:textSize="16sp" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/singleEventStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="singleEventStatus"
+                android:textColor="#0E0E0E"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/singleEventType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="singleEventType"
+                android:textColor="#0E0E0E"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/singleEventDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="singleEventDistance"
+                android:textColor="#0E0E0E"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/singleEventDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="singleEventDescription"
+                android:textColor="#0E0E0E"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="375dp"
+        app:layout_constraintBottom_toTopOf="@+id/returntomaporlist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2">
+
+        <Button
+            android:id="@+id/seeReviews"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="See Reviews"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.005" />
+
+        <Button
+            android:id="@+id/addReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="add Review"
+            app:iconTint="#122063"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/seeReviews"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.005" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="325dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addReview">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/participantRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/leaveSingleEvent"
@@ -178,9 +205,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/joinSingleEvent"
@@ -193,9 +218,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.93"
-        app:layout_constraintStart_toEndOf="@+id/returntomaporlist"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toEndOf="@+id/returntomaporlist" />
 
     <Button
         android:id="@+id/returntomaporlist"
