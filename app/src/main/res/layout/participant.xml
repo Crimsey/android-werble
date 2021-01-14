@@ -21,25 +21,13 @@
             android:id="@+id/participantLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif-black"
             android:text="participantLogin"
             android:textColor="#00BFA5"
             android:textSize="20dp"
             android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/participantFirstName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="participantFirstName"
-            android:textColor="#121111" />
-
-        <TextView
-            android:id="@+id/participantLastName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="#121111" />
 
         <View
             android:id="@+id/view2"

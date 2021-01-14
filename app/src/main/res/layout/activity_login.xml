@@ -37,7 +37,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="10dp"
-                android:text="kubus"
                 android:imeOptions="actionNext"
                 android:inputType="textPersonName"
                 android:maxLines="1" />
@@ -55,7 +54,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="10dp"
-                android:text="12345678"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:maxLines="1" />

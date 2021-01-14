@@ -107,11 +107,6 @@ public class SettingsActivity extends NavigationActivity implements
                         description = user.getDescription().toString();
                         userDescription.setText(description);
                     }
-                    /*if (user.getEmail()!=null){
-                        email = user.getEmail();
-                        userEmail.setText(email);
-                    }*/
-
                 } else {
                     handleErrors(response.errorBody());
                 }
@@ -165,23 +160,10 @@ public class SettingsActivity extends NavigationActivity implements
         userLastName.setError(null);
         userBirthDate.setError(null);
         userDescription.setError(null);
-        //userEmail.setError(null);
-        //userPassword.setError(null);
+
         validator.clear();
-        System.out.println("firstName "+firstName);
-        System.out.println("lastName "+lastName);
-        System.out.println("birthDate "+birthDate);
-        System.out.println("description "+description);
-        System.out.println("email "+email);
 
         if (validator.validate()) {
-
-            System.out.println("firstName "+firstName);
-            System.out.println("lastName "+lastName);
-            System.out.println("birthDate "+birthDate);
-            System.out.println("description "+description);
-            System.out.println("email "+email);
-
 
             messageCall = service.userEdit(firstName, lastName, birthDate, description);//, email);//,password);
 
@@ -258,16 +240,15 @@ public class SettingsActivity extends NavigationActivity implements
                     });
                 }
             }
-            /*else {
+            else {
                 gotoProfile();
-            }*/
+            }
     }
 
     private void handleErrors(ResponseBody response) {
 
         ApiError apiError = Utils.converErrors(response);
         if (apiError.getErrors() != null) {
-            Log.w("no errors", "apiError.getErrors()"+apiError.getErrors());
 
             for (Map.Entry<String, List<String>> error : apiError.getErrors().entrySet()) {
                 if (error.getKey().equals("first_name")) {
@@ -292,13 +273,11 @@ public class SettingsActivity extends NavigationActivity implements
     }
 
     public void setupRules() {
-        //if (!userEmail.getText().toString().isEmpty()){
-            //System.out.println("MAIL");
-        validatorEmail.addValidation(this,R.id.userEmail, Patterns.EMAIL_ADDRESS,R.string.err_email);//}
+        validatorEmail.addValidation(this,R.id.userEmail, Patterns.EMAIL_ADDRESS,R.string.err_email);
         validator.addValidation(this,R.id.userPassword,"[a-zA-Z0-9]{8,64}|^\\s*$",R.string.err_password);
         validator.addValidation(this,R.id.userFirstName,"[a-zA-Z]{1,30}|^\\s*$",R.string.err_firstname);
         validator.addValidation(this,R.id.userLastName,"[a-zA-Z]{1,40}|^\\s*$",R.string.err_lastname);
-        validator.addValidation(this, R.id.userDescription, "[a-zA-Z0-9]{1,200}|^\\s*$", R.string.err_event_description);
+        validator.addValidation(this, R.id.userDescription, "[a-zA-Z0-9,. ]{1,200}|^\\s*$", R.string.err_event_description);
     }
 
     @OnClick(R.id.deactivateProfile)

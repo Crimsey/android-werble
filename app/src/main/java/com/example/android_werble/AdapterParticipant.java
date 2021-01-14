@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android_werble.entities.Event;
 import com.example.android_werble.entities.EventParticipant;
 
 import java.util.List;
@@ -27,13 +26,10 @@ public class AdapterParticipant extends RecyclerView.Adapter{
         public MyViewHolder(View pItem) {
             super(pItem);
             eLogin = (TextView) pItem.findViewById(R.id.participantLogin);
-            eFirstName = (TextView) pItem.findViewById(R.id.participantFirstName);
-            eLastName = (TextView) pItem.findViewById(R.id.participantLastName);
         }
     }
 
     public AdapterParticipant(List<EventParticipant> pParticipants, RecyclerView pRecyclerView) {
-        //super();
         mParticipants = pParticipants;
         mRecyclerView = pRecyclerView;
     }
@@ -44,22 +40,6 @@ public class AdapterParticipant extends RecyclerView.Adapter{
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.participant, parent, false);
 
-        // dla elementu listy ustawiamy obiekt OnClickListener,
-        // który usunie element z listy po kliknięciu na niego
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // odnajdujemy indeks klikniętego elementu
-                int positionToDelete = mRecyclerView.getChildAdapterPosition(v);
-                // usuwamy element ze źródła danych
-                mParticipants.remove(positionToDelete);
-                // poniższa metoda w animowany sposób usunie element z listy
-                notifyItemRemoved(positionToDelete);
-            }
-        });
-
-
         return new MyViewHolder(view);
     }
 
@@ -68,8 +48,6 @@ public class AdapterParticipant extends RecyclerView.Adapter{
         // uzupełniamy layout wydarzenia
         EventParticipant participant = mParticipants.get(position);
         ((MyViewHolder) holder).eLogin.setText(participant.getLogin());
-        ((MyViewHolder) holder).eFirstName.setText(participant.getFirstName());
-        ((MyViewHolder) holder).eLastName.setText(participant.getLastName());
 
     }
 
