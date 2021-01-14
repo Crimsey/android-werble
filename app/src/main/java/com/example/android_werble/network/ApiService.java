@@ -41,7 +41,7 @@ public interface ApiService {
     Call <AccessToken> refresh(@Field("refresh_token") String refreshToken);
 
 
-    @POST("user/events/create")
+    @POST("user/events")
     @FormUrlEncoded
     Call<Message> createEventwithMarker(    @Field("name") String name,
                                             @Field("location") String location,
@@ -70,7 +70,7 @@ public interface ApiService {
     @GET("user")
     Call<User> user();
 
-    @PUT("user/profile/edit")
+    @PUT("user/profile")
     @FormUrlEncoded
     Call<Message> userEdit(
                         @Field("first_name") String first_name,
@@ -116,14 +116,14 @@ public interface ApiService {
     Call<Message> leaveEvent(
             @Path("id") Integer event_id);
 
-    @POST("user/events/review/create")
+    @POST("user/reviews")
     @FormUrlEncoded
     Call<Message> createReview(
                         @Field("content") String content,
                         @Field("rating") Integer rating,
                         @Field("event_id") Integer event_id);
 
-    @PUT("user/events/{id}/edit")
+    @PUT("user/events/{id}")
     @FormUrlEncoded
     Call<Message> editEvent(
                         @Path("id") Integer event_id,
@@ -139,7 +139,7 @@ public interface ApiService {
                         @Field("street_name") String streetName,
                         @Field("house_number") String houseNumber);
 
-    @PUT("user/events/{id}/review/edit")
+    @PUT("user/events/{id}/review")
     @FormUrlEncoded
     Call<Message> editReview(
             @Path("id") Integer event_id,
@@ -150,17 +150,17 @@ public interface ApiService {
     Call<EventReview> getSingleReview(
             @Path("id") Integer event_id);
 
-    @DELETE("user/events/review/{id}/softdelete")
+    @DELETE("user/events/reviews/{id}")
     Call<Message> deleteReview(
             @Path("id") Integer event_participant_id
     );
 
-    @DELETE("user/events/{id}/softdelete")
+    @DELETE("user/events/{id}")
     Call<Message> deleteEvent(
             @Path("id") Integer event_id
     );
 
-    @DELETE("user/profile/deactivate")
+    @DELETE("user/profile")
     Call<Message> deactivateProfile();
 
 

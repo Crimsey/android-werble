@@ -76,7 +76,6 @@ public class RegisterActivity extends AppCompatActivity {
         Password.setError(null);
         PasswordConfirmation.setError(null);
         validator.clear();
-
         if(validator.validate()) {
             if (password_confirmation.equals(password)) {
                 call = service.register(name, email, password, password_confirmation);
@@ -85,19 +84,16 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
 
                         Log.e(TAG, "onResponse: " + response);
-
                         if (response.isSuccessful()) {
                             Log.e(TAG, "onResponse: " + response.body());
                             tokenManager.saveToken(response.body());
                             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                             finish();
                             Toast.makeText(RegisterActivity.this, "Successful registration", Toast.LENGTH_LONG).show();
-
                         } else {
                             handleErrors(response.errorBody());
                         }
                     }
-
                     @Override
                     public void onFailure(Call<AccessToken> call, Throwable t) {
                         Log.e(TAG, "onFailure: " + t.getMessage());
@@ -108,6 +104,11 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(RegisterActivity.this,"Passwords doesn't match!",Toast.LENGTH_LONG).show();
             }
         }
+    }
+    public void setupRules(){
+        validator.addValidation(this,R.id.Login, "[a-zA-Z0-9]{4,30}",R.string.err_login);
+        validator.addValidation(this,R.id.Email, Patterns.EMAIL_ADDRESS,R.string.err_email);
+        validator.addValidation(this,R.id.Password,"[a-zA-Z0-9]{8,64}",R.string.err_password);
     }
 
     @OnClick(R.id.go_to_login)
@@ -125,10 +126,10 @@ public class RegisterActivity extends AppCompatActivity {
                     Login.setError(error.getValue().get(0));
                 }
                 if (error.getKey().equals("email")) {
-                    Login.setError(error.getValue().get(0));
+                    Email.setError(error.getValue().get(0));
                 }
                 if (error.getKey().equals("password")) {
-                    Login.setError(error.getValue().get(0));
+                    Password.setError(error.getValue().get(0));
                 }
             }
         }
@@ -138,11 +139,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
-    public void setupRules(){
-        validator.addValidation(this,R.id.Login, "[a-zA-Z0-9]{4,30}",R.string.err_login);
-        validator.addValidation(this,R.id.Email, Patterns.EMAIL_ADDRESS,R.string.err_email);
-        validator.addValidation(this,R.id.Password,"[a-zA-Z0-9]{8,64}",R.string.err_password);
-    }
+
 
     @Override
     protected void onDestroy(){
