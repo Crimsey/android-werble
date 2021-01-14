@@ -88,7 +88,7 @@ public interface ApiService {
     Call<Message> userEditPassword(
             @Field("password") String password);
 
-    @PUT("user/position")
+    @PUT("user/profile/position")
     @FormUrlEncoded
     Call<Message> userPosition(
                         @Field("longitude") String longitude,
