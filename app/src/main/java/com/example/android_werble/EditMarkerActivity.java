@@ -129,7 +129,6 @@ public class EditMarkerActivity extends AppCompatActivity
             public void onComplete(@NonNull Task<Location> task) {
                 if (task.isSuccessful()){
                     Location location = task.getResult();
-                    //GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                     LatLng latLng  = new LatLng(location.getLatitude(), location.getLongitude());
                     System.out.println("WSPÓŁRZĘDNE"+latLng);
 

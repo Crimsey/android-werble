@@ -29,7 +29,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
         public TextView eName;
         public TextView eLocation;
         public TextView eDatetime;
-        public Button join;
         public TextView eDistance;
         public Event eEvent;
 
@@ -38,9 +37,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
             eName = (TextView) pItem.findViewById(R.id.eventName);
             eLocation = (TextView) pItem.findViewById(R.id.eventLocation);
             eDatetime = (TextView) pItem.findViewById(R.id.eventStartDatetime);
-            //join = (Button) pItem.findViewById(R.id.join);
             eDistance = (TextView) pItem.findViewById(R.id.eventDistance);
-
 
             pItem.setOnClickListener(new View.OnClickListener() {
                  @Override
@@ -49,15 +46,11 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
                      Intent myIntent = new Intent(contextAdapter, EventSingleActivity.class);
                      myIntent.putExtra("event_id", String.valueOf(eEvent.getEventId()));
                      myIntent.putExtra("variable", String.valueOf(variable));
-
-                     //send additiona variable to check if click is from adapter or from map
+                     //send additional variable to check if click is from adapter or from map
                      contextAdapter.startActivity(myIntent);
                  }
              }
             );
-
-
-
         }
     }
 

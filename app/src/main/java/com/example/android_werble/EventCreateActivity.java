@@ -223,28 +223,11 @@ public class EventCreateActivity extends AppCompatActivity {
                 startDate = sdf.parse(startDatetime);
                 endDate = sdf.parse(endDatetime);
                 if (startDate.before(endDate)) {
-
                     Bundle b = getIntent().getExtras();
                     String latitude = b.getString("lat");
                     String longitude = b.getString("lon");
-
-                    Log.w(TAG, b.getString("lat"));
-                    Log.w(TAG, b.getString("lon"));
-
-                    System.out.println("name"+name);
-                    System.out.println("location"+location);
-                    System.out.println("description"+description);
-                    System.out.println("startDatetime"+startDatetime);
-                    System.out.println("endDatetime"+endDatetime);
-                    System.out.println("longitude"+longitude);
-                    System.out.println("latitude"+latitude);
-                    System.out.println("typeId"+typeId);
-                    System.out.println("zipCode"+zipCode);
-                    System.out.println("streetName"+streetName);
-                    System.out.println("houseNumber"+houseNumber);
-
-
-                    call = service.createEventwithMarker(name, location, description, startDatetime, endDatetime, longitude, latitude, typeId, zipCode, streetName, houseNumber);
+                    call = service.createEventwithMarker(name, location, description, startDatetime, endDatetime, longitude,
+                                                            latitude, typeId, zipCode, streetName, houseNumber);
                     call.enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {
@@ -252,24 +235,18 @@ public class EventCreateActivity extends AppCompatActivity {
                                 Log.e(TAG, "onResponse: " + response.body());
                                 Toast.makeText(EventCreateActivity.this, "Created event!", Toast.LENGTH_LONG).show();
                                 gotoEvent();
-
                             } else {
-                                Log.e(TAG, "onResponse: " + response.body());
                                 handleErrors(response.errorBody());
                             }
                         }
-
                         @Override
                         public void onFailure(Call<Message> call, Throwable t) {
                             Log.e(TAG, "onFailure: " + t.getMessage());
-
                         }
                     });
-
                 } else {
                     Toast.makeText(this, "Begin datetime have to be before end datetime", Toast.LENGTH_LONG).show();
                 }
-
             } catch (Exception e) {
                 System.out.println("Error occurred " + e.getMessage());
             }

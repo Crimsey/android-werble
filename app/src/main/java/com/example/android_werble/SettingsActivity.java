@@ -164,17 +164,12 @@ public class SettingsActivity extends NavigationActivity implements
         validator.clear();
 
         if (validator.validate()) {
-
-            messageCall = service.userEdit(firstName, lastName, birthDate, description);//, email);//,password);
-
+            messageCall = service.userEdit(firstName, lastName, birthDate, description);
             messageCall.enqueue(new Callback<Message>() {
                 @Override
                 public void onResponse(Call<Message> call, Response<Message> response) {
-                    Log.w(TAG, "CHECK2");
                     if (response.isSuccessful()) {
                         Log.e(TAG, "onResponse: " + response);
-
-
                     } else {
                         handleErrors(response.errorBody());
                     }
@@ -183,13 +178,10 @@ public class SettingsActivity extends NavigationActivity implements
                 @Override
                 public void onFailure(Call<Message> call, Throwable t) {
                     Log.e(TAG, "onFailure: " + t.getMessage());
-
                 }
             });
-        }else {
-            Log.e(TAG, "VALIDATOR: " + validator.validate());
-
         }
+
         userPassword.setError(null);
         validator.clear();
             if (!password.isEmpty()) {
@@ -298,7 +290,6 @@ public class SettingsActivity extends NavigationActivity implements
                     finish();
                 }
             }
-
             @Override
             public void onFailure(Call<Message> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage());

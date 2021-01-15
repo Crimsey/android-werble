@@ -200,7 +200,6 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
             }
         });
 
-        //eventEditDatetime = findViewById(R.id.eventEditDatetime2);
         eventStartEditDatetime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -320,20 +319,19 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
             String latitude = b.getString("lat");
             String longitude = b.getString("lon");
 
-            callMessage = service.editEvent(Integer.parseInt(event_id),name,location,description,startdatetime,enddatetime,longitude,latitude,typeId,zipCode,streetName,houseNumber);
+            callMessage = service.editEvent(Integer.parseInt(event_id),name,location,description,startdatetime,
+                                            enddatetime,longitude,latitude,typeId,zipCode,streetName,houseNumber);
             callMessage.enqueue(new Callback<Message>() {
-
                 @Override
                 public void onResponse(Call<Message> call, Response<Message> response) {
                     if (response.isSuccessful()){
                         Log.e(TAG, "onResponse: " + response);
                         gotoEvent();
-
+                        Toast.makeText(EventEditActivity.this, "Edited event!", Toast.LENGTH_LONG).show();
                     } else {
                     handleErrors(response.errorBody());
                 }
                 }
-
                 @Override
                 public void onFailure(Call<Message> call, Throwable t) {
                     Log.e(TAG, "onFailure: " + t.getMessage());

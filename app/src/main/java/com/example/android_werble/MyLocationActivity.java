@@ -324,31 +324,25 @@ public class MyLocationActivity extends NavigationActivity
         });
 
         FloatingActionButton fab = findViewById(R.id.fab);
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
-                        //markerOptions.title(latLng.latitude + " : " + latLng.longitude);
                         googleMap.addMarker(markerOptions);
-
-                        Log.w(TAG,"goting to create event");
-
                         Intent intent = new Intent(MyLocationActivity.this, EventCreateActivity.class);
                         intent.putExtra("lat",Double.toString(latLng.latitude));
                         intent.putExtra("lon",Double.toString(latLng.longitude));
                         intent.putExtra("range",String.valueOf(seekBar.getProgress()));
-
                         startActivity(intent);
                         finish();
-
                     }
                 });
-
             }
         });
 

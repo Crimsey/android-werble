@@ -30,12 +30,9 @@ public class NavigationActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "NavigationActivity";
-
     protected Toolbar toolbar;
     protected DrawerLayout drawerLayout;
     protected NavigationView navigationView;
-    protected ActionBarDrawerToggle actionBarDrawerToggle;
-
     Call<Message> messageCall;
     ApiService service;
     TokenManager tokenManager;
@@ -50,7 +47,6 @@ public class NavigationActivity extends AppCompatActivity implements
     void setupDrawer(){
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        //toolbar = findViewById(R.id.main_toolbar);
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -69,50 +65,39 @@ public class NavigationActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-
         tokenManager = TokenManager.getInstance(getSharedPreferences("prefs", MODE_PRIVATE));
         if (tokenManager.getToken() == null) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
-
-        //implementation of sidebar
-
         setSupportActionBar(toolbar);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getTitle().toString()) {
-
             case "Map":
                 gotoMap();
                 break;
-
             case "Your profile":
                 gotoProfile();
                 break;
-
             case "Local events":
                 gotoLocalEvents();
                 break;
-
             case "Owned events":
                 gotoOwnedEvents();
                 break;
-
             case "Participating":
                 gotoParticipating();
                 break;
-
             case "Settings":
                 gotoSettings();
                 break;
             case "Logout":
                 logout();
                 break;
-
         }
         return false;
     }

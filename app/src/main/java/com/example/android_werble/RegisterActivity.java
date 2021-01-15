@@ -82,8 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
                 call.enqueue(new Callback<AccessToken>() {
                     @Override
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
-
-                        Log.e(TAG, "onResponse: " + response);
                         if (response.isSuccessful()) {
                             Log.e(TAG, "onResponse: " + response.body());
                             tokenManager.saveToken(response.body());

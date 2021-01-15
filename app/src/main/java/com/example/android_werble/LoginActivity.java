@@ -77,20 +77,16 @@ public class LoginActivity extends AppCompatActivity {
             call.enqueue(new Callback<AccessToken>() {
                 @Override
                 public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
-
-                    Log.w(TAG, "onResponse " + response);
-
                     if (response.isSuccessful()) {
+                        Log.w(TAG, "onResponse " + response);
                         tokenManager.saveToken(response.body());
                         startActivity(new Intent(LoginActivity.this, EventLocalListActivity.class));
                         finish();
                         Toast.makeText(LoginActivity.this,"Successful login",Toast.LENGTH_LONG).show();
-
                     } else {
                         if (response.code() == 422) {
                             handleErrors(response.errorBody());
-                            //Toast.makeText(LoginActivity.this, "User doesnt exist!", Toast.LENGTH_LONG).show();
-
+                            Toast.makeText(LoginActivity.this, "User doesnt exist!", Toast.LENGTH_LONG).show();
                         }
                         if (response.code() == 401) {
                             ApiError apiError = Utils.converErrors(response.errorBody());
@@ -98,13 +94,16 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 }
-
                 @Override
                 public void onFailure(Call<AccessToken> call, Throwable t) {
                     Log.w(TAG, "onFailure: " + t.getMessage());
                 }
             });
         }
+    }
+    public void setupRules(){
+        validator.addValidation(this,R.id.Login, RegexTemplate.NOT_EMPTY, R.string.err_login2);
+        validator.addValidation(this,R.id.Password,RegexTemplate.NOT_EMPTY, R.string.err_password2);
     }
 
     @OnClick(R.id.go_to_register)
@@ -133,12 +132,6 @@ public class LoginActivity extends AppCompatActivity {
             Log.w(TAG,"Incorrect Login or Password");
 
         }
-    }
-
-    public void setupRules(){
-        validator.addValidation(this,R.id.Login, RegexTemplate.NOT_EMPTY, R.string.err_login2);
-        validator.addValidation(this,R.id.Password,RegexTemplate.NOT_EMPTY, R.string.err_password2);
-
     }
 
     @Override
