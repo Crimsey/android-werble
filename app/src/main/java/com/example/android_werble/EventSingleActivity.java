@@ -57,8 +57,6 @@ public class EventSingleActivity extends AppCompatActivity {
     Call<Data<EventReview>> callReview;
     Call<Data<EventType>> callType;
 
-    //Call<AccessToken> callAccessToken;
-    //AwesomeValidation validator;
     TokenManager tokenManager;
 
 
@@ -114,7 +112,6 @@ public class EventSingleActivity extends AppCompatActivity {
 
 
         service = RetrofitBuilder.createServiceWithAuth(ApiService.class, tokenManager);
-        //validator = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
@@ -303,14 +300,12 @@ public class EventSingleActivity extends AppCompatActivity {
                                         participantId =  eventParticipant.getEventParticipantId().toString();
                                         help++;
                                     }
-
                                 }
                                 addReview.setClickable(false);
                                 seeReviews.setClickable(false);
                                 addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
                                 seeReviews.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
                                 leaveSingleEvent.setVisibility(View.GONE);
-
                                 if (help>0){ //participant
                                     joinSingleEvent.setVisibility(View.GONE);
                                     leaveSingleEvent.setVisibility(View.VISIBLE);
@@ -325,7 +320,6 @@ public class EventSingleActivity extends AppCompatActivity {
                                 {
                                     addReview.setClickable(true);
                                     addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
-
                                     Bundle b = getIntent().getExtras();
                                     String event_id = b.getString("event_id");
                                     callReview = service.getEventReview(Integer.parseInt(event_id));
@@ -337,7 +331,8 @@ public class EventSingleActivity extends AppCompatActivity {
                                                 for (EventReview eventReview : eventReviewList){
                                                     if (eventReview.getEventParticipantId().toString().equals(participantId)){
                                                         addReview.setClickable(false);
-                                                        addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blankblue)));
+                                                        addReview.setBackgroundTintList(ColorStateList.valueOf(getResources().
+                                                                getColor(R.color.blankblue)));
                                                     }
                                                 }
                                             }
@@ -345,13 +340,12 @@ public class EventSingleActivity extends AppCompatActivity {
 
                                         @Override
                                         public void onFailure(Call<Data<EventReview>> call, Throwable t) {
-
+                                            Log.w(TAG, "onFailure: " + t.getMessage());
                                         }
                                     });
                                 }
-
                             } else {
-                                Log.w(TAG, "POST-PARTICIPANT");
+                                handleErrors(response.errorBody());
                             }
                         }
 
@@ -382,21 +376,18 @@ public class EventSingleActivity extends AppCompatActivity {
                 Log.w("no errors", "apiError.getErrors()" + apiError.getErrors());
 
                 for (Map.Entry<String, List<String>> error : apiError.getErrors().entrySet()) {
-                    /*if (error.getKey().equals("first_name")) {
-                        userFirstName.setError(error.getValue().get(0));
+                    if (error.getKey().equals("name")) {
+                        name.setError(error.getValue().get(0));
                     }
-                    if (error.getKey().equals("last_name")) {
-                        userLastName.setError(error.getValue().get(0));
+                    if (error.getKey().equals("startdatetime")) {
+                        startdatetime.setError(error.getValue().get(0));
                     }
-                    if (error.getKey().equals("birth_date")) {
-                        userBirthDate.setError(error.getValue().get(0));
+                    if (error.getKey().equals("enddatetime")) {
+                        enddatetime.setError(error.getValue().get(0));
                     }
-                    if (error.getKey().equals("description")) {
-                        userDescription.setError(error.getValue().get(0));
-                    }*/
-                /*if (error.getKey().equals("password")) {
-                    userPassword.setError(error.getValue().get(0));
-                }*/
+                    if (error.getKey().equals("status")) {
+                        status.setError(error.getValue().get(0));
+                    }
                 }
             } else {
                 Log.e("no errors", "weird");
@@ -438,14 +429,14 @@ public class EventSingleActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 Log.w(TAG, "You have left event!: " + response);
-                Toast.makeText(EventSingleActivity.this,"LEAVING EVENT",Toast.LENGTH_LONG).show();
+                Toast.makeText(EventSingleActivity.this,"LEAVING EVENT",
+                        Toast.LENGTH_LONG).show();
                 finish();
                 startActivity(getIntent());
             }
             @Override
             public void onFailure(Call<Message> call, Throwable t) {
                 Log.w(TAG, "onFailure: " + t.getMessage());
-
             }
         });
 

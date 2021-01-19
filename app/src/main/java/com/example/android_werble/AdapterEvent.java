@@ -26,10 +26,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
     private Context contextAdapter;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView eName;
-        public TextView eLocation;
-        public TextView eDatetime;
-        public TextView eDistance;
+        public TextView eName,eLocation,eDatetime,eDistance;
         public Event eEvent;
 
         public ViewHolder(View pItem) {
@@ -46,12 +43,20 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
                      Intent myIntent = new Intent(contextAdapter, EventSingleActivity.class);
                      myIntent.putExtra("event_id", String.valueOf(eEvent.getEventId()));
                      myIntent.putExtra("variable", String.valueOf(variable));
-                     //send additional variable to check if click is from adapter or from map
                      contextAdapter.startActivity(myIntent);
                  }
              }
             );
         }
+    }
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+
+        holder.eEvent = mEvents.get(position);
+        holder.eName.setText(holder.eEvent.getName());
+        holder.eLocation.setText("Location: " + holder.eEvent.getLocation());
+        holder.eDatetime.setText("Datetime: " + holder.eEvent.getStartDatetime());
+        holder.eDistance.setText("Distance: " + holder.eEvent.getDistance().toString()+"km");
     }
 
     public AdapterEvent(List<Event> pEvents, Context context) {
@@ -76,7 +81,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
                     if (mEvents != null && mEvents.size() > 0) {
                         for (final Event e : mEvents) {
                             if (e.getName().toLowerCase().contains(constraint.toString())) {
-                                //|| e.getLocation().toLowerCase().contains(constraint.toString()))
                                 results.add(e);
                             }
                         }
@@ -112,19 +116,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.ViewHolder>
                 .inflate(R.layout.event, parent, false);
 
         return new ViewHolder(view);
-    }
-
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-
-        holder.eEvent = mEvents.get(position);
-        holder.eName.setText(holder.eEvent.getName());
-        holder.eLocation.setText("Location: " + holder.eEvent.getLocation());
-        holder.eDatetime.setText("Datetime: " + holder.eEvent.getStartDatetime());
-        holder.eDistance.setText("Distance: " + holder.eEvent.getDistance().toString()+"km");
-
-
     }
 
     @Override

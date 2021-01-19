@@ -374,11 +374,9 @@ public class EventEditActivity extends AppCompatActivity implements ViewDialog.V
                     Log.e(TAG, "onResponse: " + response);
                 }
             }
-
             @Override
             public void onFailure(Call<Message> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage());
-
             }
         });
         gotoEventList();

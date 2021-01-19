@@ -324,8 +324,6 @@ public class MyLocationActivity extends NavigationActivity
         });
 
         FloatingActionButton fab = findViewById(R.id.fab);
-
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -338,7 +336,6 @@ public class MyLocationActivity extends NavigationActivity
                         Intent intent = new Intent(MyLocationActivity.this, EventCreateActivity.class);
                         intent.putExtra("lat",Double.toString(latLng.latitude));
                         intent.putExtra("lon",Double.toString(latLng.longitude));
-                        intent.putExtra("range",String.valueOf(seekBar.getProgress()));
                         startActivity(intent);
                         finish();
                     }

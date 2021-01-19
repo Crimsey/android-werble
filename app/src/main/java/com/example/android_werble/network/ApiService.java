@@ -21,7 +21,7 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    @POST("register") //http://domain.com/api/
+    @POST("register")
     @FormUrlEncoded
     Call<AccessToken> register(@Field("login") String login,
                                @Field("email") String email,
@@ -36,11 +36,6 @@ public interface ApiService {
     @POST("logout")
     Call<Message>   logout();
 
-    @POST("refresh")
-    @FormUrlEncoded
-    Call <AccessToken> refresh(@Field("refresh_token") String refreshToken);
-
-
     @POST("user/events")
     @FormUrlEncoded
     Call<Message> createEventwithMarker(    @Field("name") String name,
@@ -54,9 +49,6 @@ public interface ApiService {
                                             @Field("zip_code") String zipCode,
                                             @Field("street_name") String streetName,
                                             @Field("house_number") String houseNumber);
-
-    @GET("user/events")
-    Call<Data<Event>> getUserEvents();
 
     @GET("user/events/local")
     Call<Data<Event>> getLocalEvents(@Query("distance") Integer distance);
@@ -107,14 +99,14 @@ public interface ApiService {
     @GET("user/types")
     Call<Data<EventType>> getEventTypes();
 
+    @GET("user/events/{id}/review")
+    Call<EventReview> getSingleReview(
+            @Path("id") Integer event_id);
+
     @POST("user/events/{id}/join")
     Call<Message> joinEvent(
                     @Path("id") Integer event_id
                     );
-
-    @DELETE("user/events/{id}/leave")
-    Call<Message> leaveEvent(
-            @Path("id") Integer event_id);
 
     @POST("user/reviews")
     @FormUrlEncoded
@@ -146,11 +138,9 @@ public interface ApiService {
             @Field("rating") Integer rating,
             @Field("content") String content);
 
-    @GET("user/events/{id}/review")
-    Call<EventReview> getSingleReview(
-            @Path("id") Integer event_id);
 
-    @DELETE("user/events/reviews/{id}")
+
+    @DELETE("user/reviews/{id}")
     Call<Message> deleteReview(
             @Path("id") Integer event_participant_id
     );
@@ -163,5 +153,12 @@ public interface ApiService {
     @DELETE("user/profile")
     Call<Message> deactivateProfile();
 
+    @DELETE("user/events/{id}/leave")
+    Call<Message> leaveEvent(
+            @Path("id") Integer event_id);
+
+    @POST("refresh")
+    @FormUrlEncoded
+    Call <AccessToken> refresh(@Field("refresh_token") String refreshToken);
 
 }

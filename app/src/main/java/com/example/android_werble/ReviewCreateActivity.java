@@ -59,17 +59,14 @@ public class ReviewCreateActivity extends AppCompatActivity {
 
     @OnClick(R.id.CreateReviewButton)
     void createReview(){
-
-        Log.w(TAG,"Going to Review");
-
         Bundle b = getIntent().getExtras();
         String event_id = b.getString("event_id");
-
         Integer ratingInt = (int) rating.getRating();
         String contentString = String.valueOf(content.getEditText().getText());
 
         if (rating.getRating()==0){
-            Toast.makeText(ReviewCreateActivity.this, "Rating cannot be zero", Toast.LENGTH_LONG).show();
+            Toast.makeText(ReviewCreateActivity.this, "Rating cannot be zero",
+                    Toast.LENGTH_LONG).show();
         }else {
             content.setError(null);
             validator.clear();
@@ -80,15 +77,11 @@ public class ReviewCreateActivity extends AppCompatActivity {
                     public void onResponse(Call<Message> call, Response<Message> response) {
                         if (response.isSuccessful()) {
                             Log.w(TAG, "You have created review!: " + response);
-                            Toast.makeText(ReviewCreateActivity.this, "CREATING REVIEW", Toast.LENGTH_LONG).show();
-                        }else {
-                            Log.w(TAG,"rES: "+response.body());
+                            Toast.makeText(ReviewCreateActivity.this, "CREATING REVIEW",
+                                    Toast.LENGTH_LONG).show();
                         }
                         gotoReviewList();
-                        //finish();
-                        //startActivity(getIntent());
                     }
-
                     @Override
                     public void onFailure(Call<Message> call, Throwable t) {
                         Log.w(TAG, "onFailure: " + t.getMessage());

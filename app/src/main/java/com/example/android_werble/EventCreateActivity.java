@@ -172,25 +172,21 @@ public class EventCreateActivity extends AppCompatActivity {
                         calendar.set(Calendar.MINUTE, minute);
 
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
-
                         Date currentTime = new Date();
-                        System.out.println("currentTime: " + currentTime);
-                        System.out.println("choosenTime: " + calendar.getTime());
                         if (currentTime.before(calendar.getTime())) {
                             eventDatetime.setText(simpleDateFormat.format(calendar.getTime()));
-
                         } else {
-                            System.out.println("DATE NOT GREATER");
-                            Toast.makeText(EventCreateActivity.this, "Your date must be greater than todays date", Toast.LENGTH_LONG).show();
+                            Toast.makeText(EventCreateActivity.this, "Your date must be greater than todays date",
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 };
-
-                new TimePickerDialog(EventCreateActivity.this, R.style.datepicker, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
+                new TimePickerDialog(EventCreateActivity.this, R.style.datepicker, timeSetListener,
+                        calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
             }
         };
-
-        new DatePickerDialog(EventCreateActivity.this, R.style.datepicker, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+        new DatePickerDialog(EventCreateActivity.this, R.style.datepicker, dateSetListener,
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
 
@@ -226,14 +222,15 @@ public class EventCreateActivity extends AppCompatActivity {
                     Bundle b = getIntent().getExtras();
                     String latitude = b.getString("lat");
                     String longitude = b.getString("lon");
-                    call = service.createEventwithMarker(name, location, description, startDatetime, endDatetime, longitude,
-                                                            latitude, typeId, zipCode, streetName, houseNumber);
+                    call = service.createEventwithMarker(name, location, description, startDatetime,
+                           endDatetime, longitude, latitude, typeId, zipCode, streetName, houseNumber);
                     call.enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {
                             if (response.isSuccessful()) {
                                 Log.e(TAG, "onResponse: " + response.body());
-                                Toast.makeText(EventCreateActivity.this, "Created event!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(EventCreateActivity.this, "Created event!",
+                                        Toast.LENGTH_LONG).show();
                                 gotoEvent();
                             } else {
                                 handleErrors(response.errorBody());
@@ -245,7 +242,8 @@ public class EventCreateActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(this, "Begin datetime have to be before end datetime", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Begin datetime have to be before end datetime",
+                            Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
                 System.out.println("Error occurred " + e.getMessage());

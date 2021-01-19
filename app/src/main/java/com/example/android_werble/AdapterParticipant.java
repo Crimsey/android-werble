@@ -19,8 +19,6 @@ public class AdapterParticipant extends RecyclerView.Adapter{
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView eLogin;
-        public TextView eFirstName;
-        public TextView eLastName;
 
 
         public MyViewHolder(View pItem) {
@@ -45,10 +43,8 @@ public class AdapterParticipant extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        // uzupełniamy layout wydarzenia
         EventParticipant participant = mParticipants.get(position);
         ((MyViewHolder) holder).eLogin.setText(participant.getLogin());
-
     }
 
     @Override
